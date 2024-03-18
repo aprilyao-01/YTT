@@ -1,0 +1,82 @@
+<div class="container text-center basic-info">
+    <div class="row">
+      <div class="col left">
+        <div>
+            <span class="text-large">
+                {{ stock.ticker }} <i class="bi bi-star"></i>
+                <!-- <mat-icon fontIcon="star_border"></mat-icon> -->
+            </span>
+        </div>
+        <div class="text-mid text-secondary">{{ stock.name }}</div>
+        <div class="text-small">{{ stock.exchange }}</div>
+        <div>
+            <button type="button" class="btn btn-success">Buy</button>&nbsp;
+            <!-- <button *ngIf="stockHoldingFlag" type="button" class="btn btn-danger" (click)="startSellTransaction()">Sell</button> -->
+        </div>
+      </div>
+      <div class="col middle">
+        <img id="logo-img" src="{{ stock.logo }}" style="width: 100px; height: auto;">
+      </div>
+      <div class="col right">
+        <div #searchPrice>
+            <div class="text-large">{{ stock.c }}</div>
+            <div class="text-mid">
+                <!-- <i *ngIf="!priceUp" class="bi bi-caret-down-fill"></i>
+                <i *ngIf="priceUp" class="bi bi-caret-up-fill"></i> -->
+                <i class="bi bi-caret-down-fill"></i>
+                {{ stock.d }}({{ stock.dp }}%)
+            </div>
+        </div>
+        <div class="text-small">
+            example time
+        </div>
+      </div>
+    </div>
+</div>
+<div class="market-info text-center" style="color: green; margin: 10px 0;">
+    Market is Open
+</div>
+<div class="detail-info">
+    <mat-tab-group >
+        <mat-tab label="Summary">
+            <div class="row">
+                <div class="col-md">
+                    <div style="padding: 30px; margin-right:50%; font-size: small; width: 50%;">
+                        <table>
+                            <tr><th>High Price:</th><td>{{ stock.h }}</td></tr>
+                            <tr><th>Low Price:</th><td>{{ stock.l }}</td></tr>
+                            <tr><th>Open Price:</th><td>{{ stock.o }}</td></tr>
+                            <tr><th>Prev. Close:</th><td>{{ stock.pc }}</td></tr>
+                        </table>
+                    </div>
+                    <div style="padding: 10px; text-align: center; font-size: small;">
+                        <p style="font-size: large;"><strong><u>About the company</u></strong></p>
+                        <div style="margin: 5px 0;"><strong>IPO Start Date: </strong>{{ stock.ipo }}</div>
+                        <div style="margin: 5px 0;"><strong>Industry: </strong>{{ stock.finnhubIndustry }}</div>
+                        <div style="margin: 5px 0;"><strong>Webpage: </strong><a #weblink href="" target="_blank">{{ stock.weburl }}</a></div>
+                        <div style="margin: 5px 0;"><strong>Company peers: </strong></div>
+                        <!-- TODO: peers list -->
+                        <div style="margin: 5px 0">{{ stock.peers }}</div>
+                    </div>
+                </div>
+                <div class="col-md" style="text-align: start;">
+                    chart
+                    <!-- <highcharts-chart class="search-highchart insights-highchart" id="summary-highchart" 
+                        [Highcharts]="highcharts"
+                        [options]="summaryChartOptions"
+                    >
+                    </highcharts-chart> -->
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Top News"> Top News 
+
+        </mat-tab>
+        <mat-tab label="Charts"> Charts 
+
+        </mat-tab>
+        <mat-tab label="Insights"> Insights 
+
+        </mat-tab>
+    </mat-tab-group>
+</div>

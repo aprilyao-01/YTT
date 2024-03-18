@@ -1,0 +1,15 @@
+* {
+    margin: auto;
+}
+.text-large {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.text-mid {
+    font-size: 20px;
+}
+
+.text-small {
+    font-size: 14px;
+}
