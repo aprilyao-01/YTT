@@ -12,4 +12,8 @@ export class StockService {
   getAll(): Stock {
     return sample_stock;
   }
+
+  getInfoByTicker(ticker:string){
+    
+  }
 }
