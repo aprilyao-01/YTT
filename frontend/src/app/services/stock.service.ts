@@ -9,11 +9,15 @@ export class StockService {
 
   constructor() { }
 
-  getAll(): Stock {
+  getAll(): Stock[] {
     return sample_stock;
   }
 
-  getInfoByTicker(ticker:string){
-    
+  getSample(): Stock {
+    return sample_stock[0];
+  }
+
+  getInfoByTicker(ticker:string): Stock{
+    return this.getAll().find(stock => stock.ticker === ticker.toUpperCase()) ?? new Stock();
   }
 }

@@ -1,0 +1,22 @@
+.search-container {
+    border: 3px solid darkblue;
+    width: 450px;
+    height:fit-content;
+    max-width: 100%;
+    border-radius: 30px;
+}
+
+.input-form {
+    display: inline-block;
+}
+
+.stock-input {
+    font-size: 17px;
+    border: 0;
+    width: 350px;
+    max-width: 95%;
+}
+
+.btn {
+    color: darkblue;
+}

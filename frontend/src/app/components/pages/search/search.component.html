@@ -1,3 +1,4 @@
+<app-search-bar></app-search-bar>
 <div class="container text-center basic-info">
     <div class="row">
       <div class="col left">
@@ -49,14 +50,14 @@
                             <tr><th>Prev. Close:</th><td>{{ stock.pc }}</td></tr>
                         </table>
                     </div>
-                    <div style="padding: 10px; text-align: center; font-size: small;">
-                        <p style="font-size: large;"><strong><u>About the company</u></strong></p>
-                        <div style="margin: 5px 0;"><strong>IPO Start Date: </strong>{{ stock.ipo }}</div>
-                        <div style="margin: 5px 0;"><strong>Industry: </strong>{{ stock.finnhubIndustry }}</div>
-                        <div style="margin: 5px 0;"><strong>Webpage: </strong><a #weblink href="" target="_blank">{{ stock.weburl }}</a></div>
-                        <div style="margin: 5px 0;"><strong>Company peers: </strong></div>
+                    <div class = "text-center" style="padding: 10px; font-size: small;">
+                        <p class="my-4" style="font-size: large;"><strong><u>About the company</u></strong></p>
+                        <div class="my-2"><strong>IPO Start Date: </strong>{{ stock.ipo }}</div>
+                        <div class="my-2"><strong>Industry: </strong>{{ stock.finnhubIndustry }}</div>
+                        <div class="my-2"><strong>Webpage: </strong><a href="{{ stock.weburl }}" target="_blank">{{ stock.weburl }}</a></div>
+                        <div class="my-2"><strong>Company peers: </strong></div>
                         <!-- TODO: peers list -->
-                        <div style="margin: 5px 0">{{ stock.peers }}</div>
+                        <div class="my-2">{{ stock.peers }}</div>
                     </div>
                 </div>
                 <div class="col-md" style="text-align: start;">

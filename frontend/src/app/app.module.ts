@@ -10,12 +10,18 @@ import { HeaderComponent } from './components/partials/header/header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchComponent } from './components/pages/search/search.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { SearchBarComponent } from './components/partials/search-bar/search-bar.component';
+import { WatchlistComponent } from './components/pages/watchlist/watchlist.component';
+import { PortfolioComponent } from './components/pages/portfolio/portfolio.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    SearchComponent
+    SearchComponent,
+    SearchBarComponent,
+    WatchlistComponent,
+    PortfolioComponent
   ],
   imports: [
     BrowserModule,
