@@ -15,6 +15,7 @@ import { WatchlistComponent } from './components/pages/watchlist/watchlist.compo
 import { PortfolioComponent } from './components/pages/portfolio/portfolio.component';
 import { FooterComponent } from './components/partials/footer/footer.component';
 import { HomeComponent } from './components/pages/home/home.component';
+import { AlertComponent } from './components/partials/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { HomeComponent } from './components/pages/home/home.component';
     WatchlistComponent,
     PortfolioComponent,
     FooterComponent,
-    HomeComponent
+    HomeComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
