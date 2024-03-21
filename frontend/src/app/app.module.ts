@@ -13,6 +13,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { SearchBarComponent } from './components/partials/search-bar/search-bar.component';
 import { WatchlistComponent } from './components/pages/watchlist/watchlist.component';
 import { PortfolioComponent } from './components/pages/portfolio/portfolio.component';
+import { FooterComponent } from './components/partials/footer/footer.component';
+import { HomeComponent } from './components/pages/home/home.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { PortfolioComponent } from './components/pages/portfolio/portfolio.compo
     SearchComponent,
     SearchBarComponent,
     WatchlistComponent,
-    PortfolioComponent
+    PortfolioComponent,
+    FooterComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

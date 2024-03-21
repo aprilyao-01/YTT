@@ -58,23 +58,26 @@ export const sample_stock: Stock[] =
   },
 ]
 
-export const sample_watchlist: Watchlist[] = 
-[
-  {
-    "name":"Apple Inc",
-    "ticker":"AAPL",
-    "c":172.62,
-    "d":-0.38,
-    "dp":-0.2197,
-  },
-  {
-    "name":"Dell Technologies Inc",
-    "ticker":"DELL",
-    "c":107,
-    "d":0.55,
-    "dp":0.5167,
-  }
-]
+export const sample_watchlist: Watchlist = 
+{
+  "watchedStock":
+  [
+    {
+      "ticker":"AAPL",
+      "name":"Apple Inc",
+      "c":172.62,
+      "d":-0.38,
+      "dp":-0.2197,
+    },
+    {
+      "name":"Dell Technologies Inc",
+      "ticker":"DELL",
+      "c":107,
+      "d":0.55,
+      "dp":0.5167,
+    }
+  ]
+}
 
 export const sample_portfolio: Portfolio = 
 {
@@ -86,7 +89,7 @@ export const sample_portfolio: Portfolio =
       "ticker":"AAPL",
       "c":172.62,
       "quantity": 3.00,
-      "totalCost": 552.69
+      "totalCost": 552.69,
     },
     {
       "name":"Dell Technologies Inc",

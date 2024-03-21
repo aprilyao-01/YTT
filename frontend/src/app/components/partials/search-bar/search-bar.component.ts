@@ -23,4 +23,8 @@ export class SearchBarComponent implements OnInit{
     if(ticker)
     this.router.navigateByUrl('/search/'+ticker);
   }
+
+  OnCancelClick() {
+
+  }
 }

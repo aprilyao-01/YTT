@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Watchlist } from '../../../shared/models/Watchlist';
 import { WatchlistService } from '../../../services/watchlist.service';
+import { WatchlistItem } from '../../../shared/models/WatchlistItem';
 
 @Component({
   selector: 'app-watchlist',
@@ -9,7 +10,9 @@ import { WatchlistService } from '../../../services/watchlist.service';
   styleUrl: './watchlist.component.css'
 })
 export class WatchlistComponent {
-  watchlist: Watchlist[] = [];
+
+  private sample: WatchlistItem[] = [];
+  watchlist: Watchlist = new Watchlist(this.sample);
   constructor(private watchlistService: WatchlistService, activatedRoute:ActivatedRoute) {
     // activatedRoute.params.subscribe((params) => {
     //   if(params.ticker)
@@ -18,5 +21,9 @@ export class WatchlistComponent {
     //   this.stock = stockService.getSample();
     // })
     this.watchlist = watchlistService.getAll();
+  }
+
+  removeFromWatchlist(ticker: string) {
+    this.watchlistService.removeFromWatchlist(ticker);
   }
 }

@@ -4,7 +4,11 @@
       <div class="col left">
         <div>
             <span class="text-large">
-                {{ stock.ticker }} <i class="bi bi-star"></i>
+                {{ stock.ticker }}
+                <i (click)="toggleToWatchlist()" 
+                [ngClass]="{'bi bi-star-fill': isInWatchlist, 'bi bi-star': !isInWatchlist}" 
+                [ngStyle]="{'color': isInWatchlist ? 'gold' : 'inherit'}"></i>
+                 
                 <!-- <mat-icon fontIcon="star_border"></mat-icon> -->
             </span>
         </div>

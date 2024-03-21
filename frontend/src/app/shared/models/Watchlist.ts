@@ -1,10 +1,5 @@
-import { Stock } from "./Stock";
+import { WatchlistItem } from "./WatchlistItem";
 
 export class Watchlist {
-    watchedStock?: Stock[];
-    ticker?: string;
-    name?: string;
-    c?: number;
-    d?: number;
-    dp?: number;
+    constructor(public watchedStock:WatchlistItem[]){ }
 }

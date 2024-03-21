@@ -20,4 +20,8 @@ export class StockService {
   getInfoByTicker(ticker:string): Stock{
     return this.getAll().find(stock => stock.ticker === ticker.toUpperCase()) ?? new Stock();
   }
+
+  private setStockToLocalStorage():void {
+    
+  }
 }

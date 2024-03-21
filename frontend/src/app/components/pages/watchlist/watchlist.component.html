@@ -1,9 +1,9 @@
 <h1 class="fs-2 py-3 my-4 mx-auto" style="width: 70%;">My Watchlist</h1>
 
-<div *ngFor="let watchItem of watchlist">
+<div *ngFor="let watchItem of watchlist.watchedStock">
     <div class="card my-4 mx-auto" style="width: 70%;">
         <div class="card-body">
-            <button class="btn p-0" type="button"> <i class="bi bi-x"></i> </button>
+            <button class="btn p-0" type="button" (click)="removeFromWatchlist(watchItem.ticker)"> <i class="bi bi-x"></i> </button>
             <div class="fs-4 my-2">
                 <span>{{watchItem.ticker}}</span>
                 <span style="float: right;">{{ watchItem.c }}</span>

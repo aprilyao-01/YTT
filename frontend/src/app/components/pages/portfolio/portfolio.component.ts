@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Portfolio, PortfolioStock } from '../../../shared/models/Portfolio';
+import { Portfolio } from '../../../shared/models/Portfolio';
 import { PortfolioService } from '../../../services/portfolio.service';
 import { ActivatedRoute } from '@angular/router';
+import { PortfolioStock } from '../../../shared/models/PortfolioItem';
 
 @Component({
   selector: 'app-portfolio',
