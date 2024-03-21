@@ -1,4 +1,6 @@
+import { Portfolio } from "./app/shared/models/Portfolio";
 import { Stock } from "./app/shared/models/Stock";
+import { Watchlist } from "./app/shared/models/Watchlist";
 
 export const sample_stock: Stock[] = 
 [
@@ -24,7 +26,9 @@ export const sample_stock: Stock[] =
     "o":171,
     "pc":173,
     "t":1710532802,
-    "peers": ["AAPL","DELL","SMCI","HPQ","1337.HK","HPE","NTAP","WDC","PSTG","XRX"]
+    "peers": ["AAPL","DELL","SMCI","HPQ","1337.HK","HPE","NTAP","WDC","PSTG","XRX"],
+    "quantity": 3.00,
+    "totalCost": 552.69
   },
   {
     "country":"US",
@@ -48,6 +52,48 @@ export const sample_stock: Stock[] =
     "o":107.044,
     "pc":106.45,
     "t":1710460800,
-    "peers": ["AAPL","DELL","SMCI","HPQ","1337.HK","HPE","NTAP","WDC","PSTG","XRX"]
+    "peers": ["AAPL","DELL","SMCI","HPQ","1337.HK","HPE","NTAP","WDC","PSTG","XRX"],
+    "quantity": 3.00,
+    "totalCost": 2331.34
   },
 ]
+
+export const sample_watchlist: Watchlist[] = 
+[
+  {
+    "name":"Apple Inc",
+    "ticker":"AAPL",
+    "c":172.62,
+    "d":-0.38,
+    "dp":-0.2197,
+  },
+  {
+    "name":"Dell Technologies Inc",
+    "ticker":"DELL",
+    "c":107,
+    "d":0.55,
+    "dp":0.5167,
+  }
+]
+
+export const sample_portfolio: Portfolio = 
+{
+  "balance": 25000.00,
+  "stock": 
+  [
+    {
+      "name":"Apple Inc",
+      "ticker":"AAPL",
+      "c":172.62,
+      "quantity": 3.00,
+      "totalCost": 552.69
+    },
+    {
+      "name":"Dell Technologies Inc",
+      "ticker":"DELL",
+      "c":107,
+      "quantity": 3.00,
+      "totalCost": 2331.34
+    },
+  ]
+}

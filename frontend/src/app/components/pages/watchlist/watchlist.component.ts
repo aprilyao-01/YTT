@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Stock } from '../../../shared/models/Stock';
-import { StockService } from '../../../services/stock.service';
 import { ActivatedRoute } from '@angular/router';
+import { Watchlist } from '../../../shared/models/Watchlist';
+import { WatchlistService } from '../../../services/watchlist.service';
 
 @Component({
   selector: 'app-watchlist',
@@ -9,13 +9,14 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './watchlist.component.css'
 })
 export class WatchlistComponent {
-  stock: Stock = new Stock();
-  constructor(private stockService: StockService, activatedRoute:ActivatedRoute) {
-    activatedRoute.params.subscribe((params) => {
-      if(params.ticker)
-      this.stock = this.stockService.getInfoByTicker(params.ticker);
-      else
-      this.stock = stockService.getSample();
-    })
+  watchlist: Watchlist[] = [];
+  constructor(private watchlistService: WatchlistService, activatedRoute:ActivatedRoute) {
+    // activatedRoute.params.subscribe((params) => {
+    //   if(params.ticker)
+    //   this.stock = this.stockService.getInfoByTicker(params.ticker);
+    //   else
+    //   this.stock = stockService.getSample();
+    // })
+    this.watchlist = watchlistService.getAll();
   }
 }

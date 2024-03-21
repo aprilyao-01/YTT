@@ -14,7 +14,7 @@ export class Stock {
     logo!: string;
     finnhubIndustry!:string;
     // https://finnhub.io/api/v1/quote?symbol=AAPL&token=cmq5s09r01ql684s0ra0cmq5s09r01ql684s0rag
-    c!: number;
+    c!: number;     // current price
     d!: number;
     dp!: number;
     h!: number;
@@ -23,5 +23,12 @@ export class Stock {
     pc!: number;
     t!: number;
     // https://finnhub.io/api/v1/stock/peers?symbol=AAPL&token=cmq5s09r01ql684s0ra0cmq5s09r01ql684s0rag
-    peers?: string[];
+    peers!: string[];
+    // for portfolio
+    quantity!: number;
+    totalCost!: number;
+    // ave = total / quantity
+    // current = c
+    // change = ave - c
+    // marketV = c * qty
 }

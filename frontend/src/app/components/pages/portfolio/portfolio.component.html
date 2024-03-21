@@ -1,1 +1,44 @@
-<p>portfolio works!</p>
+<h1 class="fs-2 pt-3 pb-0 my-4 mx-auto" style="width: 70%;">My Portfolio</h1>
+<p class="fs-4 py-0 my-4 mx-auto" style="width: 70%;">Money in Wallet: ${{portfolio.balance}} </p>
+
+<div *ngFor="let portfolioItem of portfolio.stock">
+    <div class="card my-4 mx-auto" style="width: 70%;">
+        <div class="card-header pt-3">
+            <span class="fs-4">{{portfolioItem.ticker}} </span>
+            <span class="fs-5" style="color: gray;">  {{portfolioItem.name}}</span>
+        </div>
+        <div class="card-body fs-5">
+            <div class="row">
+                <div class="col">
+                    <div>Quantity: </div>
+                    <div>Avg.Cost / Share: </div>
+                    <div>Total Cost: </div>
+                </div>
+                <div class="col pe-0">
+                    <div>{{portfolioItem.quantity}}</div>
+                    <div>{{calculateAvgValue(portfolioItem)}}</div>
+                    <div>{{portfolioItem.totalCost}}</div>
+                </div>
+                <div class="col">
+                    <div>Change: </div>
+                    <div>Current Price: </div>
+                    <div>Market Value: </div>
+                </div>
+                <div class="col pe-0">
+                    <div>
+                        <!-- <i *ngIf="stockItem.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
+                        <i *ngIf="stockItem.color == 'text-success'" class="bi bi-caret-up-fill"></i> -->
+                        <i class="bi bi-caret-down-fill"></i>
+                        {{calculateChangeValue(portfolioItem)}}
+                    </div>
+                    <div>{{portfolioItem.c}}</div>
+                    <div>{{calculateMarketValue(portfolioItem)}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-body-secondary">
+            <button class="btn btn-primary mx-1 px-3" type="button">Buy</button>
+            <button class="btn btn-danger mx-1 px-3" type="button">Sell</button>
+        </div>
+    </div>
+</div>
