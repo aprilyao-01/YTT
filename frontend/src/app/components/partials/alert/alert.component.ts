@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Alert } from '../../../shared/models/Alert';
 import { AlertService } from '../../../services/alert.service';
 
@@ -18,11 +18,25 @@ import { AlertService } from '../../../services/alert.service';
 
 
 
-export class AlertComponent {
-  alert: Alert = new Alert('undefined', 'undefined', 'undefined', false);
+export class AlertComponent implements OnInit{
+  @Input()
+  visible: boolean = false;
+  @Input()
+  condition: string = '';
 
-  constructor(private alertService:AlertService) {
-    this.alert = alertService.setAlert('undefined');
+  alert: Alert;
+
+  constructor(private alertService:AlertService) { this.alert = this.alertService.setAlert(this.condition); }
+
+  ngOnInit(): void {
+    this.alert = this.alertService.setAlert(this.condition);
+  }
+
+  ngOnChanges(condition: string): void {
+    // Check if 'condition' input has changed
+    if (condition) {
+      this.alert = this.alertService.setAlert(this.condition);
+    }
   }
 
   close(alert: Alert) {

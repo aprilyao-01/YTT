@@ -4,6 +4,7 @@ export class WatchlistItem {
                 public c: number, 
                 public d: number, 
                 public dp: number){ }
+    color?: string;
     // ticker!: string;
     // name!: string;
     // c!: number;

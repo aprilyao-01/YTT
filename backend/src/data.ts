@@ -1,8 +1,4 @@
-import { Portfolio } from "./app/shared/models/Portfolio";
-import { Stock } from "./app/shared/models/Stock";
-import { Watchlist } from "./app/shared/models/Watchlist";
-
-export const sample_stock: Stock[] = 
+export const sample_stock: any[] = 
 [
   {
     "country":"US",
@@ -58,7 +54,7 @@ export const sample_stock: Stock[] =
   },
 ]
 
-export const sample_watchlist: Watchlist = 
+export const sample_watchlist: any = 
 {
   "watchedStock":
   [
@@ -89,7 +85,7 @@ export const sample_watchlist: Watchlist =
   ]
 }
 
-export const sample_portfolio: Portfolio = 
+export const sample_portfolio: any = 
 {
   "balance": 25000.00,
   "stock": 

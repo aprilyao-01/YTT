@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Portfolio } from '../../../shared/models/Portfolio';
 import { PortfolioService } from '../../../services/portfolio.service';
 import { ActivatedRoute } from '@angular/router';
-import { PortfolioStock } from '../../../shared/models/PortfolioItem';
+import { PortfolioItem } from '../../../shared/models/PortfolioItem';
 
 @Component({
   selector: 'app-portfolio',
@@ -21,13 +21,13 @@ export class PortfolioComponent {
     this.portfolio = portfolioService.getAll();
   }
 
-  calculateMarketValue(item: PortfolioStock): string {
+  calculateMarketValue(item: PortfolioItem): string {
     return (item.c * item.quantity).toFixed(2);
   }
-  calculateAvgValue(item: PortfolioStock): string {
+  calculateAvgValue(item: PortfolioItem): string {
     return (item.totalCost / item.quantity).toFixed(2);
   }
-  calculateChangeValue(item: PortfolioStock): string {
+  calculateChangeValue(item: PortfolioItem): string {
     return (item.totalCost / item.quantity - item.c).toFixed(2);
   }
 }

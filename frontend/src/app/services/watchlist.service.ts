@@ -33,6 +33,7 @@ export class WatchlistService {
   }
 
   removeFromWatchlist(ticker: string): void {
+    console.log('server removeFromWatchlist', ticker);
     this.watchlist.watchedStock = this.watchlist.watchedStock.filter(item => item.ticker != ticker);
     this.setWatchlistToLocalStorage();
   }
@@ -51,5 +52,11 @@ export class WatchlistService {
   private getWatchlistToLocalStorage():Watchlist {
     const watchlistJson = localStorage.getItem('Watchlist');
     return watchlistJson? JSON.parse(watchlistJson) : new Watchlist([]);
+  }
+
+  setColor(watchItem: WatchlistItem): void {
+    if(watchItem.d > 0) watchItem.color = 'text-success';
+    else if(watchItem.d < 0) watchItem.color = 'text-danger';
+    else watchItem.color = 'text-dark';
   }
 }

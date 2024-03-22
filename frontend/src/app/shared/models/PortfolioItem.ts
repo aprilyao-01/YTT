@@ -1,4 +1,4 @@
-export class PortfolioStock {
+export class PortfolioItem {
     ticker!: string;
     name!: string;
     c!: number;
@@ -7,6 +7,7 @@ export class PortfolioStock {
     average?: string = "";
     marketValue?: string = "";
     change?: string = "";
+    color?: string;
     // ave = total / quantity
     // current = c
     // change = ave - c

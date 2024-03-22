@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Portfolio } from '../shared/models/Portfolio';
+import { PortfolioItem } from '../shared/models/PortfolioItem';
 import { sample_portfolio } from '../../data';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -40,5 +41,12 @@ export class PortfolioService {
 
   private setPortfolioToLocalStorage():void {
 
+  }
+
+  setColor(portfolioItem: PortfolioItem): void {
+    let change = portfolioItem.totalCost / portfolioItem.quantity - portfolioItem.c;
+    if(change > 0) portfolioItem.color = 'text-success';
+    else if(change < 0) portfolioItem.color = 'text-danger';
+    else portfolioItem.color = 'text-dark';
   }
 }

@@ -7,6 +7,7 @@ import { HomeComponent } from './components/pages/home/home.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'search/home', pathMatch: 'full'},
+  {path: '', component: HomeComponent},
   {path: 'search/home', component: HomeComponent},
   {path: 'search/:ticker', component: SearchComponent},
   {path: 'watchlist', component: WatchlistComponent},

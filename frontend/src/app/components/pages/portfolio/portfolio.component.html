@@ -1,5 +1,5 @@
 <h1 class="fs-2 pt-3 pb-0 my-4 mx-auto" style="width: 70%;">My Portfolio</h1>
-<p class="fs-4 py-0 my-4 mx-auto" style="width: 70%;">Money in Wallet: ${{portfolio.balance}} </p>
+<p class="fs-4 py-0 my-4 mx-auto" style="width: 70%;">Money in Wallet: ${{portfolio.balance.toFixed(2)}} </p>
 
 <div *ngFor="let portfolioItem of portfolio.stock">
     <div class="card my-4 mx-auto" style="width: 70%;">
@@ -15,7 +15,7 @@
                     <div>Total Cost: </div>
                 </div>
                 <div class="col pe-0">
-                    <div>{{portfolioItem.quantity}}</div>
+                    <div>{{portfolioItem.quantity.toFixed(2)}}</div>
                     <div>{{calculateAvgValue(portfolioItem)}}</div>
                     <div>{{portfolioItem.totalCost}}</div>
                 </div>
@@ -24,11 +24,10 @@
                     <div>Current Price: </div>
                     <div>Market Value: </div>
                 </div>
-                <div class="col pe-0">
+                <div class="col pe-0 {{portfolioItem.color}}">
                     <div>
-                        <!-- <i *ngIf="stockItem.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
-                        <i *ngIf="stockItem.color == 'text-success'" class="bi bi-caret-up-fill"></i> -->
-                        <i class="bi bi-caret-down-fill"></i>
+                        <i *ngIf="portfolioItem.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
+                        <i *ngIf="portfolioItem.color == 'text-success'" class="bi bi-caret-up-fill"></i>
                         {{calculateChangeValue(portfolioItem)}}
                     </div>
                     <div>{{portfolioItem.c}}</div>
