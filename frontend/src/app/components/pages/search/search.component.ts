@@ -4,6 +4,7 @@ import { StockService } from '../../../services/stock.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WatchlistService } from '../../../services/watchlist.service';
 import { sample_stock } from '../../../../data';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -11,18 +12,23 @@ import { sample_stock } from '../../../../data';
   styleUrl: './search.component.css'
 })
 export class SearchComponent {
-  stock: Stock = sample_stock[0];
+  stock: Stock = sample_stock[-1];
   isInWatchlist: boolean = false;
 
 
-  constructor(private stockService: StockService, activatedRoute:ActivatedRoute, 
+  constructor(private stockService: StockService, activatedRoute:ActivatedRoute,
     private watchlistService: WatchlistService, private router: Router) {
-    
+    let stockObservable: Observable<Stock>;
     activatedRoute.params.subscribe((params) => {
       if(params.ticker)
-      this.stock = this.stockService.getInfoByTicker(params.ticker);
+        stockObservable = this.stockService.getInfoByTicker(params.ticker);
       else
-      this.stock = stockService.getSample();
+        stockObservable = stockService.getSample();
+
+      stockObservable.subscribe((serverStock) => {
+        this.stock = serverStock;
+        this.isInWatchlist = watchlistService.isWatched(serverStock.ticker);
+      })
     })
   }
 
