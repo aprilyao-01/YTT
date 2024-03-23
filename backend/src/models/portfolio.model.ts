@@ -37,3 +37,5 @@ export const PortfolioSchema = new Schema<Portfolio>(
         }
     }
 )
+
+export const PortfolioModel = model<Portfolio>('portfolio', PortfolioSchema);

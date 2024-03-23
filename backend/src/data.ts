@@ -56,7 +56,7 @@ export const sample_stock: any[] =
 
 export const sample_watchlist: any = 
 {
-  "watchedStock":
+  "watchItem":
   [
     {
       "ticker":"AAPL",
@@ -88,7 +88,7 @@ export const sample_watchlist: any =
 export const sample_portfolio: any = 
 {
   "balance": 25000.00,
-  "stock": 
+  "portfolioItem": 
   [
     {
       "name":"Apple Inc",
