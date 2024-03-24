@@ -8,6 +8,9 @@
         [formControl]="tickerFormCtrl"
         [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionClick($event.option.value)">
+            <mat-option *ngIf="loading">
+                <mat-spinner diameter="30"></mat-spinner>
+            </mat-option>
             <mat-option *ngFor="let option of companies | async" [value]="option.symbol">
                 {{option.symbol}} | {{option.description}}
             </mat-option>

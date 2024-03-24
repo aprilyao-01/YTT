@@ -17,6 +17,7 @@ export class SearchBarComponent implements OnInit{
   dummyCtrl = new FormControl('');
   companies: Observable<any[]> = of([]);
   autoCom: any[] = [];
+  loading = false;
 
 
   constructor(private activatedRoute:ActivatedRoute, private router:Router, private http:HttpClient){
@@ -28,18 +29,20 @@ export class SearchBarComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    // for autocomplete
     this.tickerFormCtrl.valueChanges.pipe(
       debounceTime(300),
     ).subscribe((value) => {
-      this.dummyCtrl.setValue("");
-      this.autoCom = [];
       if (!value || value.length == 0) {
+        this.loading = false;
         this.autoCom = [];
         this.dummyCtrl.setValue("");
       } else {
+        this.loading = true;
         this.http.get<any[]>(AUTOCOMPLETE_URL + value.trim()).subscribe((data) => {
           this.autoCom = data;
           this.dummyCtrl.setValue(value);
+          this.loading = false;
         });
       }
     });
