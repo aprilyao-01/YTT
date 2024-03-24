@@ -63,11 +63,21 @@ export class WatchlistService {
     return this.watchlistSubject.asObservable();
   }
 
+  updateWatchlistInDatabase(watchlist: WatchlistItem[]): Observable<any> {
+    return this.http.post(`${WATCHLIST_URL}/update`, watchlist);
+  }  
+
   private setWatchlistToLocalStorage():void {
     const watchlistJson = JSON.stringify(this.watchlist);
     localStorage.setItem('Watchlist', watchlistJson);
     // broadcast to subscriber
     this.watchlistSubject.next(this.watchlist);
+
+    // update in database
+    this.updateWatchlistInDatabase(this.watchlist).subscribe({
+      next: (response) => console.log(response.message),
+      error: (error) => console.error('Failed to update watchlist in database', error)
+    });
   }
 
   private getWatchlistFromLocalStorage():WatchlistItem[] {

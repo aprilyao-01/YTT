@@ -1,5 +1,5 @@
 export class Stock {
-    // https://finnhub.io/api/v1/stock/profile2?symbol=AAPL&token=cmq5s09r01ql684s0ra0cmq5s09r01ql684s0rag
+    // https://finnhub.io/api/v1/stock/profile2?symbol=AAPL&token=
     country?: string;
     currency?: string;
     estimateCurrency?: string;
@@ -13,7 +13,7 @@ export class Stock {
     weburl!: string;
     logo!: string;
     finnhubIndustry!:string;
-    // https://finnhub.io/api/v1/quote?symbol=AAPL&token=cmq5s09r01ql684s0ra0cmq5s09r01ql684s0rag
+    // https://finnhub.io/api/v1/quote?symbol=AAPL&token=
     c!: number;     // current price
     d!: number;
     dp!: number;
@@ -22,7 +22,7 @@ export class Stock {
     o!: number;
     pc!: number;
     t!: number;
-    // https://finnhub.io/api/v1/stock/peers?symbol=AAPL&token=cmq5s09r01ql684s0ra0cmq5s09r01ql684s0rag
+    // https://finnhub.io/api/v1/stock/peers?symbol=AAPL&token=
     peers!: string[];
     // for portfolio
     quantity!: number;

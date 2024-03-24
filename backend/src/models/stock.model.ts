@@ -25,6 +25,9 @@ export const StockSchema = new Schema<Stock>(
         // get from db and work on it
         toObject: {     
             virtuals: true
+        },
+        toJSON: {
+            virtuals: true
         }
     }
 )

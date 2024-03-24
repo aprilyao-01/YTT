@@ -34,6 +34,9 @@ export const PortfolioSchema = new Schema<Portfolio>(
     },{
         toObject: {
             virtuals: true
+        },
+        toJSON: {
+            virtuals: true
         }
     }
 )

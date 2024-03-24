@@ -22,12 +22,13 @@ export class SearchPageComponent {
     activatedRoute.params.subscribe((params) => {
       if(params.ticker)
         stockObservable = this.stockService.getInfoByTicker(params.ticker);
-      else
-        stockObservable = stockService.getSample();
+      // else
+      //   stockObservable = stockService.getSample();
 
       stockObservable.subscribe((serverStock) => {
         this.stock = serverStock;
         this.isInWatchlist = watchlistService.isWatched(serverStock.ticker);
+        this.stockService.setStockToLocalStorage();
       })
     })
   }
@@ -38,9 +39,4 @@ export class SearchPageComponent {
     this.isInWatchlist? this.watchlistService.removeFromWatchlist(this.stock.ticker) : this.watchlistService.addToWatchlist(this.stock);
     this.isInWatchlist = !this.isInWatchlist;
   }
-
-  // addToWatchlist(): void {
-  //   this.watchlistService.addToWatchlist(this.stock);
-  //   // this.router.navigateByUrl('/add');
-  // }
 }

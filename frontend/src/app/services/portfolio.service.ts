@@ -55,12 +55,12 @@ export class PortfolioService {
   }
 
   private setPortfolioToLocalStorage():void {
-    localStorage.setItem('portfolio', JSON.stringify(this.portfolio));
+    localStorage.setItem('Portfolio', JSON.stringify(this.portfolio));
     this.portfolioSubject.next(this.portfolio);
   }
 
   private getPortfolioFromLocalStorage():Portfolio {
-    let data = localStorage.getItem('portfolio');
+    let data = localStorage.getItem('Portfolio');
     return data ? JSON.parse(data) : this.http.get<Portfolio>(PORTFOLIO_URL);
   }
 
