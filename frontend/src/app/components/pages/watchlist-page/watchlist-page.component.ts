@@ -13,7 +13,6 @@ export class WatchlistPageComponent {
     this.watchlistService.getWatchlistObservable().subscribe(watchItems => {
       this.watchlist = watchItems;
     })
-    // this.watchlist = this.watchlistService.getAll();
     console.log('Current watchlist in page.ts:', this.watchlist);
   }
 

@@ -10,11 +10,11 @@ import { sample_watchlist } from '../../data';
   providedIn: 'root'
 })
 export class WatchlistService {
-  private watchlist: WatchlistItem[] = this.getWatchlistToLocalStorage();
+  private watchlist: WatchlistItem[] = this.getWatchlistFromLocalStorage();
   private watchlistSubject: BehaviorSubject<WatchlistItem[]> = new BehaviorSubject(this.watchlist);
 
   constructor(private http: HttpClient) {
-    const localData = this.getWatchlistToLocalStorage();
+    const localData = this.getWatchlistFromLocalStorage();
     if (localData.length > 0) {
       this.watchlist = localData;
       console.log('Initial watchlist 0:', this.watchlist);
@@ -32,8 +32,8 @@ export class WatchlistService {
   }
   
   getAll(): Observable<WatchlistItem[]> {
-    let list = this.http.get<WatchlistItem[]>(WATCHLIST_URL);
-    console.log('In Function watchlist:', list);
+    // let list = this.http.get<WatchlistItem[]>(WATCHLIST_URL);
+    // console.log('In Function watchlist:', list);
     return this.http.get<WatchlistItem[]>(WATCHLIST_URL);
   }
 
@@ -70,7 +70,7 @@ export class WatchlistService {
     this.watchlistSubject.next(this.watchlist);
   }
 
-  private getWatchlistToLocalStorage():WatchlistItem[] {
+  private getWatchlistFromLocalStorage():WatchlistItem[] {
     const watchlistJson = localStorage.getItem('Watchlist');
     console.log('watchlistJson from localStorage:', watchlistJson);
     return watchlistJson ? JSON.parse(watchlistJson) : this.http.get<WatchlistItem[]>(WATCHLIST_URL);

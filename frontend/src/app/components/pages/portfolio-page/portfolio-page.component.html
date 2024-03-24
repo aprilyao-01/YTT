@@ -1,9 +1,9 @@
 <h1 class="fs-2 pt-3 pb-0 my-4 mx-auto" style="width: 70%;">My Portfolio</h1>
-<p class="fs-4 py-0 my-4 mx-auto" style="width: 70%;">Money in Wallet: ${{portfolio.balance.toFixed(2)}} </p>
+<p class="fs-4 py-0 my-4 mx-auto" style="width: 70%;">Money in Wallet: ${{portfolio.balance}} </p>
 
 <app-loading></app-loading>
 
-<div *ngFor="let portfolioItem of portfolio.stock">
+<div *ngFor="let portfolioItem of portfolio.portfolioItem">
     <div class="card my-4 mx-auto" style="width: 70%;">
         <div class="card-header pt-3">
             <span class="fs-4">{{portfolioItem.ticker}} </span>
@@ -17,7 +17,7 @@
                     <div>Total Cost: </div>
                 </div>
                 <div class="col pe-0">
-                    <div>{{portfolioItem.quantity.toFixed(2)}}</div>
+                    <div>{{portfolioItem.quantity}}</div>
                     <div>{{calculateAvgValue(portfolioItem)}}</div>
                     <div>{{portfolioItem.totalCost}}</div>
                 </div>

@@ -23,8 +23,9 @@ router.get('/seed', asynceHandler(
 
 router.get('/', asynceHandler(
     async (req, res) => {
-        // get all portfolio items
-        const portfolio = await PortfolioModel.find();
+        // get the portfolio items
+        const portfolio = await PortfolioModel.findOne();
+        console.log("request to /portfolio in db");
         res.send(portfolio);
     }
 ))

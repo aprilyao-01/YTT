@@ -116,7 +116,7 @@ export const sample_watchlist: WatchlistItem[] =
 export const sample_portfolio: Portfolio = 
 {
   "balance": 25000.00,
-  "stock": 
+  "portfolioItem": 
   [
     {
       "name":"Apple Inc",

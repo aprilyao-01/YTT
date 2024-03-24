@@ -1,24 +1,39 @@
 import { Injectable } from '@angular/core';
 import { Portfolio } from '../shared/models/Portfolio';
 import { PortfolioItem } from '../shared/models/PortfolioItem';
-import { sample_portfolio } from '../../data';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { PORTFOLIO_URL } from '../shared/constants/urls';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PortfolioService {
-  private portfolio: Portfolio = new Portfolio();
+  private portfolio: Portfolio = this.getPortfolioFromLocalStorage();
   private portfolioSubject: BehaviorSubject<Portfolio> = new BehaviorSubject(this.portfolio);
 
-  constructor() { }
+  constructor(private http: HttpClient) {
+    const localData = this.getPortfolioFromLocalStorage();
+    if (localData.portfolioItem && localData.portfolioItem.length > 0) {
+      this.portfolio = localData;
+      this.portfolioSubject.next(this.portfolio);
+    } else {
+      this.getAll().subscribe(data => {
+        this.portfolio = data;
+        this.setPortfolioToLocalStorage();
+      });
+    }
+    console.log('Initial portfolio:', this.portfolio);
+  }
 
-  getAll(): Portfolio {
-    return sample_portfolio;
+  getAll(): Observable<Portfolio> {
+    let list = this.http.get<Portfolio>(PORTFOLIO_URL);
+    console.log('In Function portfolio:', list);
+    return this.http.get<Portfolio>(PORTFOLIO_URL);
   }
 
   changeQuantity(increment: number, ticker: string) {
-    let inPortfolioItem = this.portfolio.stock.find(item => item.ticker === ticker);
+    let inPortfolioItem = this.portfolio.portfolioItem.find(item => item.ticker === ticker);
     if (!inPortfolioItem) return;   // not currently in portfolio
 
     // update
@@ -40,7 +55,13 @@ export class PortfolioService {
   }
 
   private setPortfolioToLocalStorage():void {
+    localStorage.setItem('portfolio', JSON.stringify(this.portfolio));
+    this.portfolioSubject.next(this.portfolio);
+  }
 
+  private getPortfolioFromLocalStorage():Portfolio {
+    let data = localStorage.getItem('portfolio');
+    return data ? JSON.parse(data) : this.http.get<Portfolio>(PORTFOLIO_URL);
   }
 
   setColor(portfolioItem: PortfolioItem): void {

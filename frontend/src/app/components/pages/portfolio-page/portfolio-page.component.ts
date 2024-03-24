@@ -11,14 +11,12 @@ import { PortfolioItem } from '../../../shared/models/PortfolioItem';
 })
 export class PortfolioPageComponent {
   portfolio: Portfolio = new Portfolio();
-  constructor(private portfolioService: PortfolioService, activatedRoute:ActivatedRoute) {
-    // activatedRoute.params.subscribe((params) => {
-    //   if(params.ticker)
-    //   this.stock = this.stockService.getInfoByTicker(params.ticker);
-    //   else
-    //   this.stock = stockService.getSample();
-    // })
-    this.portfolio = portfolioService.getAll();
+  constructor(private portfolioService: PortfolioService) {
+    this.portfolioService.getPortfolioObservable().subscribe(portfolio => {
+      this.portfolio = portfolio;
+    })
+    console.log('Current portfolio in page.ts:', this.portfolio);
+    console.log('Current portfolioItem in service.ts:', this.portfolio.portfolioItem);
   }
 
   calculateMarketValue(item: PortfolioItem): string {
