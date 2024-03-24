@@ -34,7 +34,9 @@ export class SearchPageComponent {
 
   toggleToWatchlist(): void{
     this.isInWatchlist = this.watchlistService.isWatched(this.stock.ticker);
+    console.log('isInWatchlist:', this.isInWatchlist);
     this.isInWatchlist? this.watchlistService.removeFromWatchlist(this.stock.ticker) : this.watchlistService.addToWatchlist(this.stock);
+    this.isInWatchlist = !this.isInWatchlist;
   }
 
   // addToWatchlist(): void {

@@ -13,17 +13,32 @@ export class WatchlistService {
   private watchlist: WatchlistItem[] = this.getWatchlistToLocalStorage();
   private watchlistSubject: BehaviorSubject<WatchlistItem[]> = new BehaviorSubject(this.watchlist);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    const localData = this.getWatchlistToLocalStorage();
+    if (localData.length > 0) {
+      this.watchlist = localData;
+      console.log('Initial watchlist 0:', this.watchlist);
+    } else {
+      this.getAll().subscribe(data => {
+        this.watchlist = data;
+        this.setWatchlistToLocalStorage();
+      });
+      console.log('Initial watchlist: 1', this.watchlist);
+    }
+  }
 
   getSampleWatchlist(): WatchlistItem[] {
     return sample_watchlist;
   }
   
   getAll(): Observable<WatchlistItem[]> {
+    let list = this.http.get<WatchlistItem[]>(WATCHLIST_URL);
+    console.log('In Function watchlist:', list);
     return this.http.get<WatchlistItem[]>(WATCHLIST_URL);
   }
 
   isWatched(ticker:string): boolean {
+    console.log('Current watchlist:', this.watchlist);
     let watchItem = this.watchlist.find(item => item.ticker === ticker);
     return watchItem? true : false;
   }
@@ -35,6 +50,7 @@ export class WatchlistService {
     // update
     this.watchlist.push(new WatchlistItem(stock.name, stock.ticker, stock.c, stock.d, stock.dp));
     this.setWatchlistToLocalStorage();
+    console.log('server addToWatchlist', stock.ticker);
   }
 
   removeFromWatchlist(ticker: string): void {
@@ -56,7 +72,8 @@ export class WatchlistService {
 
   private getWatchlistToLocalStorage():WatchlistItem[] {
     const watchlistJson = localStorage.getItem('Watchlist');
-    return watchlistJson? JSON.parse(watchlistJson) : [];
+    console.log('watchlistJson from localStorage:', watchlistJson);
+    return watchlistJson ? JSON.parse(watchlistJson) : this.http.get<WatchlistItem[]>(WATCHLIST_URL);
   }
 
   setColor(watchItem: WatchlistItem): void {

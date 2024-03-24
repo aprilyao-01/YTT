@@ -10,10 +10,11 @@ import { WatchlistItem } from '../../../shared/models/WatchlistItem';
 export class WatchlistPageComponent {
   watchlist: WatchlistItem[] = [];
   constructor(private watchlistService: WatchlistService) {
-    // this.watchlistService.getWatchlistObservable().subscribe(watchItems => {
-    //   this.watchlist = watchItems;
-    // })
-    this.watchlist = this.watchlistService.getSampleWatchlist();
+    this.watchlistService.getWatchlistObservable().subscribe(watchItems => {
+      this.watchlist = watchItems;
+    })
+    // this.watchlist = this.watchlistService.getAll();
+    console.log('Current watchlist in page.ts:', this.watchlist);
   }
 
   removeFromWatchlist(ticker: string) {

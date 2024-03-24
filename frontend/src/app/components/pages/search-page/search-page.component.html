@@ -1,6 +1,5 @@
 <app-search-bar></app-search-bar>
 <app-loading></app-loading>
-<!-- *ngIf="" -->
 <div style="width: 70%;" *ngIf="stock">
     <div class="container text-center basic-info">
         <div class="row">
@@ -11,8 +10,6 @@
                     <i (click)="toggleToWatchlist()" 
                     [ngClass]="{'bi bi-star-fill': isInWatchlist, 'bi bi-star': !isInWatchlist}" 
                     [ngStyle]="{'color': isInWatchlist ? 'gold' : 'inherit'}"></i>
-                     
-                    <!-- <mat-icon fontIcon="star_border"></mat-icon> -->
                 </span>
             </div>
             <div class="text-mid text-secondary">{{ stock.name }}</div>
@@ -29,9 +26,8 @@
             <div #searchPrice>
                 <div class="text-large">{{ stock.c }}</div>
                 <div class="text-mid">
-                    <!-- <i *ngIf="!priceUp" class="bi bi-caret-down-fill"></i>
-                    <i *ngIf="priceUp" class="bi bi-caret-up-fill"></i> -->
-                    <i class="bi bi-caret-down-fill"></i>
+                    <!-- <i *ngIf="stock.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
+                    <i *ngIf="stock.color == 'text-success'" class="bi bi-caret-up-fill"></i> -->
                     {{ stock.d }}({{ stock.dp }}%)
                 </div>
             </div>
