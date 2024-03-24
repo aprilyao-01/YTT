@@ -8,6 +8,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 
+import { HighchartsChartModule } from 'highcharts-angular';
+
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,6 +26,7 @@ import { WatchlistPageComponent } from './components/pages/watchlist-page/watchl
 import { PortfolioPageComponent } from './components/pages/portfolio-page/portfolio-page.component';
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
 import { SearchPageComponent } from './components/pages/search-page/search-page.component';
+import { ChartComponent } from './components/partials/chart/chart.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,8 @@ import { SearchPageComponent } from './components/pages/search-page/search-page.
     WatchlistPageComponent,
     PortfolioPageComponent,
     HomePageComponent,
-    SearchPageComponent
+    SearchPageComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +53,8 @@ import { SearchPageComponent } from './components/pages/search-page/search-page.
     MatAutocompleteModule,
     MatInputModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HighchartsChartModule
   ],
   providers: [
     provideAnimationsAsync(),

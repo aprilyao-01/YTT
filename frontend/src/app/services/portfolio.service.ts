@@ -63,11 +63,4 @@ export class PortfolioService {
     let data = localStorage.getItem('Portfolio');
     return data ? JSON.parse(data) : this.http.get<Portfolio>(PORTFOLIO_URL);
   }
-
-  setColor(portfolioItem: PortfolioItem): void {
-    let change = portfolioItem.totalCost / portfolioItem.quantity - portfolioItem.c;
-    if(change > 0) portfolioItem.color = 'text-success';
-    else if(change < 0) portfolioItem.color = 'text-danger';
-    else portfolioItem.color = 'text-dark';
-  }
 }

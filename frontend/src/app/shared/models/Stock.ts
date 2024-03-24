@@ -31,4 +31,5 @@ export class Stock {
     // current = c
     // change = ave - c
     // marketV = c * qty
+    color?: string;
 }

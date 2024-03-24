@@ -1,5 +1,5 @@
 <app-search-bar></app-search-bar>
-<app-loading></app-loading>
+<!-- <app-loading></app-loading> -->
 <div style="width: 70%;" *ngIf="stock">
     <div class="container text-center basic-info">
         <div class="row">
@@ -23,11 +23,11 @@
             <img id="logo-img" src="{{ stock.logo }}" style="width: 100px; height: auto;">
           </div>
           <div class="col right">
-            <div #searchPrice>
+            <div #searchPrice class="{{stock.color}}">
                 <div class="text-large">{{ stock.c }}</div>
                 <div class="text-mid">
-                    <!-- <i *ngIf="stock.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
-                    <i *ngIf="stock.color == 'text-success'" class="bi bi-caret-up-fill"></i> -->
+                    <i *ngIf="stock.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
+                    <i *ngIf="stock.color == 'text-success'" class="bi bi-caret-up-fill"></i>
                     {{ stock.d }}({{ stock.dp }}%)
                 </div>
             </div>
@@ -60,7 +60,10 @@
                             <div class="my-2"><strong>Webpage: </strong><a href="{{ stock.weburl }}" target="_blank">{{ stock.weburl }}</a></div>
                             <div class="my-2"><strong>Company peers: </strong></div>
                             <!-- TODO: peers list -->
-                            <div class="my-2">{{ stock.peers }}</div>
+                            <div class="my-2">
+                                <span *ngFor="let peer of stock.peers" [routerLink]="['/','search','{{peer}}']"> {{peer}}</span>
+                                <!-- <a href="https://www.google.com/search?q={{stock.ticker}}+stock" target="_blank">More...</a> -->
+                            </div>
                         </div>
                     </div>
                     <div class="col-md" style="text-align: start;">
@@ -74,10 +77,22 @@
                 </div>
             </mat-tab>
             <mat-tab label="Top News"> Top News 
-    
+                <!-- <div #newslist class="row mt-3" style="margin: auto; margin-bottom: 2px;">
+                    <div class="col-md mt-3" hidden>
+                        <mat-card>
+                            hello
+                        </mat-card>
+                    </div>
+                    <div class="col-md mt-3" hidden>
+                        <mat-card>
+                            hello
+                        </mat-card>
+                    </div>
+                    <div class="w-100"></div>
+                </div> -->
             </mat-tab>
-            <mat-tab label="Charts"> Charts 
-    
+            <mat-tab label="Charts">
+                <app-chart></app-chart>
             </mat-tab>
             <mat-tab label="Insights"> Insights 
     

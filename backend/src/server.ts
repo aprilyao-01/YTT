@@ -19,7 +19,8 @@ app.use(cors({
     origin: 'http://localhost:4200'
 }));
 
-app.use("/search", searchRouter);
+// setup routes
+app.use("/api/search", searchRouter);
 app.use('/api/watchlist', watchlistRouter);
 app.use('/api/portfolio', portfolioRouter);
 
@@ -27,14 +28,3 @@ const port = 3000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-
-// setup routes
-// app.get('/sample/all', (req, res) => {
-//     res.send(sample_stock);
-// });
-
-// app.get('/sample/single', (req, res) => {
-//     res.send(sample_stock[0]);
-// });
-
-// TODO: Add route according to frontend xxx.service.ts

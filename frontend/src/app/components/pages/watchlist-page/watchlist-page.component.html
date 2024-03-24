@@ -3,7 +3,7 @@
 <app-loading></app-loading>
 
 <div *ngFor="let watchItem of watchlist">
-    <div class="card my-4 mx-auto" style="width: 70%;" [routerLink]="['/search/{{watchItem.ticker}}']">
+    <div class="card my-4 mx-auto" style="width: 70%;" [routerLink]="['/','search','{{watchItem.ticker}}']">
         <div class="card-body">
             <button class="btn p-0" type="button"> <i class="bi bi-x" (click)="removeFromWatchlist(watchItem.ticker)"></i> </button>
             <div class="row">

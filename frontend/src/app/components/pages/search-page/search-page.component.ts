@@ -23,7 +23,7 @@ export class SearchPageComponent {
       if(params.ticker)
         stockObservable = this.stockService.getInfoByTicker(params.ticker);
       // else
-      //   stockObservable = stockService.getSample();
+      //   stockObservable = stockService.getStockFromLocalStorage();
 
       stockObservable.subscribe((serverStock) => {
         this.stock = serverStock;

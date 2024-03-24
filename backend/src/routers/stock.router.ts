@@ -10,7 +10,7 @@ import { IFinnhubSearchResponse, IFinnhubSearchResult } from '../interfaces/IFin
 const router = Router();
 
 // profile
-router.get('/:ticker', asynceHandler(
+router.get('/profile/:ticker', asynceHandler(
     async (req, res) => {
         const ticker = req.params.ticker.trim().toUpperCase();
     
@@ -27,7 +27,7 @@ router.get('/:ticker', asynceHandler(
     }
 ));
 
-// current price
+// quote
 router.get('/quote/:ticker', asynceHandler(
     async (req, res) => {
         const ticker = req.params.ticker.trim().toUpperCase();
