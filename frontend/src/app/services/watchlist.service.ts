@@ -1,45 +1,49 @@
 import { Injectable } from '@angular/core';
-import { Watchlist } from '../shared/models/Watchlist';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, sample } from 'rxjs';
 import { Stock } from '../shared/models/Stock';
 import { WatchlistItem } from '../shared/models/WatchlistItem';
 import { HttpClient } from '@angular/common/http';
 import { WATCHLIST_URL } from '../shared/constants/urls';
+import { sample_watchlist } from '../../data';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WatchlistService {
-  private watchlist:Watchlist = this.getWatchlistToLocalStorage();
-  private watchlistSubject: BehaviorSubject<Watchlist> = new BehaviorSubject(this.watchlist);
+  private watchlist: WatchlistItem[] = this.getWatchlistToLocalStorage();
+  private watchlistSubject: BehaviorSubject<WatchlistItem[]> = new BehaviorSubject(this.watchlist);
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<Watchlist> {
-    return this.http.get<Watchlist>(WATCHLIST_URL);
+  getSampleWatchlist(): WatchlistItem[] {
+    return sample_watchlist;
+  }
+  
+  getAll(): Observable<WatchlistItem[]> {
+    return this.http.get<WatchlistItem[]>(WATCHLIST_URL);
   }
 
   isWatched(ticker:string): boolean {
-    let watchItem = this.watchlist.watchItem.find(item => item.ticker === ticker);
+    let watchItem = this.watchlist.find(item => item.ticker === ticker);
     return watchItem? true : false;
   }
 
   addToWatchlist(stock: Stock): void {
-    let watchItem = this.watchlist.watchItem.find(item => item.ticker === stock.ticker);
+    let watchItem = this.watchlist.find(item => item.ticker === stock.ticker);
     if(watchItem) return; // already watched
 
     // update
-    this.watchlist.watchItem.push(new WatchlistItem(stock.name, stock.ticker, stock.c, stock.d, stock.dp));
+    this.watchlist.push(new WatchlistItem(stock.name, stock.ticker, stock.c, stock.d, stock.dp));
     this.setWatchlistToLocalStorage();
   }
 
   removeFromWatchlist(ticker: string): void {
     console.log('server removeFromWatchlist', ticker);
-    this.watchlist.watchItem = this.watchlist.watchItem.filter(item => item.ticker != ticker);
+    this.watchlist = this.watchlist.filter(item => item.ticker != ticker);
     this.setWatchlistToLocalStorage();
   }
 
-  getWatchlistObservable():Observable<Watchlist> {
+  getWatchlistObservable():Observable<WatchlistItem[]> {
     return this.watchlistSubject.asObservable();
   }
 
@@ -50,9 +54,9 @@ export class WatchlistService {
     this.watchlistSubject.next(this.watchlist);
   }
 
-  private getWatchlistToLocalStorage():Watchlist {
+  private getWatchlistToLocalStorage():WatchlistItem[] {
     const watchlistJson = localStorage.getItem('Watchlist');
-    return watchlistJson? JSON.parse(watchlistJson) : new Watchlist([]);
+    return watchlistJson? JSON.parse(watchlistJson) : [];
   }
 
   setColor(watchItem: WatchlistItem): void {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Watchlist } from '../../../shared/models/Watchlist';
 import { WatchlistService } from '../../../services/watchlist.service';
+import { WatchlistItem } from '../../../shared/models/WatchlistItem';
 
 @Component({
   selector: 'app-watchlist-page',
@@ -8,17 +8,18 @@ import { WatchlistService } from '../../../services/watchlist.service';
   styleUrl: './watchlist-page.component.css'
 })
 export class WatchlistPageComponent {
-  watchlist!: Watchlist;
+  watchlist: WatchlistItem[] = [];
   constructor(private watchlistService: WatchlistService) {
-    this.watchlistService.getWatchlistObservable().subscribe(watchlist => {
-      this.watchlist = watchlist;
-    })
+    // this.watchlistService.getWatchlistObservable().subscribe(watchItems => {
+    //   this.watchlist = watchItems;
+    // })
+    this.watchlist = this.watchlistService.getSampleWatchlist();
   }
 
   removeFromWatchlist(ticker: string) {
     console.log('removeFromWatchlist', ticker);
     //update UI
-    this.watchlist.watchItem = this.watchlist.watchItem.filter(item => item.ticker != ticker);
+    this.watchlist = this.watchlist.filter(item => item.ticker != ticker);
     //update server
     this.watchlistService.removeFromWatchlist(ticker);
   }

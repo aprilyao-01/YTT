@@ -20,8 +20,8 @@ app.use(cors({
 }));
 
 app.use("/search", searchRouter);
-app.use('/watchlist', watchlistRouter);
-app.use('/portfolio', portfolioRouter);
+app.use('/api/watchlist', watchlistRouter);
+app.use('/api/portfolio', portfolioRouter);
 
 const port = 3000;
 app.listen(port, () => {
