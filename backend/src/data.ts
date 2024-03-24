@@ -85,6 +85,34 @@ export const sample_watchlist: any =
   ]
 }
 
+export const sample_watchItems: any[] = 
+[
+  {
+    "ticker":"AAPL",
+    "name":"Apple Inc",
+    "c":172.62,
+    "d":-0.38,
+    "dp":-0.2197,
+    "color":"text-danger"
+  },
+  {
+    "name":"Dell Technologies Inc",
+    "ticker":"DELL",
+    "c":107,
+    "d":0.55,
+    "dp":0.5167,
+    "color":"text-success"
+  },
+  {
+    "ticker":"No Change",
+    "name":"Apple Inc",
+    "c":172.62,
+    "d":0,
+    "dp":-0.2197,
+    "color":"text-dark"
+  },
+]
+
 export const sample_portfolio: any = 
 {
   "balance": 25000.00,

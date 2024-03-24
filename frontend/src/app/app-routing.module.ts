@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SearchComponent } from './components/pages/search/search.component';
-import { WatchlistComponent } from './components/pages/watchlist/watchlist.component';
-import { PortfolioComponent } from './components/pages/portfolio/portfolio.component';
-import { HomeComponent } from './components/pages/home/home.component';
+import { WatchlistPageComponent } from './components/pages/watchlist-page/watchlist-page.component';
+import { PortfolioPageComponent } from './components/pages/portfolio-page/portfolio-page.component';
+import { HomePageComponent } from './components/pages/home-page/home-page.component';
+import { SearchPageComponent } from './components/pages/search-page/search-page.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'search/home', pathMatch: 'full'},
-  {path: '', component: HomeComponent},
-  {path: 'search/home', component: HomeComponent},
-  {path: 'search/:ticker', component: SearchComponent},
-  {path: 'watchlist', component: WatchlistComponent},
-  {path: 'portfolio', component: PortfolioComponent}
+  {path: '', component: HomePageComponent},
+  {path: 'search/home', component: HomePageComponent},
+  {path: 'search/:ticker', component: SearchPageComponent},
+  {path: 'watchlist', component: WatchlistPageComponent},
+  {path: 'portfolio', component: PortfolioPageComponent}
 ];
 
 @NgModule({

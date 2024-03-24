@@ -87,7 +87,7 @@ export const sample_stock: Stock[] =
 
 export const sample_watchlist: Watchlist = 
 {
-  "watchedStock":
+  "watchItem":
   [
     {
       "ticker":"AAPL",

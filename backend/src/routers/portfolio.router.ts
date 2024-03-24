@@ -21,9 +21,13 @@ router.get('/seed', asynceHandler(
     }
 ))
 
-router.get('/', (req, res) => {
-    res.send({message: 'Portfolio router'});
-})
+router.get('/', asynceHandler(
+    async (req, res) => {
+        // get all portfolio items
+        const portfolio = await PortfolioModel.find();
+        res.send(portfolio);
+    }
+))
 
 
 export default router;

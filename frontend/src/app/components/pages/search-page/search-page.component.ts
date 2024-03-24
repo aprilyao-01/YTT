@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { Stock } from '../../../shared/models/Stock';
+import { sample_stock } from '../../../../data';
 import { StockService } from '../../../services/stock.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WatchlistService } from '../../../services/watchlist.service';
-import { sample_stock } from '../../../../data';
 import { Observable } from 'rxjs';
+import { Stock } from '../../../shared/models/Stock';
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrl: './search.component.css'
+  selector: 'app-search-page',
+  templateUrl: './search-page.component.html',
+  styleUrl: './search-page.component.css'
 })
-export class SearchComponent {
+export class SearchPageComponent {
   stock: Stock = sample_stock[-1];
   isInWatchlist: boolean = false;
 

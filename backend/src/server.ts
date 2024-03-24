@@ -4,7 +4,6 @@ dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
-import { sample_portfolio, sample_stock, sample_watchlist } from './data';
 import searchRouter from './routers/stock.router';
 import watchlistRouter from './routers/watchlist.router';
 import portfolioRouter from './routers/portfolio.router';
@@ -30,12 +29,12 @@ app.listen(port, () => {
 });
 
 // setup routes
-app.get('/sample/all', (req, res) => {
-    res.send(sample_stock);
-});
+// app.get('/sample/all', (req, res) => {
+//     res.send(sample_stock);
+// });
 
-app.get('/sample/single', (req, res) => {
-    res.send(sample_stock[0]);
-});
+// app.get('/sample/single', (req, res) => {
+//     res.send(sample_stock[0]);
+// });
 
 // TODO: Add route according to frontend xxx.service.ts

@@ -2,28 +2,32 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import {Router} from 'express';
-import axios from 'axios';
 import asynceHandler from 'express-async-handler';
-import { WatchlistModel } from '../models/watchlist.model';
-import { sample_watchlist } from '../data';
+import { WatchlistModel, WatchItemModel } from '../models/watchlist.model';
+import { sample_watchItems} from '../data';
 
 const router = Router();
 
 router.get('/seed', asynceHandler(
     async (req, res) => {
-        const watchItemCount = await WatchlistModel.countDocuments();
+        const watchItemCount = await WatchItemModel.countDocuments();
         if(watchItemCount>0){
             res.send({message: 'Watchlist already seeded'});
             return
         }
-        await WatchlistModel.create(sample_watchlist);
+        await WatchItemModel.create(sample_watchItems);
         res.send({message: 'Watchlist seeded'});
     }
 ))
 
-router.get('/', (req, res) => {
-    res.send({message: 'Watchlist router'});
-})
+router.get('/', asynceHandler(
+    async (req, res) => {
+        // get all watchlist items
+        const watchlist = await WatchItemModel.find();
+        console.log("request to /watchlist in db");
+        res.send(watchlist);
+    }
+))
 
 
 export default router;

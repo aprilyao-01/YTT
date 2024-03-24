@@ -13,6 +13,17 @@ interface Watchlist extends Document {
     watchItem: WatchItem[];
 }
 
+export const WatchItemSchema = new Schema<WatchItem>(
+    {
+        ticker: {type: String, required: true},
+        name: {type: String, required: true},
+        c: {type: Number, required: true},
+        d: {type: Number, required: true},
+        dp: {type: Number, required: true},
+        color: {type: String, required: false}
+    }
+)
+
 export const WatchlistSchema = new Schema<Watchlist>(
    {
         watchItem: [{
@@ -29,5 +40,7 @@ export const WatchlistSchema = new Schema<Watchlist>(
        }
    }
 )
+
+export const WatchItemModel = model<WatchItem>('watchItem', WatchItemSchema);
 
 export const WatchlistModel = model<Watchlist>('watchlist', WatchlistSchema);

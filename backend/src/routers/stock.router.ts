@@ -3,8 +3,23 @@ dotenv.config();
 
 import {Router} from 'express';
 import axios from 'axios';
+import asynceHandler from 'express-async-handler';
+import { StockModel } from '../models/stock.model';
+import { sample_stock } from '../data';
 
 const router = Router();
+
+// router.get('/seed', asynceHandler(
+//     async (req, res) => {
+//         const stockCount = await StockModel.countDocuments();
+//         if(stockCount>0){
+//             res.send({message: 'Stock already seeded'});
+//             return
+//         }
+//         await StockModel.create(sample_stock);
+//         res.send({message: 'Stock seeded'});
+//     }
+// ));
 
 router.get('/:ticker', (req, res) => {
     const ticker = req.params.ticker.trim().toUpperCase();

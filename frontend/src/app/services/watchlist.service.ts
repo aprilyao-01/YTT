@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Watchlist } from '../shared/models/Watchlist';
-import { sample_stock, sample_watchlist } from '../../data';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Stock } from '../shared/models/Stock';
 import { WatchlistItem } from '../shared/models/WatchlistItem';
+import { HttpClient } from '@angular/common/http';
+import { WATCHLIST_URL } from '../shared/constants/urls';
 
 @Injectable({
   providedIn: 'root'
@@ -12,29 +13,29 @@ export class WatchlistService {
   private watchlist:Watchlist = this.getWatchlistToLocalStorage();
   private watchlistSubject: BehaviorSubject<Watchlist> = new BehaviorSubject(this.watchlist);
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getAll(): Watchlist {
-    return sample_watchlist;
+  getAll(): Observable<Watchlist> {
+    return this.http.get<Watchlist>(WATCHLIST_URL);
   }
 
   isWatched(ticker:string): boolean {
-    let watchItem = this.watchlist.watchedStock.find(item => item.ticker === ticker);
+    let watchItem = this.watchlist.watchItem.find(item => item.ticker === ticker);
     return watchItem? true : false;
   }
 
   addToWatchlist(stock: Stock): void {
-    let watchItem = this.watchlist.watchedStock.find(item => item.ticker === stock.ticker);
+    let watchItem = this.watchlist.watchItem.find(item => item.ticker === stock.ticker);
     if(watchItem) return; // already watched
 
     // update
-    this.watchlist.watchedStock.push(new WatchlistItem(stock.name, stock.ticker, stock.c, stock.d, stock.dp));
+    this.watchlist.watchItem.push(new WatchlistItem(stock.name, stock.ticker, stock.c, stock.d, stock.dp));
     this.setWatchlistToLocalStorage();
   }
 
   removeFromWatchlist(ticker: string): void {
     console.log('server removeFromWatchlist', ticker);
-    this.watchlist.watchedStock = this.watchlist.watchedStock.filter(item => item.ticker != ticker);
+    this.watchlist.watchItem = this.watchlist.watchItem.filter(item => item.ticker != ticker);
     this.setWatchlistToLocalStorage();
   }
 

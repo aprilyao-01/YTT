@@ -5,11 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { PortfolioItem } from '../../../shared/models/PortfolioItem';
 
 @Component({
-  selector: 'app-portfolio',
-  templateUrl: './portfolio.component.html',
-  styleUrl: './portfolio.component.css'
+  selector: 'app-portfolio-page',
+  templateUrl: './portfolio-page.component.html',
+  styleUrl: './portfolio-page.component.css'
 })
-export class PortfolioComponent {
+export class PortfolioPageComponent {
   portfolio: Portfolio = new Portfolio();
   constructor(private portfolioService: PortfolioService, activatedRoute:ActivatedRoute) {
     // activatedRoute.params.subscribe((params) => {
