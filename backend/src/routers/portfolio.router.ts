@@ -3,13 +3,13 @@ dotenv.config();
 
 import {Router} from 'express';
 import axios from 'axios';
-import asynceHandler from 'express-async-handler';
+import asyncHandler from 'express-async-handler';
 import { PortfolioModel } from '../models/portfolio.model';
 import { sample_portfolio } from '../data';
 
 const router = Router();
 
-router.get('/seed', asynceHandler(
+router.get('/seed', asyncHandler(
     async (req, res) => {
         const portfolioItemCount = await PortfolioModel.countDocuments();
         if(portfolioItemCount>0){
@@ -21,7 +21,7 @@ router.get('/seed', asynceHandler(
     }
 ))
 
-router.get('/', asynceHandler(
+router.get('/', asyncHandler(
     async (req, res) => {
         // get the portfolio items
         const portfolio = await PortfolioModel.findOne();
@@ -30,7 +30,7 @@ router.get('/', asynceHandler(
     }
 ))
 
-router.post('/update', asynceHandler(
+router.post('/update', asyncHandler(
     async (req, res) => {
         // clear existing and insert new
         // await PortfolioModel.deleteMany({});

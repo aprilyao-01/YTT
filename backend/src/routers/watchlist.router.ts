@@ -2,13 +2,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import {Router} from 'express';
-import asynceHandler from 'express-async-handler';
+import asyncHandler from 'express-async-handler';
 import { WatchItemModel } from '../models/watchlist.model';
 import { sample_watchItems } from '../data';
 
 const router = Router();
 
-router.get('/seedItem', asynceHandler(
+router.get('/seed', asyncHandler(
     async (req, res) => {
         const watchItemCount = await WatchItemModel.countDocuments();
         if(watchItemCount>0){
@@ -20,7 +20,7 @@ router.get('/seedItem', asynceHandler(
     }
 ))
 
-router.get('/', asynceHandler(
+router.get('/', asyncHandler(
     async (req, res) => {
         // get all watchlist items
         const watchlist = await WatchItemModel.find();
@@ -29,7 +29,7 @@ router.get('/', asynceHandler(
     }
 ))
 
-router.post('/update', asynceHandler(
+router.post('/update', asyncHandler(
     async (req, res) => {
         // clear existing and insert new
         // await WatchItemModel.deleteMany({});

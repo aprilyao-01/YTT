@@ -7,8 +7,8 @@ import { SearchPageComponent } from './components/pages/search-page/search-page.
 
 const routes: Routes = [
   {path: '', redirectTo: 'search/home', pathMatch: 'full'},
-  {path: '', component: HomePageComponent},
-  {path: 'search/home', component: HomePageComponent},
+  // {path: '', component: HomePageComponent},
+  // {path: 'search/home', component: HomePageComponent},
   {path: 'search/:ticker', component: SearchPageComponent},
   {path: 'watchlist', component: WatchlistPageComponent},
   {path: 'portfolio', component: PortfolioPageComponent}
