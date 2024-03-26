@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { map, startWith, switchMap, catchError, debounceTime } from 'rxjs/operators';
+import { map, startWith, debounceTime } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { AUTOCOMPLETE_URL } from '../../../shared/constants/urls';
 
@@ -13,6 +13,10 @@ import { AUTOCOMPLETE_URL } from '../../../shared/constants/urls';
 })
 export class SearchBarComponent implements OnInit{
 
+  // passing data to search page
+  @Output() notify = new EventEmitter();
+
+  // handle autocomplete
   tickerFormCtrl = new FormControl('');
   dummyCtrl = new FormControl('');
   companies: Observable<any[]> = of([]);
@@ -22,7 +26,7 @@ export class SearchBarComponent implements OnInit{
 
   constructor(private activatedRoute:ActivatedRoute, private router:Router, private http:HttpClient){
     this.activatedRoute.params.subscribe((params) => {
-      if(params.ticker) {
+      if(params.ticker && params.ticker!='home') {
         this.tickerFormCtrl.setValue(params.ticker);
       }
     });
@@ -54,7 +58,8 @@ export class SearchBarComponent implements OnInit{
   }
 
   OnSearchClick():void{
-    this.router.navigateByUrl('/search/'+this.tickerFormCtrl.value);
+    // this.router.navigateByUrl('/search/'+this.tickerFormCtrl.value);
+    this.notify.emit(this.tickerFormCtrl.value);
   }
 
   OnCancelClick() {
@@ -63,7 +68,10 @@ export class SearchBarComponent implements OnInit{
   }
 
   onOptionClick(ticker: string) {
-    this.tickerFormCtrl.setValue(ticker);
-    this.router.navigateByUrl('/search/' + ticker);
+    if(ticker){
+      this.tickerFormCtrl.setValue(ticker);
+      this.notify.emit(ticker);
+    }
+    return ticker;
   }
 }

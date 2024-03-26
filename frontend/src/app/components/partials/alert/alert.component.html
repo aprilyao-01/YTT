@@ -1,5 +1,5 @@
 <ngb-alert *ngIf="visible" class="mx-auto" type="{{alert.type}}" [dismissible]="alert.dismissible" (closed)="close(alert)" style="width: 70%;">
     <div class="text-center">
-        {{ alert.message }}
+        <span *ngIf="ticker">{{ ticker }}</span> {{ alert.message }}
     </div>
 </ngb-alert>

@@ -23,12 +23,12 @@ export class PortfolioService {
         this.setPortfolioToLocalStorage();
       });
     }
-    console.log('Initial portfolio:', this.portfolio);
+    // console.log('Initial portfolio:', this.portfolio);
   }
 
   getAll(): Observable<Portfolio> {
     let list = this.http.get<Portfolio>(PORTFOLIO_URL);
-    console.log('In Function portfolio:', list);
+    // console.log('In Function portfolio:', list);
     return this.http.get<Portfolio>(PORTFOLIO_URL);
   }
 

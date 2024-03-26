@@ -3,19 +3,21 @@
 </div>
 
 <div class="search-container mx-auto my-4">
-    <form class="input-form text-center" (ngSubmit)="OnSearchClick()">
-        <input type="text" class="stock-input" placeholder="Enter stock ticker symbol" 
-        [formControl]="tickerFormCtrl"
-        [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionClick($event.option.value)">
-            <mat-option *ngIf="loading">
-                <mat-spinner diameter="30"></mat-spinner>
-            </mat-option>
-            <mat-option *ngFor="let option of companies | async" [value]="option.symbol">
-                {{option.symbol}} | {{option.description}}
-            </mat-option>
-        </mat-autocomplete>
-    </form>
-    <button class="btn p-1" type="submit" (click)="OnSearchClick()"> <i class="bi bi-search"></i> </button>
-    <button class="btn p-1" type="button" (click)="OnCancelClick()"> <i class="bi bi-x-lg"></i> </button>
+        <form class="input-form text-start" (ngSubmit)="OnSearchClick()">
+            <input type="text" class="stock-input ms-3" placeholder="Enter stock ticker symbol" 
+            [formControl]="tickerFormCtrl"
+            [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionClick($event.option.value)">
+                <mat-option *ngIf="loading">
+                    <mat-spinner diameter="30"></mat-spinner>
+                </mat-option>
+                <div *ngIf="!loading">
+                    <mat-option *ngFor="let option of companies | async" [value]="option.symbol">
+                        {{option.symbol}} <small> | {{option.description}}</small>
+                    </mat-option>
+                </div>
+            </mat-autocomplete>
+        </form>
+        <button class="btn p-1" type="submit" (click)="OnSearchClick()"> <i class="bi bi-search"></i> </button>
+        <button class="btn p-1" type="button" (click)="OnCancelClick()"> <i class="bi bi-x-lg"></i> </button>
 </div>

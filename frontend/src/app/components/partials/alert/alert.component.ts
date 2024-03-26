@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Alert } from '../../../shared/models/Alert';
 import { AlertService } from '../../../services/alert.service';
 
@@ -23,6 +23,8 @@ export class AlertComponent implements OnInit{
   visible: boolean = false;
   @Input()
   condition: string = '';
+  @Input()
+  ticker: string = '';
 
   alert: Alert;
 
@@ -32,12 +34,22 @@ export class AlertComponent implements OnInit{
     this.alert = this.alertService.setAlert(this.condition);
   }
 
-  ngOnChanges(condition: string): void {
+  ngOnChanges(condition: string, ticker?: string): void {
     // Check if 'condition' input has changed
     if (condition) {
+      if(ticker){
+        this.ticker = ticker;
+      }
       this.alert = this.alertService.setAlert(this.condition);
     }
   }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   // Check if 'condition' input has changed and react accordingly
+  //   if (changes.condition && changes.condition.currentValue !== changes.condition.previousValue) {
+  //     this.alert = this.alertService.setAlert(this.condition);
+  //   }
+  // }
 
   close(alert: Alert) {
 		// this.alert.splice(this.alert.indexOf(alert), 1);

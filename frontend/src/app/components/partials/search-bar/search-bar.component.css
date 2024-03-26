@@ -1,22 +1,31 @@
 .search-container {
     border: 3px solid darkblue;
-    width: 450px;
+    width: 30%;
     height:fit-content;
-    max-width: 100%;
     border-radius: 30px;
 }
 
 .input-form {
+    width: 80%;
     display: inline-block;
+}
+
+.stock-input:focus {
+    outline: none;
 }
 
 .stock-input {
     font-size: 17px;
+    width: 100%;
     border: 0;
-    width: 350px;
-    max-width: 95%;
 }
 
 .btn {
     color: darkblue;
+}
+
+@media screen and (max-width: 1000px) {
+    .search-container {
+        width: 70%;
+    }
 }

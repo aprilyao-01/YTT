@@ -18,6 +18,19 @@ export const ALERTS: Alert[] = [
     },
     {
         type: 'success',
+        condition: 'addWatchlist',
+        message: 'added to Watchlist',
+        dismissible: true
+    },
+    {
+        type: 'danger',
+        condition: 'removeWatchlist',
+        message: 'removed from Watchlist',
+        dismissible: true
+    },
+//TODO: add more alerts
+    {
+        type: 'success',
         condition: 'buySuccess',
         message: 'bought successfully',
         dismissible: true
@@ -39,6 +52,6 @@ export const ALERTS: Alert[] = [
         type: 'custom',
         condition: 'undefined',
         message: 'This alert is undefined',
-        dismissible: false
+        dismissible: true
     },
 ];

@@ -17,13 +17,13 @@ export class WatchlistService {
     const localData = this.getWatchlistFromLocalStorage();
     if (localData.length > 0) {
       this.watchlist = localData;
-      console.log('Initial watchlist 0:', this.watchlist);
+      // console.log('Initial watchlist 0:', this.watchlist);
     } else {
       this.getAll().subscribe(data => {
         this.watchlist = data;
         this.setWatchlistToLocalStorage();
       });
-      console.log('Initial watchlist: 1', this.watchlist);
+      // console.log('Initial watchlist: 1', this.watchlist);
     }
   }
 
@@ -38,7 +38,7 @@ export class WatchlistService {
   }
 
   isWatched(ticker:string): boolean {
-    console.log('Current watchlist:', this.watchlist);
+    // console.log('Current watchlist:', this.watchlist);
     let watchItem = this.watchlist.find(item => item.ticker === ticker);
     return watchItem? true : false;
   }
@@ -50,11 +50,11 @@ export class WatchlistService {
     // update
     this.watchlist.push(new WatchlistItem(stock.name, stock.ticker, stock.c, stock.d, stock.dp));
     this.setWatchlistToLocalStorage();
-    console.log('server addToWatchlist', stock.ticker);
+    // console.log('server addToWatchlist', stock.ticker);
   }
 
   removeFromWatchlist(ticker: string): void {
-    console.log('server removeFromWatchlist', ticker);
+    // console.log('server removeFromWatchlist', ticker);
     this.watchlist = this.watchlist.filter(item => item.ticker != ticker);
     this.setWatchlistToLocalStorage();
   }
@@ -82,7 +82,7 @@ export class WatchlistService {
 
   private getWatchlistFromLocalStorage():WatchlistItem[] {
     const watchlistJson = localStorage.getItem('Watchlist');
-    console.log('watchlistJson from localStorage:', watchlistJson);
+    // console.log('watchlistJson from localStorage:', watchlistJson);
     return watchlistJson ? JSON.parse(watchlistJson) : this.http.get<WatchlistItem[]>(WATCHLIST_URL);
   }
 

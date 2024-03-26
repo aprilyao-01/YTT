@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Stock } from '../shared/models/Stock';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { PEERS_URL, PROFILE_URL, QUOTE_URL, SEARCH_URL } from '../shared/constants/urls';
 
 @Injectable({
@@ -9,17 +9,18 @@ import { PEERS_URL, PROFILE_URL, QUOTE_URL, SEARCH_URL } from '../shared/constan
 })
 export class StockService {
   private stock: Stock = this.getStockFromLocalStorage();
-  private stockSubject: BehaviorSubject<Stock> = new BehaviorSubject(this.stock);
+  private stockSubject: Subject<Stock> = new Subject();
 
   constructor(private http:HttpClient) {
-    // const localData = this.getStockFromLocalStorage();
-    // if (localData.ticker) {
-    //   this.stock = localData;
-    //   this.stockSubject.next(this.stock);
-    // }
+    const localData = this.getStockFromLocalStorage();
+    if (localData.ticker) {
+      this.stock = localData;
+      this.stockSubject.next(this.stock);
+    }
   }
 
   getInfoByTicker(ticker:string): Observable <Stock>{
+    if(ticker === 'home') return new Observable<Stock>(); // Return an empty observable
     // this.getProfile(ticker);
     // this.getQuote(ticker);
     this.getPeers(ticker);

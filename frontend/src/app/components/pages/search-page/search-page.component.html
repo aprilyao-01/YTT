@@ -1,5 +1,6 @@
-<app-search-bar></app-search-bar>
+<app-search-bar (notify)="OnNotify($event)"></app-search-bar>
 <!-- <app-loading></app-loading> -->
+<app-alert [visible]="alertVisible" [condition]="alertCondition" [ticker]="alertTicker"></app-alert>
 <div style="width: 70%;" *ngIf="stock">
     <div class="container text-center basic-info">
         <div class="row">

@@ -1,16 +1,35 @@
+<!-- TODO: for mobile hamburger bar -->
 <nav class="navbar bg-body-tertiary py-0">
     <div class="container-fluid">
         <span class="navbar-brand h1 m-2 mx-5">Stock Search</span>
 
-        <ul class="nav justify-content-end mx-4 nav-pills white-pills">
-            <li class="nav-item" id="nav-search">
-                <a class="nav-link active" aria-current="page" [routerLink]="['/','search','home']">Search</a>
+        <ul class="nav justify-content-end mx-4">
+            <li class="nav-item">
+                <button
+                class="nav-link"
+                id="nav-search"
+                [routerLink]="['/', 'search', 'home']"
+                (click)="setActiveTab('search')"
+                [class.active]="activeTab === 'search'">Search</button>
+                <!-- <button class="nav-link active" id="nav-search" [routerLink]="['/','search','home']" (click)="setSearchTab()">Search</button> -->
             </li>
-            <li class="nav-item" id="nav-watchlist">
-                <a class="nav-link" routerLink="/watchlist">Watchlist</a>
+            <li class="nav-item">
+                <button
+                class="nav-link"
+                id="nav-watchlist"
+                routerLink="/watchlist"
+                (click)="setActiveTab('watchlist')"
+                [class.active]="activeTab === 'watchlist'">Watchlist</button>
+                <!-- <button class="nav-link " id="nav-watchlist" routerLink="/watchlist" (click)="setWatchlistTab()">Watchlist</button> -->
             </li>
-            <li class="nav-item" id="nav-portfolio">
-                <a class="nav-link" routerLink="/portfolio">Portfolio</a>
+            <li class="nav-item">
+                <button
+                class="nav-link"
+                id="nav-portfolio"
+                routerLink="/portfolio"
+                (click)="setActiveTab('portfolio')"
+                [class.active]="activeTab === 'portfolio'">Portfolio</button>
+                <!-- <button class="nav-link" id="nav-portfolio" routerLink="/portfolio" (click)="setPortfolioTab()">Portfolio</button> -->
             </li>
         </ul>
     </div>
