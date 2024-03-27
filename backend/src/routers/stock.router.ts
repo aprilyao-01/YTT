@@ -9,6 +9,7 @@ import { formatEarning } from '../middlewares/earning.mid';
 import { formatDate, formatNews } from '../middlewares/news.mid';
 import { formatSearch} from '../middlewares/autocomplete.mid';
 import { formatProfile } from '../middlewares/profile.mid';
+import { formatQuote } from '../middlewares/quote.mid';
 
 const router = Router();
 
@@ -59,7 +60,7 @@ router.get('/quote/:ticker', asyncHandler(
                 symbol: ticker
             }
         }).then(data => {
-            res.send(data.data);
+            res.send(formatQuote(data.data));
         }).catch(err => {
             res.send({error: err});
         });

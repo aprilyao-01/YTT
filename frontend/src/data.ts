@@ -157,14 +157,15 @@ export const sample_stockV2:StockV2 =
     "weburl": ""
   },
   "currentPrice": {
-    "c": 0,
-    "d": 0,
-    "dp": 0,
-    "h": 0,
-    "l": 0,
-    "o": 0,
-    "pc": 0,
-    "t": 0
+    "c": "",
+    "d": "",
+    "dp": "",
+    "h": "",
+    "l": "",
+    "o": "",
+    "pc": "",
+    "t": "",
+    "color": ""
   },
   "peers": [],
   "quantity": 0,

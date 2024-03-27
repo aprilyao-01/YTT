@@ -22,59 +22,38 @@ export class SearchPageComponent {
   isInWatchlist: boolean = false;
   currentTicker: string = 'home';
 
-  stockV2: StockV2 =  new StockV2(); // Use a spread to ensure a separate copy
+  stockV2!: StockV2;
 
+  isLoading: boolean = false;
 
-  // constructor(private stockService: StockService, activatedRoute:ActivatedRoute,
-  //   private watchlistService: WatchlistService, private router: Router) {
-  //   let stockObservableV2: Observable<StockV2>;
-  //   activatedRoute.params.subscribe(async(params) => {
-  //     if(params.ticker)
-  //       stockObservableV2 = this.stockService.getInfoByTickerV2(params.ticker);
-  //     // else
-  //     //   stockObservableV2 = stockService.getStockFromLocalStorageV2();
-
-  //     stockObservableV2.subscribe((serverStock) => {
-  //       this.stockV2 = serverStock;
-  //       // this.isInWatchlist = watchlistService.isWatched(serverStock.profile.ticker);
-  //     })
-  //   })
-
-  // }
-
-  constructor(private stockService: StockService, activatedRoute: ActivatedRoute,
+  constructor(private stockService: StockService, private activatedRoute: ActivatedRoute,
     private watchlistService: WatchlistService, private router: Router) {
-  activatedRoute.params.subscribe(params => {
-    if(params.ticker) {
-      this.stockService.getInfoByTickerV2(params.ticker).subscribe((serverStock) => {
+      this.stockService.getStockObservableV2().subscribe((serverStock) => {
         this.stockV2 = serverStock;
-        // Additional logic here
       });
-    }
-  });
+
+      this.activatedRoute.params.subscribe((params) => {
+        if(params.ticker && params.ticker!='home') {
+          this.search(params.ticker);
+        }
+      });
 }
 
   toggleToWatchlist(): void{
-    this.isInWatchlist = this.watchlistService.isWatched(this.stock.ticker);
-    console.log('isInWatchlist:', this.isInWatchlist);
-    this.isInWatchlist? this.watchlistService.removeFromWatchlist(this.stock.ticker) : this.watchlistService.addToWatchlist(this.stock);
+    this.isInWatchlist = this.watchlistService.isWatched(this.stockV2.profile.ticker);
+    // this.isInWatchlist? this.watchlistService.removeFromWatchlist(this.stockV2.profile.ticker) : this.watchlistService.addToWatchlist(this.stockV2);
     this.isInWatchlist = !this.isInWatchlist;
   }
 
   search(ticker: string): void {
     this.currentTicker = ticker;
     this.router.navigateByUrl('/search/' + ticker);
-    
-    if(ticker === 'home'){
-      console.log('ticker is: ', ticker);
-      this.stockV2 = new StockV2();
-    }
-    // this.stockService.
+    this.stockService.getInfoByTickerV2(ticker);
   }
 
   OnNotify(ticker: string): void {
+    console.log('Notify: ', ticker);
     this.search(ticker)
-    // this.router.navigateByUrl('/search/' + ticker);
   }
 
   changeAlert(condition:string, ticker?: string): void {

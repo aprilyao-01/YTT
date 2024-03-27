@@ -9,14 +9,15 @@ export interface Profile {
 }
 
 export interface CurrentPrice {
-    c: number;
-    d: number;
-    dp: number;
-    h: number;
-    l: number;
-    o: number;
-    pc: number;
-    t: number;
+    c: string;
+    d: string;
+    dp: string;
+    h: string;
+    l: string;
+    o: string;
+    pc: string;
+    t: string;
+    color: string;
 }
 
 export class Stock {
@@ -61,5 +62,4 @@ export class StockV2 {
     peers!: string[];
     quantity?: number = 0;
     totalCost?: number = 0;
-    color?: string;
 }

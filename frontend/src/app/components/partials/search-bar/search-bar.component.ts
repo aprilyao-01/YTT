@@ -27,7 +27,9 @@ export class SearchBarComponent implements OnInit{
   constructor(private activatedRoute:ActivatedRoute, private router:Router, private http:HttpClient){
     this.activatedRoute.params.subscribe((params) => {
       if(params.ticker && params.ticker!='home') {
+        // console.log('params.ticker:', params.ticker);
         this.tickerFormCtrl.setValue(params.ticker);
+        this.notify.emit(params.ticker);
       }
     });
   }
@@ -58,7 +60,6 @@ export class SearchBarComponent implements OnInit{
   }
 
   OnSearchClick():void{
-    // this.router.navigateByUrl('/search/'+this.tickerFormCtrl.value);
     this.notify.emit(this.tickerFormCtrl.value);
   }
 

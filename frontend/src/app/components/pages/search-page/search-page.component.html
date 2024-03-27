@@ -1,7 +1,9 @@
 <app-search-bar (notify)="OnNotify($event)"></app-search-bar>
-<app-loading></app-loading>
+<div class="container-fluid my-5" *ngIf="isLoading">
+    <mat-spinner style="margin: auto;" diameter="50"></mat-spinner>
+</div>
 <app-alert [visible]="alertVisible" [condition]="alertCondition" [ticker]="alertTicker"></app-alert>
-<div style="width: 70%;" *ngIf="stockV2 && currentTicker != 'home'">
+<div style="width: 70%;" *ngIf="!isLoading && currentTicker != 'home' && stockV2">
     <div class="container text-center basic-info">
         <div class="row">
           <div class="col left">
@@ -24,11 +26,11 @@
             <img id="logo-img" src="{{ stockV2.profile.logo }}" style="width: 100px; height: auto;">
           </div>
           <div class="col right">
-            <div #searchPrice class="{{stockV2.color}}">
+            <div #searchPrice class="{{stockV2.currentPrice.color}}">
                 <div class="text-large">{{ stockV2.currentPrice.c }}</div>
                 <div class="text-mid">
-                    <i *ngIf="stockV2.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
-                    <i *ngIf="stockV2.color == 'text-success'" class="bi bi-caret-up-fill"></i>
+                    <i *ngIf="stockV2.currentPrice.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
+                    <i *ngIf="stockV2.currentPrice.color == 'text-success'" class="bi bi-caret-up-fill"></i>
                     {{ stockV2.currentPrice.d }}({{ stockV2.currentPrice.dp }}%)
                 </div>
             </div>
