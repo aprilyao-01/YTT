@@ -13,7 +13,7 @@ import { catchError, finalize, map } from 'rxjs/operators';
 })
 export class StockService {
 
-  private stockV2: StockV2 = this.getStockFromLocalStorageV2();
+  private stockV2: StockV2 = this.getStockFromLocalV2();
   private stockSubjectV2: BehaviorSubject<StockV2> = new BehaviorSubject(this.stockV2);
 
   // for passing state to components
@@ -47,6 +47,7 @@ export class StockService {
         const combinedData = new StockV2(result.profile, result.quote, result.peers);
         this.stockDataSubject.next(combinedData);
         this.errorSubject.next(null);
+        this.setStockToLocalV2();
       }
     });
   }
@@ -63,16 +64,16 @@ export class StockService {
     this.errorSubject.next(condition);
   }
 
-  getInfoByTickerV2(ticker:string): void{
-    if(ticker === 'home'){
-      this.stockV2 = new StockV2();
-    } else {
-      this.getProfileV2(ticker);
-      this.getQuoteV2(ticker);
-      this.getPeersV2(ticker);
-    }
-    this.setStockToLocalStorageV2();
-  }
+  // getInfoByTickerV2(ticker:string): void{
+  //   if(ticker === 'home'){
+  //     this.stockV2 = new StockV2();
+  //   } else {
+  //     this.getProfileV2(ticker);
+  //     this.getQuoteV2(ticker);
+  //     this.getPeersV2(ticker);
+  //   }
+  //   this.setStockToLocalStorageV2();
+  // }
 
   getProfileV2(ticker: string): Observable<any> {
     // Assuming PROFILE_URL is defined and correct
@@ -89,16 +90,30 @@ export class StockService {
     return this.http.get(PEERS_URL + ticker);
   }
 
-  getStockObservableV2():Observable<StockV2>{
-    return this.stockSubjectV2.asObservable();
+  // getStockObservableV2():Observable<StockV2>{
+  //   return this.stockSubjectV2.asObservable();
+  // }
+
+  setStockToLocalV2():void {
+    if(this.stockV2){
+      // localStorage.setItem('marketOpen', JSON.stringify(this.stockV2.currentPrice.markOpen));
+      // localStorage.setItem('currentPrice', JSON.stringify(this.stockV2.currentPrice));
+      localStorage.setItem('stockV2', JSON.stringify(this.stockV2));
+      this.stockSubjectV2.next(this.stockV2);
+    } else {
+      // localStorage.removeItem('marketOpen');
+      // localStorage.removeItem('currentPrice');
+      localStorage.removeItem('stockV2');
+      // this.stockSubjectV2.next(new StockV2());
+    }
   }
 
-  setStockToLocalStorageV2():void {
-    localStorage.setItem('stockV2', JSON.stringify(this.stockV2));
-    this.stockSubjectV2.next(this.stockV2);
+  getMarketFromLocal():boolean{
+    let data = localStorage.getItem('marketOpen');
+    return data ? JSON.parse(data) : false;
   }
-
-  getStockFromLocalStorageV2():StockV2{
+  
+  getStockFromLocalV2():StockV2{
     let data = localStorage.getItem('stockV2');
     return data ? JSON.parse(data) : new StockV2();
   }

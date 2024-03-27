@@ -1,48 +1,50 @@
 <app-search-bar (notify)="OnNotify($event)"></app-search-bar>
-<!-- <div class="container-fluid my-5" *ngIf="loading$ | async">
-    <mat-spinner style="margin: auto;" diameter="50"></mat-spinner>
-</div> -->
 <app-loading *ngIf="loading$ | async"></app-loading>
 <app-alert [visible]="alertVisible" [condition]="alertCondition" [ticker]="alertTicker"></app-alert>
-<div class="stock-info" style="width: 70%;" *ngIf="!(loading$ | async) && currentTicker !== 'home' && stockV2">
+<div class="container w-70 stock-info" *ngIf="!(loading$ | async) && currentTicker !== 'home' && stockV2">
     <div class="container text-center basic-info">
-        <div class="row">
-          <div class="col left">
+        <div class="row profile">
+          <div class="col-5 left px-0">
             <div>
-                <span class="text-large">
+                <span class="my-2 fs-3">
                     {{ stockV2.profile.ticker }}
                     <i (click)="toggleToWatchlist()" 
-                    [ngClass]="{'bi bi-star-fill': isInWatchlist, 'bi bi-star': !isInWatchlist}" 
+                    [ngClass]="{'bi bi-star-fill fs-5': isInWatchlist, 'bi bi-star fs-5': !isInWatchlist}" 
                     [ngStyle]="{'color': isInWatchlist ? 'gold' : 'inherit'}"></i>
                 </span>
             </div>
-            <div class="text-mid text-secondary">{{ stockV2.profile.name }}</div>
-            <div class="text-small">{{ stockV2.profile.exchange }}</div>
-            <div>
-                <button type="button" class="btn btn-success">Buy</button>&nbsp;
-                <!-- <button *ngIf="stockHoldingFlag" type="button" class="btn btn-danger" (click)="startSellTransaction()">Sell</button> -->
-            </div>
+            <div class="text-secondary my-2 fs-5">{{ stockV2.profile.name }}</div>
+            <div class="my-2">{{ stockV2.profile.exchange }}</div>
           </div>
-          <div class="col middle">
-            <img id="logo-img" src="{{ stockV2.profile.logo }}" style="width: 100px; height: auto;">
+          <div class="col-2 middle px-0">
+            <img id="logo-img" src="{{ stockV2.profile.logo }}">
           </div>
-          <div class="col right">
+          <div class="col-5 right px-0">
             <div #searchPrice class="{{stockV2.currentPrice.color}}">
-                <div class="text-large">{{ stockV2.currentPrice.c.toFixed(2) }}</div>
-                <div class="text-mid">
-                    <i *ngIf="stockV2.currentPrice.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
-                    <i *ngIf="stockV2.currentPrice.color == 'text-success'" class="bi bi-caret-up-fill"></i>
-                    {{ stockV2.currentPrice.d.toFixed(2) }}({{ stockV2.currentPrice.dp.toFixed(2) }}%)
-                </div>
+                <div class="my-2 fs-3">{{ stockV2.currentPrice.c.toFixed(2) }}</div>
+                <span class="my-2 fs-5">
+                    <i *ngIf="stockV2.currentPrice.color == 'text-danger'" class="fs-6 bi bi-caret-down-fill"></i>
+                    <i *ngIf="stockV2.currentPrice.color == 'text-success'" class="fs-6 bi bi-caret-up-fill"></i>
+                    {{ stockV2.currentPrice.d.toFixed(2) }} ({{ stockV2.currentPrice.dp.toFixed(2) }}%)
+                </span>
             </div>
-            <div class="text-small">
-                example time
-            </div>
+            <div class="my-2"> {{stockV2.currentPrice.currentTimestamp}} </div>
           </div>
         </div>
-    </div>
-    <div class="market-info text-center" style="color: green; margin: 10px 0;">
-        Market is Open
+        <div class="row buy-sell">
+            <div class="col-5 d-flex justify-content-center px-0">
+                <span>
+                    <button type="button" class="btn btn-success" (click)="OnBuyClick(stockV2.profile.ticker)">Buy</button>&nbsp;
+                    <button *ngIf="stockV2.quantity>0" type="button" class="btn btn-danger" (click)="OnSellClick(stockV2.profile.ticker)">Sell</button>
+                </span>
+            </div>
+            <div class="col-2 px-0"></div>
+            <div class="col-5 px-0"></div>
+        </div>
+        <div class="market-info  text-center my-2 fw-bold">
+            <div class="text-success" *ngIf="stockV2.currentPrice.markOpen"> Market is Open </div>
+            <div class="text-danger" *ngIf="!stockV2.currentPrice.markOpen"> Market Closed on {{stockV2.currentPrice.lastTimestamp}} </div>
+        </div>
     </div>
     <div class="detail-info">
         <mat-tab-group >

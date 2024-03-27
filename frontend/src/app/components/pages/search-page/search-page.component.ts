@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 // import { sample_stock, sample_stockV2 } from '../../../../data';
 import { StockService } from '../../../services/stock.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { WatchlistService } from '../../../services/watchlist.service';
 import { Observable } from 'rxjs';
 import { Stock, StockV2 } from '../../../shared/models/Stock';
 import { time } from 'highcharts';
+import { PortfolioService } from '../../../services/portfolio.service';
 
 @Component({
   selector: 'app-search-page',
@@ -28,8 +29,11 @@ export class SearchPageComponent implements OnInit {
   stockData$ = this.stockService.stockData$;
   error$ = this.stockService.error$;
 
+  //selector
+  @ViewChild('marketStatus') marketStatus!: ElementRef;
+
   constructor(private stockService: StockService, private activatedRoute: ActivatedRoute,
-    private watchlistService: WatchlistService, private router: Router) {  }
+    private watchlistService: WatchlistService, private router: Router, private portfolioService: PortfolioService) {  }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
@@ -45,6 +49,7 @@ export class SearchPageComponent implements OnInit {
       this.stockV2 = data;
       if(data) {
         this.isInWatchlist = this.watchlistService.isWatched(data.profile.ticker);
+        // this.updateMarketStatus();
       }
     });
 
@@ -53,6 +58,12 @@ export class SearchPageComponent implements OnInit {
         this.changeAlert("notFound");
       }
     });
+  }
+
+  changeAlert(condition:string, ticker?: string): void {
+    this.alertCondition = condition;
+    this.alertVisible = true;
+    ticker? this.alertTicker = ticker : this.alertTicker = '';
   }
 
   toggleToWatchlist(): void{
@@ -78,7 +89,7 @@ export class SearchPageComponent implements OnInit {
       this.stockService.setStockDataSubject(null);
       return;
     }
-    this.router.navigateByUrl('/search/' + ticker);
+    // this.router.navigateByUrl('/search/' + ticker);
     // Set the current ticker and proceed with the search for valid tickers other than 'home'
     this.currentTicker = ticker;
     this.stockService.loadStockData(ticker);
@@ -87,12 +98,37 @@ export class SearchPageComponent implements OnInit {
 
   OnNotify(ticker: string): void {
     console.log('Notify: ', ticker);
-    this.search(ticker)
+    if(ticker === 'home') {
+      this.router.navigateByUrl('/search/home');
+    } else {
+      this.router.navigateByUrl('/search/' + ticker);
+    }
   }
 
-  changeAlert(condition:string, ticker?: string): void {
-    this.alertCondition = condition;
-    this.alertVisible = true;
-    ticker? this.alertTicker = ticker : this.alertTicker = '';
+  OnSellClick(ticker: string): void {
+    console.log('Sell: ', ticker);
+    //TODO: add pop out for quantity
+
+    // this.portfolioService.changeQuantity(-1, ticker);
   }
+
+  OnBuyClick(ticker: string): void {
+    console.log('Buy: ', ticker);
+    //TODO: add pop out for quantity
+    // this.portfolioService.changeQuantity(1, ticker);
+  }
+
+  // updateMarketStatus(): void {
+  //   console.log('Updating market status: ', this.stockV2);
+  //   console.log('Market status element: ', this.marketStatus);
+  //   if(this.stockV2 && this.marketStatus) {
+  //     const marketStatusElement = this.marketStatus.nativeElement;
+  //     const isMarketOpen = this.stockV2.currentPrice.markOpen;
+  //     marketStatusElement.innerHTML = isMarketOpen ? 'Market is Open' : 'Market Closed on ' + this.stockV2.currentPrice.lastTimestamp;  
+  //     marketStatusElement.classList.toggle('text-success', isMarketOpen);
+  //     marketStatusElement.classList.toggle('text-danger', !isMarketOpen);
+  //   }
+  // }
+
+  
 }

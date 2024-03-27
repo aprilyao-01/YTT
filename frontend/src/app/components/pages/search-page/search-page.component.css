@@ -1,15 +1,16 @@
-* {
-    margin: auto;
-}
-.text-large {
-    font-size: x-large;
-    font-weight: bold;
+.middle img{
+    height: 100px;
+    width: auto;
 }
 
-.text-mid {
-    font-size: 20px;
-}
+@media screen and (max-width: 900px) {
+    .stock-info {
+        width: 100%;
+    }
 
-.text-small {
-    font-size: 14px;
+    .middle img {
+        height: 50px;
+        width: auto;
+    }
+    
 }

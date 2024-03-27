@@ -18,6 +18,9 @@ export interface CurrentPrice {
     pc: number;
     t: number;
     color: string;
+    markOpen: boolean;
+    currentTimestamp: string;
+    lastTimestamp: string;
 }
 
 export class Stock {
@@ -65,7 +68,7 @@ export class StockV2 {
 
     constructor(
         profile: Profile = {ticker: '', name: '', exchange: '', ipo: '', logo: '', weburl: '', finnhubIndustry: ''},
-        currentPrice: CurrentPrice = {c: 0, d: 0, dp: 0, h: 0, l: 0, o: 0, pc: 0, t: 0, color: ''},
+        currentPrice: CurrentPrice = {c: 0, d: 0, dp: 0, h: 0, l: 0, o: 0, pc: 0, t: 0, color: '', markOpen: true, currentTimestamp:'', lastTimestamp: ''},
         peers: string[] = [],
         quantity: number = 0,
         totalCost: number = 0

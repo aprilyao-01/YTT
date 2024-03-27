@@ -19,6 +19,20 @@ interface QuoteResult {
     pc: number;
     t: number;
     color: string;
+    markOpen: boolean;
+    currentTimestamp: string;
+    lastTimestamp: string;
+}
+
+function formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 export const formatQuote = (quote: QuoteItem): QuoteResult => {
@@ -31,7 +45,10 @@ export const formatQuote = (quote: QuoteItem): QuoteResult => {
         o: quote.o,
         pc: quote.pc,
         t: quote.t,
-        color: ''
+        color: '',
+        markOpen: true,
+        currentTimestamp: '',
+        lastTimestamp:'',
     };
 
     if (quote.d > 0) {
@@ -40,6 +57,17 @@ export const formatQuote = (quote: QuoteItem): QuoteResult => {
         result.color = 'text-danger';
     } else {  // d == 0
         result.color = 'text-dark';
+    }
+
+    result.currentTimestamp = formatDate(new Date());
+
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    if (currentTimestamp - quote.t < 60) {
+        result.markOpen = true;
+    } else {
+        result.markOpen = false;
+        const date = new Date(quote.t * 1000);
+        result.lastTimestamp = formatDate(date);
     }
 
     return result;

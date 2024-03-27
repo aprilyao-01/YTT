@@ -7,7 +7,7 @@
             <input type="text" class="stock-input ms-3" placeholder="Enter stock ticker symbol" 
             [formControl]="tickerFormCtrl"
             [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionClick($event.option.value)">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="OnOptionClick($event.option.value)">
                 <mat-option *ngIf="loading">
                     <mat-spinner diameter="30"></mat-spinner>
                 </mat-option>
