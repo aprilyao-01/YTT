@@ -16,4 +16,6 @@ export const EARNING_URL = SEARCH_URL + `/earning/`;
 // export const CHART_URL = SEARCH_URL + `/chart/`;
 
 export const WATCHLIST_URL = BASE_URL + `/api/watchlist`;
+export const WATCHLIST_UPDATE_URL = WATCHLIST_URL + `/update`;
 export const PORTFOLIO_URL = BASE_URL + `/api/portfolio`;
+export const PORTFOLIO_UPDATE_URL = PORTFOLIO_URL + `/update`;

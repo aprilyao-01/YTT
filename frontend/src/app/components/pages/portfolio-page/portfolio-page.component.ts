@@ -19,6 +19,7 @@ export class PortfolioPageComponent {
   constructor(private portfolioService: PortfolioService) {
     this.portfolioService.getPortfolioObservable().subscribe(portfolio => {
       this.portfolio = portfolio;
+      if(this.portfolio.portfolioItem.length === 0) this.changeAlert('emptyPortfolio');
     })
     console.log('Current portfolio in page.ts:', this.portfolio);
     console.log('Current portfolioItem in service.ts:', this.portfolio.portfolioItem);

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Portfolio } from '../shared/models/Portfolio';
 import { PortfolioItem } from '../shared/models/PortfolioItem';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { PORTFOLIO_URL } from '../shared/constants/urls';
+import { PORTFOLIO_UPDATE_URL, PORTFOLIO_URL } from '../shared/constants/urls';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -54,9 +54,19 @@ export class PortfolioService {
     return this.portfolioSubject.asObservable();
   }
 
+  updateInDB(portfolio: Portfolio): Observable<any> {
+    return this.http.post(PORTFOLIO_UPDATE_URL, portfolio);
+  }
+
   private setPortfolioToLocalStorage():void {
     localStorage.setItem('Portfolio', JSON.stringify(this.portfolio));
     this.portfolioSubject.next(this.portfolio);
+
+    // update in database
+    this.updateInDB(this.portfolio).subscribe({
+      next: (response) => console.log(response.message),
+      error: (error) => console.error('Failed to update portfolio in database', error)
+    });
   }
 
   private getPortfolioFromLocalStorage():Portfolio {

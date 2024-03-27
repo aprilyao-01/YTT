@@ -32,10 +32,9 @@ router.get('/', asyncHandler(
 router.post('/update', asyncHandler(
     async (req, res) => {
         // clear existing and insert new
-        // await WatchItemModel.deleteMany({});
-        // const updatedWatchlist = await WatchItemModel.insertMany(req.body);
-        
-        // res.send(updatedWatchlist);
+        await WatchItemModel.deleteMany({});
+        await WatchItemModel.insertMany(req.body);
+        res.send( {message: 'Watchlist updated'});
     }
 ))
 

@@ -13,11 +13,11 @@
                     <div class="fs-6 my-2">{{watchItem.name}}</div>
                 </div>
                 <div class="col {{watchItem.color}}">
-                    <div class="fs-4 my-2">{{ watchItem.c }}</div>
+                    <div class="fs-4 my-2">{{ watchItem.c.toFixed(2) }}</div>
                     <div class="fs-6 my-2">
                         <i *ngIf="watchItem.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
                         <i *ngIf="watchItem.color == 'text-success'" class="bi bi-caret-up-fill"></i>
-                        {{ watchItem.d }}({{ watchItem.dp }}%)
+                        {{ watchItem.d.toFixed(2) }}({{ watchItem.dp.toFixed(2) }}%)
                     </div>
                 </div>
             </div>

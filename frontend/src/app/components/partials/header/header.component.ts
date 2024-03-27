@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -8,41 +10,21 @@ import { Component } from '@angular/core';
 
 
 export class HeaderComponent {
+  activeTab: string = '';
 
-  activeTab: 'search' | 'watchlist' | 'portfolio' = 'search';
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
-  setActiveTab(tab: 'search' | 'watchlist' | 'portfolio') {
-    this.activeTab = tab;
-  }
-  
-  // searchSymbol: String = "";
-  validDataPresent: boolean = false;
-  isSearchTabFlag: boolean = true;
-
-
-  setSearchTab() {
-    document.getElementById('nav-watchlist')?.classList.remove('active');
-    document.getElementById('nav-portfolio')?.classList.remove('active');
-    document.getElementById('nav-search')?.classList.add('active');
-    // if (this.validDataPresent) {
-    //   document.getElementById('nav-search')?.classList.add('active');
-    // } else {
-    //   document.getElementById('nav-search')?.classList.remove('active');
-    // }
-    // this.isSearchTabFlag = true;
-  }
-
-  setWatchlistTab() {
-    document.getElementById('nav-search')?.classList.remove('active');
-    document.getElementById('nav-watchlist')?.classList.add('active');
-    document.getElementById('nav-portfolio')?.classList.remove('active');
-    // this.isSearchTabFlag = false;
-  }
-  
-  setPortfolioTab() {
-    document.getElementById('nav-search')?.classList.remove('active');
-    document.getElementById('nav-watchlist')?.classList.remove('active');
-    document.getElementById('nav-portfolio')?.classList.add('active');
-    // this.isSearchTabFlag = false;
+  ngOnInit(): void {
+    // subscribe to router events to detect navigation ends and update the active tab accordingly
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      let currentRoute = this.activatedRoute.root;
+      while (currentRoute.children[0] !== undefined) {
+        currentRoute = currentRoute.children[0];
+      }
+      // set the active tab based on the current route
+      this.activeTab = currentRoute.snapshot.url[0]?.path;
+    });
   }
 }

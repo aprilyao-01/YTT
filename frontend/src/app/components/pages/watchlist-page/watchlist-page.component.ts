@@ -13,12 +13,15 @@ export class WatchlistPageComponent {
   alertCondition: string = 'undefined';
   alertTicker: string = '';
 
+  isLoading: boolean = false;
+
   watchlist: WatchlistItem[] = [];
   constructor(private watchlistService: WatchlistService) {
     this.watchlistService.getWatchlistObservable().subscribe(watchItems => {
       this.watchlist = watchItems;
+      if(this.watchlist.length === 0) this.changeAlert('emptyWatchlist');
     })
-    console.log('Current watchlist in page.ts:', this.watchlist);
+    // console.log('Current watchlist in page.ts:', this.watchlist);
   }
 
   removeFromWatchlist(ticker: string) {

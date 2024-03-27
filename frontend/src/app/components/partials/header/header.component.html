@@ -7,39 +7,15 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <button
-                    class="nav-link"
-                    id="nav-search"
-                    [routerLink]="['/', 'search', 'home']"
-                    (click)="setActiveTab('search')"
-                    [class.active]="activeTab === 'search'">
-                    <span class="mx-2">Search</span>
-                    </button>
-                    <!-- <button class="nav-link active" id="nav-search" [routerLink]="['/','search','home']" (click)="setSearchTab()">Search</button> -->
+                  <a class="nav-link" [class.active]="activeTab === 'search'" href="/search"><span class="mx-2">Search</span></a>
                 </li>
                 <li class="nav-item">
-                    <button
-                    class="nav-link"
-                    id="nav-watchlist"
-                    routerLink="/watchlist"
-                    (click)="setActiveTab('watchlist')"
-                    [class.active]="activeTab === 'watchlist'">
-                    <span class="mx-2">Watchlist</span>
-                    </button>
-                    <!-- <button class="nav-link " id="nav-watchlist" routerLink="/watchlist" (click)="setWatchlistTab()">Watchlist</button> -->
+                  <a class="nav-link" [class.active]="activeTab === 'watchlist'" href="/watchlist"><span class="mx-2">Watchlist</span></a>
                 </li>
                 <li class="nav-item">
-                    <button
-                    class="nav-link"
-                    id="nav-portfolio"
-                    routerLink="/portfolio"
-                    (click)="setActiveTab('portfolio')"
-                    [class.active]="activeTab === 'portfolio'">
-                    <span class="mx-2">Portfolio</span>
-                    </button>
-                    <!-- <button class="nav-link" id="nav-portfolio" routerLink="/portfolio" (click)="setPortfolioTab()">Portfolio</button> -->
+                  <a class="nav-link" [class.active]="activeTab === 'portfolio'" href="/portfolio"><span class="mx-2">Portfolio</span></a>
                 </li>
-            </ul>
+              </ul>              
         </div>
         
     </div>

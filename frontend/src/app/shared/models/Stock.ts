@@ -9,14 +9,14 @@ export interface Profile {
 }
 
 export interface CurrentPrice {
-    c: string;
-    d: string;
-    dp: string;
-    h: string;
-    l: string;
-    o: string;
-    pc: string;
-    t: string;
+    c: number;
+    d: number;
+    dp: number;
+    h: number;
+    l: number;
+    o: number;
+    pc: number;
+    t: number;
     color: string;
 }
 
@@ -60,6 +60,20 @@ export class StockV2 {
     profile!: Profile;
     currentPrice!: CurrentPrice;
     peers!: string[];
-    quantity?: number = 0;
-    totalCost?: number = 0;
+    quantity!: number;
+    totalCost!: number;
+
+    constructor(
+        profile: Profile = {ticker: '', name: '', exchange: '', ipo: '', logo: '', weburl: '', finnhubIndustry: ''},
+        currentPrice: CurrentPrice = {c: 0, d: 0, dp: 0, h: 0, l: 0, o: 0, pc: 0, t: 0, color: ''},
+        peers: string[] = [],
+        quantity: number = 0,
+        totalCost: number = 0
+    ) {
+        this.profile = profile;
+        this.currentPrice = currentPrice;
+        this.peers = peers;
+        this.quantity = quantity;
+        this.totalCost = totalCost;
+    }
 }

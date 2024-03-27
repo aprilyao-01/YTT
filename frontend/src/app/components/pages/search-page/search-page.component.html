@@ -1,9 +1,10 @@
 <app-search-bar (notify)="OnNotify($event)"></app-search-bar>
-<div class="container-fluid my-5" *ngIf="isLoading">
+<!-- <div class="container-fluid my-5" *ngIf="loading$ | async">
     <mat-spinner style="margin: auto;" diameter="50"></mat-spinner>
-</div>
+</div> -->
+<app-loading *ngIf="loading$ | async"></app-loading>
 <app-alert [visible]="alertVisible" [condition]="alertCondition" [ticker]="alertTicker"></app-alert>
-<div style="width: 70%;" *ngIf="!isLoading && currentTicker != 'home' && stockV2">
+<div class="stock-info" style="width: 70%;" *ngIf="!(loading$ | async) && currentTicker !== 'home' && stockV2">
     <div class="container text-center basic-info">
         <div class="row">
           <div class="col left">
@@ -27,11 +28,11 @@
           </div>
           <div class="col right">
             <div #searchPrice class="{{stockV2.currentPrice.color}}">
-                <div class="text-large">{{ stockV2.currentPrice.c }}</div>
+                <div class="text-large">{{ stockV2.currentPrice.c.toFixed(2) }}</div>
                 <div class="text-mid">
                     <i *ngIf="stockV2.currentPrice.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
                     <i *ngIf="stockV2.currentPrice.color == 'text-success'" class="bi bi-caret-up-fill"></i>
-                    {{ stockV2.currentPrice.d }}({{ stockV2.currentPrice.dp }}%)
+                    {{ stockV2.currentPrice.d.toFixed(2) }}({{ stockV2.currentPrice.dp.toFixed(2) }}%)
                 </div>
             </div>
             <div class="text-small">
@@ -50,10 +51,10 @@
                     <div class="col-md">
                         <div style="padding: 30px; margin-right:50%; font-size: small; width: 50%;">
                             <table>
-                                <tr><th>High Price:</th><td>{{ stockV2.currentPrice.h }}</td></tr>
-                                <tr><th>Low Price:</th><td>{{ stockV2.currentPrice.l }}</td></tr>
-                                <tr><th>Open Price:</th><td>{{ stockV2.currentPrice.o }}</td></tr>
-                                <tr><th>Prev. Close:</th><td>{{ stockV2.currentPrice.pc }}</td></tr>
+                                <tr><th>High Price:</th><td>{{ stockV2.currentPrice.h.toFixed(2) }}</td></tr>
+                                <tr><th>Low Price:</th><td>{{ stockV2.currentPrice.l.toFixed(2) }}</td></tr>
+                                <tr><th>Open Price:</th><td>{{ stockV2.currentPrice.o.toFixed(2) }}</td></tr>
+                                <tr><th>Prev. Close:</th><td>{{ stockV2.currentPrice.pc.toFixed(2) }}</td></tr>
                             </table>
                         </div>
                         <div class = "text-center" style="padding: 10px; font-size: small;">

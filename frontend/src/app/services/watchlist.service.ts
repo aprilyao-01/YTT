@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, sample } from 'rxjs';
-import { Stock } from '../shared/models/Stock';
+import { Stock, StockV2 } from '../shared/models/Stock';
 import { WatchlistItem } from '../shared/models/WatchlistItem';
 import { HttpClient } from '@angular/common/http';
-import { WATCHLIST_URL } from '../shared/constants/urls';
+import { WATCHLIST_UPDATE_URL, WATCHLIST_URL } from '../shared/constants/urls';
 import { sample_watchlist } from '../../data';
 
 @Injectable({
@@ -16,14 +16,15 @@ export class WatchlistService {
   constructor(private http: HttpClient) {
     const localData = this.getWatchlistFromLocalStorage();
     if (localData.length > 0) {
+      console.log('from local:', localData);
       this.watchlist = localData;
       // console.log('Initial watchlist 0:', this.watchlist);
     } else {
+      console.log('from server');
       this.getAll().subscribe(data => {
         this.watchlist = data;
         this.setWatchlistToLocalStorage();
       });
-      // console.log('Initial watchlist: 1', this.watchlist);
     }
   }
 
@@ -43,18 +44,16 @@ export class WatchlistService {
     return watchItem? true : false;
   }
 
-  addToWatchlist(stock: Stock): void {
-    let watchItem = this.watchlist.find(item => item.ticker === stock.ticker);
+  addToWatchlist(stock: StockV2): void {
+    let watchItem = this.watchlist.find(item => item.ticker === stock.profile.ticker);
     if(watchItem) return; // already watched
 
     // update
-    this.watchlist.push(new WatchlistItem(stock.name, stock.ticker, stock.c, stock.d, stock.dp));
+    this.watchlist.push(new WatchlistItem(stock.profile.name, stock.profile.ticker, stock.currentPrice.c, stock.currentPrice.d, stock.currentPrice.dp, stock.currentPrice.color));
     this.setWatchlistToLocalStorage();
-    // console.log('server addToWatchlist', stock.ticker);
   }
 
   removeFromWatchlist(ticker: string): void {
-    // console.log('server removeFromWatchlist', ticker);
     this.watchlist = this.watchlist.filter(item => item.ticker != ticker);
     this.setWatchlistToLocalStorage();
   }
@@ -63,9 +62,9 @@ export class WatchlistService {
     return this.watchlistSubject.asObservable();
   }
 
-  updateWatchlistInDatabase(watchlist: WatchlistItem[]): Observable<any> {
-    return this.http.post(`${WATCHLIST_URL}/update`, watchlist);
-  }  
+  updateInDB(watchlist: WatchlistItem[]): Observable<any> {
+    return this.http.post(WATCHLIST_UPDATE_URL, watchlist);
+  }
 
   private setWatchlistToLocalStorage():void {
     const watchlistJson = JSON.stringify(this.watchlist);
@@ -74,7 +73,7 @@ export class WatchlistService {
     this.watchlistSubject.next(this.watchlist);
 
     // update in database
-    this.updateWatchlistInDatabase(this.watchlist).subscribe({
+    this.updateInDB(this.watchlist).subscribe({
       next: (response) => console.log(response.message),
       error: (error) => console.error('Failed to update watchlist in database', error)
     });
@@ -84,11 +83,5 @@ export class WatchlistService {
     const watchlistJson = localStorage.getItem('Watchlist');
     // console.log('watchlistJson from localStorage:', watchlistJson);
     return watchlistJson ? JSON.parse(watchlistJson) : this.http.get<WatchlistItem[]>(WATCHLIST_URL);
-  }
-
-  setColor(watchItem: WatchlistItem): void {
-    if(watchItem.d > 0) watchItem.color = 'text-success';
-    else if(watchItem.d < 0) watchItem.color = 'text-danger';
-    else watchItem.color = 'text-dark';
   }
 }

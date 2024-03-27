@@ -50,6 +50,12 @@ export const ALERTS: Alert[] = [
     },
 
     // portfolio page -> reuse form stock page
+    {
+        type: 'warning',
+        condition: 'emptyPortfolio',
+        message: 'Currently you don\'t have any stock.',
+        dismissible: false
+    },
 
     // undefined
     {

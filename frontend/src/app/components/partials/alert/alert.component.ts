@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { Alert } from '../../../shared/models/Alert';
-import { AlertService } from '../../../services/alert.service';
+import { ALERTS, Alert } from '../../../shared/models/Alert';
 
 
 @Component({
@@ -26,32 +25,36 @@ export class AlertComponent implements OnInit{
   @Input()
   ticker: string = '';
 
-  alert: Alert;
+  alert: Alert = this.setAlert('undefined');
 
-  constructor(private alertService:AlertService) { this.alert = this.alertService.setAlert(this.condition); }
+  constructor() { }
 
   ngOnInit(): void {
-    this.alert = this.alertService.setAlert(this.condition);
+    this.alert = this.setAlert(this.condition);
   }
 
-  ngOnChanges(condition: string, ticker?: string): void {
-    // Check if 'condition' input has changed
-    if (condition) {
-      if(ticker){
-        this.ticker = ticker;
-      }
-      this.alert = this.alertService.setAlert(this.condition);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.visible && changes.visible.currentValue === true) {
+      this.alert = this.setAlert(this.condition);
+
+      // dismiss after 5s
+      setTimeout(() => {
+        this.visible = false;
+      }, 5000);
+    }
+
+    // if condition change, update alert
+    if (changes.condition) {
+      this.alert = this.setAlert(this.condition);
     }
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   // Check if 'condition' input has changed and react accordingly
-  //   if (changes.condition && changes.condition.currentValue !== changes.condition.previousValue) {
-  //     this.alert = this.alertService.setAlert(this.condition);
-  //   }
-  // }
+  setAlert(condition: string): Alert{
+    const alertItem = ALERTS.find(alert => alert.condition === condition);
+    return alertItem ? alertItem : ALERTS[-1];
+  }
 
   close(alert: Alert) {
-		// this.alert.splice(this.alert.indexOf(alert), 1);
+    this.visible = false;
 	}
 }

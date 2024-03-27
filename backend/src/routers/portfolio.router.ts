@@ -33,10 +33,10 @@ router.get('/', asyncHandler(
 router.post('/update', asyncHandler(
     async (req, res) => {
         // clear existing and insert new
-        // await PortfolioModel.deleteMany({});
-        // const updatedWatchlist = await PortfolioModel.insertMany(req.body);
+        await PortfolioModel.deleteMany({});
+        await PortfolioModel.insertMany(req.body);
         
-        // res.send(updatedWatchlist);
+        res.send( {message: 'Portfolio updated'});
     }
 ))
 

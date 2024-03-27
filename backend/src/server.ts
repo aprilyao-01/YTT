@@ -19,6 +19,7 @@ app.use(cors({
     credentials: true,
     origin: 'http://localhost:4200'
 }));
+app.use(express.json());
 
 // setup routes
 app.use("/api", searchRouter);
