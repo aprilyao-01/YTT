@@ -28,9 +28,9 @@ export class SearchPageComponent {
     activatedRoute.params.subscribe(async (params) => {
       if(params.ticker)
         stockObservable = this.stockService.getInfoByTicker(params.ticker);
-      this.changeAlert('noInput', 'AAPL');
-      await new Promise(f => setTimeout(f, 3000));
-      this.changeAlert('notFound');
+      // this.changeAlert('noInput', 'AAPL');
+      // await new Promise(f => setTimeout(f, 3000));
+      // this.changeAlert('notFound');
 
       // else
       //   stockObservable = stockService.getStockFromLocalStorage();
@@ -51,6 +51,8 @@ export class SearchPageComponent {
   }
 
   search(ticker: string): void {
+    this.router.navigateByUrl('/search/' + ticker);
+    // this.stockService.
   }
 
   OnNotify(ticker: string): void {

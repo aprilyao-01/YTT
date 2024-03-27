@@ -3,11 +3,11 @@
     color: white;
 }
 
-button {
+ul li button {
     opacity: 0.7;
 }
 
-button.active {
+ul li button.active {
     color: white;
     border: 1.5px white solid;
     border-radius: 15px;
@@ -17,4 +17,24 @@ button.active {
 button:hover{
     color: white;
     opacity: 1.0;
+}
+
+@media screen and (max-width: 900px) {
+    ul {
+        position: static;
+    }
+    ul li button {
+        margin: auto;
+        text-align: start;
+        width: 80%;
+        border-radius: 10px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    ul {
+        position: absolute;
+        right: 3%;
+    }
+    
 }

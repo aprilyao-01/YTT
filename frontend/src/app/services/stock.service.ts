@@ -20,10 +20,10 @@ export class StockService {
   }
 
   getInfoByTicker(ticker:string): Observable <Stock>{
-    if(ticker === 'home') return new Observable<Stock>(); // Return an empty observable
-    // this.getProfile(ticker);
+    if(ticker === 'home') return new Observable<Stock>(); // return an empty observable
+    this.getProfile(ticker);
     // this.getQuote(ticker);
-    this.getPeers(ticker);
+    // this.getPeers(ticker);
     // this.setStockToLocalStorage();
     return this.stockSubject.asObservable();
   }
@@ -31,6 +31,7 @@ export class StockService {
   getProfile(ticker:string){
     let profile = this.http.get<any>(PROFILE_URL + ticker);
     profile.subscribe(data => {
+      console.log(data)
       this.stock.ticker = data.ticker;
       this.stock.name = data.name;
       this.stock.exchange = data.exchange;
@@ -44,27 +45,27 @@ export class StockService {
     
   }
 
-  // getQuote(ticker:string){
-  //   let quote = this.http.get<any>(QUOTE_URL + ticker);
-  //   quote.subscribe(data => {
-  //     this.stock.c = data.c;
-  //     this.stock.d = data.d;
-  //     this.stock.dp = data.dp;
-  //     this.stock.h = data.h;
-  //     this.stock.l = data.l;
-  //     this.stock.o = data.o;
-  //     this.stock.pc = data.pc;
-  //     this.stock.t = data.t;
-  //     if (this.stock.d > 0) {
-  //       this.stock.color = 'text-success';
-  //     } else if (this.stock.d < 0) {
-  //       this.stock.color = 'text-danger';
-  //     } else {  // d == 0
-  //       this.stock.color = 'text-dark';
-  //     }
-  //     // localStorage.setItem('quote', JSON.stringify(quote));
-  //   });
-  // }
+  getQuote(ticker:string){
+    let quote = this.http.get<any>(QUOTE_URL + ticker);
+    quote.subscribe(data => {
+      this.stock.c = data.c;
+      this.stock.d = data.d;
+      this.stock.dp = data.dp;
+      this.stock.h = data.h;
+      this.stock.l = data.l;
+      this.stock.o = data.o;
+      this.stock.pc = data.pc;
+      this.stock.t = data.t;
+      if (this.stock.d > 0) {
+        this.stock.color = 'text-success';
+      } else if (this.stock.d < 0) {
+        this.stock.color = 'text-danger';
+      } else {  // d == 0
+        this.stock.color = 'text-dark';
+      }
+      // localStorage.setItem('quote', JSON.stringify(quote));
+    });
+  }
 
   getPeers(ticker:string){
     let peers = this.http.get<any>(PEERS_URL + ticker);
