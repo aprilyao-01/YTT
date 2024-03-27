@@ -65,6 +65,7 @@ export class SearchBarComponent implements OnInit{
   OnCancelClick() {
     this.tickerFormCtrl.setValue('');
     this.router.navigateByUrl('/');
+    this.notify.emit('home');
   }
 
   onOptionClick(ticker: string) {

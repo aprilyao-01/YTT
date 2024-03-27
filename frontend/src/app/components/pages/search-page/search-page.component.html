@@ -1,35 +1,35 @@
 <app-search-bar (notify)="OnNotify($event)"></app-search-bar>
-<!-- <app-loading></app-loading> -->
+<app-loading></app-loading>
 <app-alert [visible]="alertVisible" [condition]="alertCondition" [ticker]="alertTicker"></app-alert>
-<div style="width: 70%;" *ngIf="stock">
+<div style="width: 70%;" *ngIf="stockV2 && currentTicker != 'home'">
     <div class="container text-center basic-info">
         <div class="row">
           <div class="col left">
             <div>
                 <span class="text-large">
-                    {{ stock.ticker }}
+                    {{ stockV2.profile.ticker }}
                     <i (click)="toggleToWatchlist()" 
                     [ngClass]="{'bi bi-star-fill': isInWatchlist, 'bi bi-star': !isInWatchlist}" 
                     [ngStyle]="{'color': isInWatchlist ? 'gold' : 'inherit'}"></i>
                 </span>
             </div>
-            <div class="text-mid text-secondary">{{ stock.name }}</div>
-            <div class="text-small">{{ stock.exchange }}</div>
+            <div class="text-mid text-secondary">{{ stockV2.profile.name }}</div>
+            <div class="text-small">{{ stockV2.profile.exchange }}</div>
             <div>
                 <button type="button" class="btn btn-success">Buy</button>&nbsp;
                 <!-- <button *ngIf="stockHoldingFlag" type="button" class="btn btn-danger" (click)="startSellTransaction()">Sell</button> -->
             </div>
           </div>
           <div class="col middle">
-            <img id="logo-img" src="{{ stock.logo }}" style="width: 100px; height: auto;">
+            <img id="logo-img" src="{{ stockV2.profile.logo }}" style="width: 100px; height: auto;">
           </div>
           <div class="col right">
-            <div #searchPrice class="{{stock.color}}">
-                <div class="text-large">{{ stock.c }}</div>
+            <div #searchPrice class="{{stockV2.color}}">
+                <div class="text-large">{{ stockV2.currentPrice.c }}</div>
                 <div class="text-mid">
-                    <i *ngIf="stock.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
-                    <i *ngIf="stock.color == 'text-success'" class="bi bi-caret-up-fill"></i>
-                    {{ stock.d }}({{ stock.dp }}%)
+                    <i *ngIf="stockV2.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
+                    <i *ngIf="stockV2.color == 'text-success'" class="bi bi-caret-up-fill"></i>
+                    {{ stockV2.currentPrice.d }}({{ stockV2.currentPrice.dp }}%)
                 </div>
             </div>
             <div class="text-small">
@@ -48,22 +48,22 @@
                     <div class="col-md">
                         <div style="padding: 30px; margin-right:50%; font-size: small; width: 50%;">
                             <table>
-                                <tr><th>High Price:</th><td>{{ stock.h }}</td></tr>
-                                <tr><th>Low Price:</th><td>{{ stock.l }}</td></tr>
-                                <tr><th>Open Price:</th><td>{{ stock.o }}</td></tr>
-                                <tr><th>Prev. Close:</th><td>{{ stock.pc }}</td></tr>
+                                <tr><th>High Price:</th><td>{{ stockV2.currentPrice.h }}</td></tr>
+                                <tr><th>Low Price:</th><td>{{ stockV2.currentPrice.l }}</td></tr>
+                                <tr><th>Open Price:</th><td>{{ stockV2.currentPrice.o }}</td></tr>
+                                <tr><th>Prev. Close:</th><td>{{ stockV2.currentPrice.pc }}</td></tr>
                             </table>
                         </div>
                         <div class = "text-center" style="padding: 10px; font-size: small;">
                             <p class="my-4" style="font-size: large;"><strong><u>About the company</u></strong></p>
-                            <div class="my-2"><strong>IPO Start Date: </strong>{{ stock.ipo }}</div>
-                            <div class="my-2"><strong>Industry: </strong>{{ stock.finnhubIndustry }}</div>
-                            <div class="my-2"><strong>Webpage: </strong><a href="{{ stock.weburl }}" target="_blank">{{ stock.weburl }}</a></div>
+                            <div class="my-2"><strong>IPO Start Date: </strong>{{ stockV2.profile.ipo }}</div>
+                            <div class="my-2"><strong>Industry: </strong>{{ stockV2.profile.finnhubIndustry }}</div>
+                            <div class="my-2"><strong>Webpage: </strong><a href="{{ stockV2.profile.weburl }}" target="_blank">{{ stockV2.profile.weburl }}</a></div>
                             <div class="my-2"><strong>Company peers: </strong></div>
                             <!-- TODO: peers list -->
                             <div class="my-2">
-                                <span *ngFor="let peer of stock.peers" [routerLink]="['/','search','{{peer}}']"> {{peer}}</span>
-                                <!-- <a href="https://www.google.com/search?q={{stock.ticker}}+stock" target="_blank">More...</a> -->
+                                <span *ngFor="let peer of stockV2.peers" [routerLink]="['/','search','{{peer}}']"> {{peer}}</span>
+                                <!-- <a href="https://www.google.com/search?q={{stockV2.profile.ticker}}+stock" target="_blank">More...</a> -->
                             </div>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
                 </div>
             </mat-tab>
             <mat-tab label="Top News"> Top News 
-                <!-- <div #newslist class="row mt-3" style="margin: auto; margin-bottom: 2px;">
+                <!-- <div #news class="row mt-3" style="margin: auto; margin-bottom: 2px;">
                     <div class="col-md mt-3" hidden>
                         <mat-card>
                             hello

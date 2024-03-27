@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { sample_stock } from '../../../../data';
+import { sample_stock, sample_stockV2 } from '../../../../data';
 import { StockService } from '../../../services/stock.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WatchlistService } from '../../../services/watchlist.service';
 import { Observable } from 'rxjs';
-import { Stock } from '../../../shared/models/Stock';
+import { Stock, StockV2 } from '../../../shared/models/Stock';
 import { time } from 'highcharts';
 
 @Component({
@@ -20,28 +20,39 @@ export class SearchPageComponent {
 
   stock: Stock = sample_stock[-1];
   isInWatchlist: boolean = false;
+  currentTicker: string = 'home';
+
+  stockV2: StockV2 =  new StockV2(); // Use a spread to ensure a separate copy
 
 
-  constructor(private stockService: StockService, activatedRoute:ActivatedRoute,
+  // constructor(private stockService: StockService, activatedRoute:ActivatedRoute,
+  //   private watchlistService: WatchlistService, private router: Router) {
+  //   let stockObservableV2: Observable<StockV2>;
+  //   activatedRoute.params.subscribe(async(params) => {
+  //     if(params.ticker)
+  //       stockObservableV2 = this.stockService.getInfoByTickerV2(params.ticker);
+  //     // else
+  //     //   stockObservableV2 = stockService.getStockFromLocalStorageV2();
+
+  //     stockObservableV2.subscribe((serverStock) => {
+  //       this.stockV2 = serverStock;
+  //       // this.isInWatchlist = watchlistService.isWatched(serverStock.profile.ticker);
+  //     })
+  //   })
+
+  // }
+
+  constructor(private stockService: StockService, activatedRoute: ActivatedRoute,
     private watchlistService: WatchlistService, private router: Router) {
-    let stockObservable: Observable<Stock>;
-    activatedRoute.params.subscribe(async (params) => {
-      if(params.ticker)
-        stockObservable = this.stockService.getInfoByTicker(params.ticker);
-      // this.changeAlert('noInput', 'AAPL');
-      // await new Promise(f => setTimeout(f, 3000));
-      // this.changeAlert('notFound');
-
-      // else
-      //   stockObservable = stockService.getStockFromLocalStorage();
-
-      stockObservable.subscribe((serverStock) => {
-        this.stock = serverStock;
-        this.isInWatchlist = watchlistService.isWatched(serverStock.ticker);
-        this.stockService.setStockToLocalStorage();
-      })
-    })
-  }
+  activatedRoute.params.subscribe(params => {
+    if(params.ticker) {
+      this.stockService.getInfoByTickerV2(params.ticker).subscribe((serverStock) => {
+        this.stockV2 = serverStock;
+        // Additional logic here
+      });
+    }
+  });
+}
 
   toggleToWatchlist(): void{
     this.isInWatchlist = this.watchlistService.isWatched(this.stock.ticker);
@@ -51,7 +62,13 @@ export class SearchPageComponent {
   }
 
   search(ticker: string): void {
+    this.currentTicker = ticker;
     this.router.navigateByUrl('/search/' + ticker);
+    
+    if(ticker === 'home'){
+      console.log('ticker is: ', ticker);
+      this.stockV2 = new StockV2();
+    }
     // this.stockService.
   }
 

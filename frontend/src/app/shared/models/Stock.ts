@@ -1,3 +1,24 @@
+export interface Profile {
+    ticker: string;
+    name: string;
+    exchange: string;
+    ipo: string;
+    logo: string;
+    weburl: string;
+    finnhubIndustry: string;
+}
+
+export interface CurrentPrice {
+    c: number;
+    d: number;
+    dp: number;
+    h: number;
+    l: number;
+    o: number;
+    pc: number;
+    t: number;
+}
+
 export class Stock {
     // https://finnhub.io/api/v1/stock/profile2?symbol=AAPL&token=
     country?: string;
@@ -31,5 +52,14 @@ export class Stock {
     // current = c
     // change = ave - c
     // marketV = c * qty
+    color?: string;
+}
+
+export class StockV2 {
+    profile!: Profile;
+    currentPrice!: CurrentPrice;
+    peers!: string[];
+    quantity?: number = 0;
+    totalCost?: number = 0;
     color?: string;
 }

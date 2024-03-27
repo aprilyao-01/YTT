@@ -1,5 +1,5 @@
 import { Portfolio } from "./app/shared/models/Portfolio";
-import { Stock } from "./app/shared/models/Stock";
+import { Stock, StockV2 } from "./app/shared/models/Stock";
 import { WatchlistItem } from "./app/shared/models/WatchlistItem";
 
 export const sample_stock: Stock[] = 
@@ -143,4 +143,30 @@ export const sample_portfolio: Portfolio =
       "color":"text-dark"
     },
   ]
+}
+
+export const sample_stockV2:StockV2 =
+{
+  "profile": {
+    "exchange": "",
+    "finnhubIndustry": "",
+    "ipo": "",
+    "logo": "",
+    "name": "",
+    "ticker": "home",
+    "weburl": ""
+  },
+  "currentPrice": {
+    "c": 0,
+    "d": 0,
+    "dp": 0,
+    "h": 0,
+    "l": 0,
+    "o": 0,
+    "pc": 0,
+    "t": 0
+  },
+  "peers": [],
+  "quantity": 0,
+  "totalCost": 0
 }

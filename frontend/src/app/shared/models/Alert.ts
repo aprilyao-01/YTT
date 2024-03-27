@@ -28,11 +28,16 @@ export const ALERTS: Alert[] = [
         message: 'removed from Watchlist',
         dismissible: true
     },
-//TODO: add more alerts
     {
         type: 'success',
         condition: 'buySuccess',
         message: 'bought successfully',
+        dismissible: true
+    },
+    {
+        type: 'danger',
+        condition: 'sellSuccess',
+        message: 'sold successfully',
         dismissible: true
     },
 
@@ -44,9 +49,8 @@ export const ALERTS: Alert[] = [
         dismissible: false
     },
 
-    // portfolio page
+    // portfolio page -> reuse form stock page
 
-    
     // undefined
     {
         type: 'custom',

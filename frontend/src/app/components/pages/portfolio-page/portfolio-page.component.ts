@@ -10,6 +10,11 @@ import { PortfolioItem } from '../../../shared/models/PortfolioItem';
   styleUrl: './portfolio-page.component.css'
 })
 export class PortfolioPageComponent {
+  //for setting alert
+  alertVisible: boolean = false;
+  alertCondition: string = 'undefined';
+  alertTicker: string = '';
+  
   portfolio: Portfolio = new Portfolio();
   constructor(private portfolioService: PortfolioService) {
     this.portfolioService.getPortfolioObservable().subscribe(portfolio => {
@@ -27,5 +32,11 @@ export class PortfolioPageComponent {
   }
   calculateChangeValue(item: PortfolioItem): string {
     return (item.totalCost / item.quantity - item.c).toFixed(2);
+  }
+
+  changeAlert(condition:string, ticker?: string): void {
+    this.alertCondition = condition;
+    this.alertVisible = true;
+    ticker? this.alertTicker = ticker : this.alertTicker = '';
   }
 }

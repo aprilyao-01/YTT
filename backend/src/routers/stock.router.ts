@@ -8,6 +8,7 @@ import { formatInsider } from '../middlewares/insider.mid';
 import { formatEarning } from '../middlewares/earning.mid';
 import { formatDate, formatNews } from '../middlewares/news.mid';
 import { formatSearch} from '../middlewares/autocomplete.mid';
+import { formatProfile } from '../middlewares/profile.mid';
 
 const router = Router();
 
@@ -40,7 +41,7 @@ router.get('/profile/:ticker', asyncHandler(
                 symbol: ticker
             }
         }).then(data => {
-            res.send(data.data);
+            res.send(formatProfile(data.data));
         }).catch(err => {
             res.send({error: err});
         });
