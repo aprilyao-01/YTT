@@ -34,6 +34,32 @@ export interface News{
     id: number;
 }
 
+export interface InsiderResult {
+    symbol: string;
+    // data: DataItem[];
+    change: {
+        total: number;
+        positiveVal: number;
+        negativeVal: number;
+    };
+    mspr: {
+        total: number;
+        positiveVal: number;
+        negativeVal: number;
+    };
+}
+
+// interface EarningItem {
+//     actual: number;
+//     estimate: number;
+//     period: string;
+//     quarter: number;
+//     surprise: number;
+//     surprisePercent: number;
+//     symbol: string;
+//     year: number;
+// }
+
 export class Stock {
     // https://finnhub.io/api/v1/stock/profile2?symbol=AAPL&token=
     country?: string;
@@ -75,6 +101,8 @@ export class StockV2 {
     currentPrice!: CurrentPrice;
     peers!: string[];
     news!: News[];
+    insider!: InsiderResult;
+    // earnings!: EarningItem[];
     quantity!: number;
     totalCost!: number;
 
@@ -83,6 +111,8 @@ export class StockV2 {
         currentPrice: CurrentPrice = {c: 0, d: 0, dp: 0, h: 0, l: 0, o: 0, pc: 0, t: 0, color: '', markOpen: true, getQuoteTimestamp:'', lastTimestamp: ''},
         peers: string[] = [],
         news: News[] = [],
+        insider: InsiderResult = {symbol: '', change: {total: 0, positiveVal: 0, negativeVal: 0}, mspr: {total: 0, positiveVal: 0, negativeVal: 0}},
+        // earnings: EarningItem[] = [],
         quantity: number = 0,
         totalCost: number = 0
     ) {
@@ -90,6 +120,8 @@ export class StockV2 {
         this.currentPrice = currentPrice;
         this.peers = peers;
         this.news = news;
+        this.insider = insider;
+        // this.earnings = earnings;
         this.quantity = quantity;
         this.totalCost = totalCost;
     }

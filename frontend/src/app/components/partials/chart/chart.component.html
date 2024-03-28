@@ -1,20 +1,4 @@
-<!-- <highcharts-chart
-  [Highcharts]="Highcharts"
-
-  [constructorType]="chartConstructor"
-  [options]="chartOptions"
-  [callbackFunction]="chartCallback"
-
-  [(update)]="updateFlag"
-  [oneToOne]="oneToOneFlag"
-  [runOutsideAngular]="runOutsideAngular"
-
-  style="width: 100%; height: 400px; display: block;"
-></highcharts-chart> -->
-
-<highcharts-chart class="history-highchart" style="margin: auto;"
-    [Highcharts]="highstock"
-    [options]="historyChartOptions"
-
-    style="width: 100%; height:auto; display: block;"
-></highcharts-chart>
+<highcharts-chart class="d-block h-100"
+    [Highcharts]="highcharts"
+    [options]="chartOptions">
+</highcharts-chart>

@@ -1,8 +1,10 @@
 <app-search-bar (notify)="OnNotify($event)"></app-search-bar>
-<app-loading *ngIf="loading$ | async"></app-loading>
+<div class="container-fluid my-5" *ngIf="loading$ | async">
+    <mat-spinner style="margin: auto;" diameter="50"></mat-spinner>
+</div>
 <app-alert [visible]="alertVisible" [condition]="alertCondition" [ticker]="alertTicker"></app-alert>
 <div class="container w-70 stock-info" *ngIf="!(loading$ | async) && currentTicker !== 'home' && stockV2">
-    <!-- <div class="container text-center basic-info">
+    <div class="container text-center basic-info">
         <div class="row profile">
           <div class="col-5 left px-0">
             <div>
@@ -41,15 +43,15 @@
             <div class="col-2 px-0"></div>
             <div class="col-5 px-0"></div>
         </div>
-        <div class="market-info  text-center my-2 fw-bold">
+        <div class="market-info text-center my-2 fw-bold">
             <div class="text-success" *ngIf="stockV2.currentPrice.markOpen"> Market is Open </div>
             <div class="text-danger" *ngIf="!stockV2.currentPrice.markOpen"> Market Closed on {{stockV2.currentPrice.lastTimestamp}} </div>
         </div>
-    </div> -->
+    </div>
     <div class="detail-info">
         <mat-tab-group>
             <mat-tab label="Summary">
-                <div class="row">
+                <div class="row my-3">
                     <div class="col-md">
                         <div class="pt-4 price">
                             <table class="mx-auto">
@@ -59,7 +61,7 @@
                                 <tr><th>Prev. Close:</th><td>{{ stockV2.currentPrice.pc.toFixed(2) }}</td></tr>
                             </table>
                         </div>
-                        <div class = "text-center py-2">
+                        <div class = "text-center my-2 py-auto">
                             <p class="my-3" style="font-size: large;"><strong><u>About the company</u></strong></p>
                             <div class="my-2"><strong>IPO Start Date: </strong>{{ stockV2.profile.ipo }}</div>
                             <div class="my-2"><strong>Industry: </strong>{{ stockV2.profile.finnhubIndustry }}</div>
@@ -71,31 +73,55 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-md" style="text-align: start;">
-                        Chart for the last Working Day:
-                        <highcharts-chart class="search-highchart insights-highchart" id="summary-highchart" 
-                            [Highcharts]="highcharts"
-                            [options]="summaryChartOptions">
-                        </highcharts-chart>
+                    <div class="col-md mb-5">
+                        <app-chart chartType="lastworking"></app-chart>
                     </div>
                 </div>
             </mat-tab>
             <mat-tab label="Top News">
-                <!-- <div class="container mt-4">
-                    <div class="news-grid">
-                        <app-news-card *ngFor="let newsItem of stockV2.news" [news]="newsItem"></app-news-card>
-                    </div>
-                </div> -->
                 <div class="row row-cols-1 row-cols-md-2 g-3 mt-3">
-                    <app-news-card *ngFor="let newsItem of stockV2.news" [news]="newsItem"></app-news-card>
+                    <app-news-card *ngFor="let newsItem of news" [news]="newsItem"></app-news-card>
                 </div>
-                
             </mat-tab>
             <mat-tab label="Charts">
-                <app-chart></app-chart>
+                <app-chart chartType="history"></app-chart>
             </mat-tab>
-            <mat-tab label="Insights"> Insights 
-    
+            <mat-tab label="Insights">
+                <div class="text-center fs-5 my-3">Insider Sentiments</div>
+                <table class="table container w-100 w-md-50 mx-auto text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">{{stockV2.profile.name}}</th>
+                            <th scope="col">MSPR</th>
+                            <th scope="col">Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Total</th>
+                            <td>{{insider.mspr.total}}</td>
+                            <td>{{insider.change.total}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Positive</th>
+                            <td>{{insider.mspr.positiveVal}}</td>
+                            <td>{{insider.change.positiveVal}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Negative</th>
+                            <td>{{insider.mspr.negativeVal}}</td>
+                            <td>{{insider.change.negativeVal}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row my-3">
+                    <div class="col-md-6 mb-5">
+                        <app-chart chartType="recommendation"></app-chart>
+                    </div>
+                    <div class="col-md-6 mb-5">
+                        <app-chart chartType="earnings"></app-chart>
+                    </div>
+                </div>
             </mat-tab>
         </mat-tab-group>
     </div>

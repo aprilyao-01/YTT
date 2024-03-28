@@ -7,18 +7,31 @@ import asyncHandler from 'express-async-handler';
 
 const router = Router();
 
-router.get('/summary/:ticker', asyncHandler(
+router.get('/lastworking/:ticker/:from/:to', asyncHandler(
     async (req, res) => {
         const ticker = req.params.ticker.trim().toUpperCase();
-        // https://api.polygon.io/v2/aggs/ticker/{ticker}/range/1/day/{from_date}/{to_date}?adjusted=true&sort=asc&apiKey={polygon_api_key}
+        const from = req.params.from.trim();
+        const to = req.params.to.trim();
 
-        axios.get('https://api.polygon.io/v2/aggs/ticker/', {
-            params: {
-                token: process.env.FINNHUB_TOKEN,
-                symbol: ticker
-            }
+        axios.get(`https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/hour/${from}/${to}?adjusted=true&sort=asc&apiKey=${process.env.POLYGON_TOKEN}`, {
         }).then(data => {
-            res.send(data.data);
+            res.send(data.data.results);
+        }).catch(err => {
+            res.send({error: err});
+        });
+    }
+));
+
+// data of the last 2 years.
+router.get('/history/:ticker/:from/:to', asyncHandler(
+    async (req, res) => {
+        const ticker = req.params.ticker.trim().toUpperCase();
+        const from = req.params.from.trim();
+        const to = req.params.to.trim();
+
+        axios.get(`https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${from}/${to}?adjusted=true&sort=asc&apiKey=${process.env.POLYGON_TOKEN}`, {
+        }).then(data => {
+            res.send(data.data.results);
         }).catch(err => {
             res.send({error: err});
         });

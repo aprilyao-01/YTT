@@ -4,7 +4,7 @@ import { StockService } from '../../../services/stock.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WatchlistService } from '../../../services/watchlist.service';
 import { Observable } from 'rxjs';
-import { Stock, StockV2 } from '../../../shared/models/Stock';
+import { InsiderResult, News, Stock, StockV2 } from '../../../shared/models/Stock';
 import { time } from 'highcharts';
 import { PortfolioService } from '../../../services/portfolio.service';
 import Highcharts from 'highcharts';
@@ -26,81 +26,25 @@ export class SearchPageComponent implements OnInit {
   alertCondition: string = 'undefined';
   alertTicker: string = '';
 
-  // for Highcharts
-  highcharts: typeof Highcharts = Highcharts;
-  summaryChartOptions: Highcharts.Options = {
-    series: [
-      {
-        data: [],
-        type: 'line'
-      }
-    ]
-  };
-  recommendationChartOptions: Highcharts.Options = {
-    chart: {
-      type: 'column'
-    },
-    plotOptions: {
-      column: {
-        stacking: 'normal'
-      }
-    },
-    series: [
-      {
-        type: 'column',
-        name: 'Strong Buy',
-        data: [],
-        color: '#18632f'
-      },
-      {
-        type: 'column',
-        name: 'Buy',
-        data: [],
-        color: '#19b049'
-      },
-      {
-        type: 'column',
-        name: 'Hold',
-        data: [],
-        color: '#af7f1b'
-      },
-      {
-        type: 'column',
-        name: 'Sell',
-        data: [],
-        color: '#f15050'
-      },
-      {
-        type: 'column',
-        name: 'Strong Sell',
-        data: [],
-        color: '#742c2e'
-      },
-    ]
-  }
-  earningsChartOptions: Highcharts.Options = {
-    title: {
-      text: "Historical EPS Surprises"
-    },
-    tooltip: {
-      shared: true,
-    },
-    series: [
-      {
-        data: [],
-        type: 'spline'
-      },
-      {
-        data: [],
-        type: 'spline'
-      }
-    ]
-  };
-
   
   // other page variables
   stockV2: StockV2 | null = null;
   currentTicker: string = 'home';
+  isInWatchlist: boolean = false;
+  news: News[] = [];
+  insider: InsiderResult = {
+    symbol: '',
+    change: {
+      total: 0,
+      positiveVal: 0,
+      negativeVal: 0
+    },
+    mspr: {
+      total: 0,
+      positiveVal: 0,
+      negativeVal: 0
+    }
+  };
   
 
   constructor(private stockService: StockService, private activatedRoute: ActivatedRoute,
@@ -119,7 +63,11 @@ export class SearchPageComponent implements OnInit {
     this.stockService.stockData$.subscribe(data => {
       this.stockV2 = data;
       if(data) {
-        // this.isInWatchlist = this.watchlistService.isWatched(data.profile.ticker);
+
+        this.news = data.news;
+        this.insider = data.insider;
+
+        this.isInWatchlist = this.watchlistService.isWatched(data.profile.ticker);
         // this.updateMarketStatus();
       }
     });
@@ -142,7 +90,7 @@ export class SearchPageComponent implements OnInit {
     const isInWatchlist = this.watchlistService.isWatched(this.stockV2.profile.ticker);
     isInWatchlist? this.watchlistService.removeFromWatchlist(this.stockV2.profile.ticker) : this.watchlistService.addToWatchlist(this.stockV2);
     this.changeAlert(isInWatchlist? 'removeWatchlist' : 'addWatchlist', this.stockV2.profile.ticker);
-    // isInWatchlist = !isInWatchlist;
+    this.isInWatchlist = !isInWatchlist;
   }
 
   search(ticker: string): void {
@@ -173,65 +121,6 @@ export class SearchPageComponent implements OnInit {
     }
   }
 
-  // presentSummaryChart() {
-  //   var data = JSON.parse(window.localStorage.getItem('summaryChart') || "{}");
-  //   var color = 'green';
-  //   if (Number(this.dp) < 0) {
-  //     color = 'red';
-  //   }
-  //   if (data.s != null && data.s == 'ok') {
-  //     for (var i = 0; i < data.t.length; i++) {
-  //       // TODO: fix timezone issue
-  //       data.t[i] = data.t[i] * 1000;
-  //     }
-  //   }
-  //   this.summaryChartOptions = {
-  //     title: {
-  //       text: `${this.stockV2?.profile.ticker} Hourly Price Variation`
-  //     },
-  //     xAxis: {
-  //       type: 'datetime',
-  //       labels: {
-  //         enabled: true,
-  //         format: '{value:%H:%M}',
-  //       },
-  //       categories: data.t,
-  //       tickInterval: 10
-  //     },
-  //     yAxis: {
-  //       title: {
-  //         text: ''
-  //       },
-  //       opposite: true
-  //     },
-  //     series: [{
-  //       showInLegend: false,
-  //       data: data.c,
-  //       type: 'line',
-  //       name: 'Price',
-  //       marker: {
-  //         radius: 0,
-  //         lineWidth: 1,
-  //       },
-  //       color: color
-  //     }]
-  //   };
-  // }
-
-  // presentHistoryChart() {
-  //   var ohlc = [];
-  //   var volume = [];
-  //   var data = JSON.parse(window.localStorage.getItem('historyChart') || "{}");
-  //   for (var i = 0; i < data.t.length; i++) {
-  //     ohlc.push([data.t[i]*1000, data.o[i], data.h[i], data.l[i], data.c[i]]);
-  //     volume.push([data.t[i]*1000, data.v[i]]);
-  //   }
-  //   this.context.ticker = this.ticker;
-  //   this.context.ohlc = ohlc;
-  //   this.context.volume = volume;
-  //   setTimeout(() => { this.historyChartReadyFlag = true; });
-  // }
-
   updateCurrentPrice(){
     // TODO: update when market is open
   }
@@ -248,18 +137,5 @@ export class SearchPageComponent implements OnInit {
     //TODO: add pop out for quantity
     // this.portfolioService.changeQuantity(1, ticker);
   }
-
-  // updateMarketStatus(): void {
-  //   console.log('Updating market status: ', this.stockV2);
-  //   console.log('Market status element: ', this.marketStatus);
-  //   if(this.stockV2 && this.marketStatus) {
-  //     const marketStatusElement = this.marketStatus.nativeElement;
-  //     const isMarketOpen = this.stockV2.currentPrice.markOpen;
-  //     marketStatusElement.innerHTML = isMarketOpen ? 'Market is Open' : 'Market Closed on ' + this.stockV2.currentPrice.lastTimestamp;  
-  //     marketStatusElement.classList.toggle('text-success', isMarketOpen);
-  //     marketStatusElement.classList.toggle('text-danger', !isMarketOpen);
-  //   }
-  // }
-
   
 }

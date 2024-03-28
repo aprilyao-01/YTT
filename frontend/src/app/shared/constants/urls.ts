@@ -10,10 +10,11 @@ export const PEERS_URL = SEARCH_URL + `/peers/`;
 export const NEWS_URL = SEARCH_URL + `/news/`;
 export const RECOMMENDATION_URL = SEARCH_URL + `/recommendation/`;
 export const INSIDER_URL = SEARCH_URL + `/insider/`;
-export const EARNING_URL = SEARCH_URL + `/earning/`;
+export const EARNING_URL = SEARCH_URL + `/earnings/`;
 
 export const CHART_URL = BASE_URL + `/api/chart`;
-export const SUMMARY_CHART_URL = CHART_URL + `/summary/`;
+export const LASTWORKING_URL = CHART_URL + `/lastworking/`;
+export const HISTORY_URL = CHART_URL + `/history/`;
 
 export const WATCHLIST_URL = BASE_URL + `/api/watchlist`;
 export const WATCHLIST_UPDATE_URL = WATCHLIST_URL + `/update`;

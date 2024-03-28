@@ -1,3 +1,5 @@
+import { format, subDays } from 'date-fns';
+
 interface QuoteItem {
     c: number;
     d: number;
@@ -62,7 +64,9 @@ export const formatQuote = (quote: QuoteItem): QuoteResult => {
     result.getQuoteTimestamp = formatDate(new Date());
 
     const currentTimestamp = Math.floor(Date.now() / 1000);
-    if (currentTimestamp - quote.t < 60) {
+    // Assume the market is closed if more than 5 minutes has elapsed from this ‘t’ value.
+    // Assume the market is open, if otherwise.
+    if (currentTimestamp - quote.t < 300) {
         result.markOpen = true;
     } else {
         result.markOpen = false;

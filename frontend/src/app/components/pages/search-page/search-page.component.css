@@ -11,13 +11,7 @@
     cursor: pointer;
 }
 
-.news-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;  /* space between cards */
-}
-
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 768px) {
     .stock-info {
         width: 100%;
     }
@@ -30,8 +24,4 @@
     .price{
         width: 100%;
     }
-
-    .news-grid {
-        grid-template-columns: 1fr; /* Stack the cards on smaller screens */
-      }
 }
