@@ -44,6 +44,7 @@ export class StockService {
     .subscribe(result => {
       if (result) {
         const combinedData = new StockV2(result.profile, result.quote, result.peers, result.news);
+        console.log("Combined data: ", combinedData);
         this.stockDataSubject.next(combinedData);
         this.errorSubject.next(null);
         this.setStockToLocalV2();

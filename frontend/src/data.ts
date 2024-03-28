@@ -176,6 +176,7 @@ export const sample_news: News =
 {
   "datetime": "March 26, 2024",
   "headline": "Wall Street Breakfast Podcast: Bridge Collapse Disrupts Coal Operations",
+  "id": 7540647,
   "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/96390221/image_96390221.jpg?io=getty-c-w1536",
   "related": "AAPL",
   "source": "SeekingAlpha",

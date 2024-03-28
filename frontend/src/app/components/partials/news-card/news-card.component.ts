@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, TemplateRef, inject } from '@angular/core';
 import { News } from '../../../shared/models/Stock';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-news-card',
@@ -9,19 +10,19 @@ import { News } from '../../../shared/models/Stock';
 export class NewsCardComponent {
 
   @Input() 
-  news: News = {
-    datetime: '',
-    headline: '',
-    image: '',
-    related: '',
-    source: '',
-    summary: '',
-    url: ''
-  };
+  news!: News;
+
+  private modalService = inject(NgbModal);
 
   constructor() { }
 
-  OnNewsClick() {
-    
-  }
+  
+  openModal(content: TemplateRef<any>) {
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+			(result) => {
+			},
+			(reason) => {
+			},
+		);
+	}
 }

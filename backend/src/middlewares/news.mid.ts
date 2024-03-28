@@ -13,6 +13,7 @@ interface NewsItem {
 interface NewsResult {
     datetime: string;
     headline: string;
+    id: number;
     image: string;
     related: string;
     source: string;
@@ -59,6 +60,7 @@ export const formatNews = (data: { data: NewsItem[]}) => {
             const newsItem: NewsResult = {
                 datetime: datetime,
                 headline: data.data[i].headline,
+                id: data.data[i].id,
                 image: data.data[i].image,
                 related: data.data[i].related,
                 source: data.data[i].source,

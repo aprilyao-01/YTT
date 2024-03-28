@@ -12,8 +12,6 @@ import { HighchartsChartModule } from 'highcharts-angular';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/partials/header/header.component';
@@ -59,7 +57,6 @@ import { NewsCardComponent } from './components/partials/news-card/news-card.com
     ReactiveFormsModule,
     FormsModule,
     HighchartsChartModule,
-    FontAwesomeModule
   ],
   providers: [
     provideAnimationsAsync(),

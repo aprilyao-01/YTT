@@ -31,6 +31,7 @@ export interface News{
     source: string;
     summary: string;
     url: string;
+    id: number;
 }
 
 export class Stock {

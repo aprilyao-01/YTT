@@ -81,22 +81,15 @@
                 </div>
             </mat-tab>
             <mat-tab label="Top News">
-                <div class="news">
-                    <div class="row">
-                        <div class="col-md">
-                            <div class="news-list">
-                                <div class="news-item" *ngFor="let news of stockV2.news">
-                                    <div class="news-title">
-                                        <a href="{{ news.url }}" target="_blank">{{ news.headline }}</a>
-                                    </div>
-                                    <div class="news-source">{{ news.source }}</div>
-                                    <div class="news-summary">{{ news.summary }}</div>
-                                    <div class="news-date">{{ news.datetime }}</div>
-                                </div>
-                            </div>
-                        </div>
+                <!-- <div class="container mt-4">
+                    <div class="news-grid">
+                        <app-news-card *ngFor="let newsItem of stockV2.news" [news]="newsItem"></app-news-card>
                     </div>
+                </div> -->
+                <div class="row row-cols-1 row-cols-md-2 g-3 mt-3">
+                    <app-news-card *ngFor="let newsItem of stockV2.news" [news]="newsItem"></app-news-card>
                 </div>
+                
             </mat-tab>
             <mat-tab label="Charts">
                 <app-chart></app-chart>
@@ -107,3 +100,5 @@
         </mat-tab-group>
     </div>
 </div>
+
+
