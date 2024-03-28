@@ -35,10 +35,11 @@
         </div>
         <div class="row buy-sell">
             <div class="col-5 d-flex justify-content-center px-0">
-                <span>
-                    <button type="button" class="btn btn-success" (click)="OnBuyClick(stockV2.profile.ticker)">Buy</button>&nbsp;
-                    <button *ngIf="stockV2.quantity>0" type="button" class="btn btn-danger" (click)="OnSellClick(stockV2.profile.ticker)">Sell</button>
-                </span>
+                <!-- <app-buy-sell c="{{stockV2.currentPrice.c}}" [price]="stockV2.currentPrice.c" [balance]="balance"></app-buy-sell> -->
+                <!-- <span>
+                    <button type="button" class="btn btn-success" (click)="openModal(buyNew)">Buy</button>&nbsp;
+                    <button *ngIf="isHold" type="button" class="btn btn-danger" (click)="openModal(sell)">Sell</button>
+                </span> -->
             </div>
             <div class="col-2 px-0"></div>
             <div class="col-5 px-0"></div>
@@ -84,11 +85,13 @@
                 </div>
             </mat-tab>
             <mat-tab label="Charts">
-                <app-chart chartType="history"></app-chart>
+                <div class="history">
+                    <app-chart chartType="history"></app-chart>
+                </div>
             </mat-tab>
             <mat-tab label="Insights">
                 <div class="text-center fs-5 my-3">Insider Sentiments</div>
-                <table class="table container w-100 w-md-50 mx-auto text-center">
+                <table class="table container w-50 mx-auto text-center insider">
                     <thead>
                         <tr>
                             <th scope="col">{{stockV2.profile.name}}</th>
@@ -128,3 +131,43 @@
 </div>
 
 
+<!-- Modal -->
+<ng-template #buyNew let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">AAPL</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div> Current Price: {{stockV2?.currentPrice?.c}} </div>
+        <div> Money in Wallet: $3333.33</div>
+        <div class="d-flex align-items-center">
+            <span class="me-2">Quantity: </span>
+            <input type="number" class="form-control" id="quantity" placeholder="0">
+        </div>
+        <div class="text-danger">Not enough</div>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+        <div>Total: 546.32</div>
+        <button type="button" class="btn btn-primary">Buy</button>
+    </div>
+</ng-template>
+
+<ng-template #sell let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">AAPL</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div> Current Price: {{stockV2?.currentPrice?.c}} </div>
+        <div> Money in Wallet: $3333.33</div>
+        <div class="d-flex align-items-center">
+            <span class="me-2">Quantity: </span>
+            <input type="number" class="form-control" id="quantity" placeholder="0">
+        </div>
+        <div class="text-danger">Not enough</div>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+        <div>Total: 546.32</div>
+        <button type="button" class="btn btn-primary">Sell</button>
+    </div>
+</ng-template>

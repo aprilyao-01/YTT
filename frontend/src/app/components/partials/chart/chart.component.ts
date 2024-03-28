@@ -217,13 +217,13 @@ export class ChartComponent implements OnInit {
         split: true
       },
 
-      // plotOptions: {
-      //   series: {
-      //     dataGrouping: {
-      //       enabled: false,
-      //     }
-      //   }
-      // },
+      plotOptions: {
+        series: {
+          dataGrouping: {
+            enabled: false,
+          }
+        }
+      },
       series: [{
         type: 'candlestick',
         name: ticker,

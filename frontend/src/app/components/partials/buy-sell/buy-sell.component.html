@@ -1,0 +1,32 @@
+<span>
+    <button type="button" class="btn btn-success" (click)="openModal(transaction, 'Buy')">Buy</button>&nbsp;
+    <button *ngIf="holding>0" type="button" class="btn btn-danger" (click)="openModal(transaction, 'Sell')">Sell</button>
+</span>
+
+<ng-template #transaction let-modal>
+    <div class="modal-header">
+        <span>{{ ticker }}</span>
+        <span><i class="bi bi-x" (click)="modal.dismiss('Cross click')"></i></span>
+    </div>
+    <div class="modal-body">
+        <div>Current Price: {{ price }}</div>
+        <div>Money in Wallet: ${{ balance }}</div>
+        <div class="form-group">
+            <label class="control-label">Quantity &nbsp;</label>
+            <input (change)="onValueChange()" (input)="onValueChange()" [(ngModel)]="quantity"
+                type="number" class="form-control transaction-input" min="0" step="1">  
+        </div>
+        <div *ngIf="isFrac" class="text-danger">No fractional shares!</div>
+        <div *ngIf="canNotBuy" class="text-danger">Not enough money in wallet!</div>
+        <div *ngIf="canNotSell" class="text-danger">You cannot sell the stocks that you don't have!</div>
+    </div>
+    <div class="modal-body" style="border-top: 1px solid; border-color: lightgray;">
+        <div style="float: left;">
+            Total: {{ totalStr }}</div>
+        <button type="button" class="btn btn-success" style="float: right; margin-bottom: 10px;"
+            (click)="doTransaction()"
+            [disabled]="disabled">{{mode}}</button>
+    </div>
+</ng-template>
+
+

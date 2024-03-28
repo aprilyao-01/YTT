@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 // import { sample_stock, sample_stockV2 } from '../../../../data';
 import { StockService } from '../../../services/stock.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { InsiderResult, News, Stock, StockV2 } from '../../../shared/models/Stoc
 import { time } from 'highcharts';
 import { PortfolioService } from '../../../services/portfolio.service';
 import Highcharts from 'highcharts';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-search-page',
@@ -31,6 +32,7 @@ export class SearchPageComponent implements OnInit {
   stockV2: StockV2 | null = null;
   currentTicker: string = 'home';
   isInWatchlist: boolean = false;
+  isHold: boolean = false;
   news: News[] = [];
   insider: InsiderResult = {
     symbol: '',
@@ -45,7 +47,7 @@ export class SearchPageComponent implements OnInit {
       negativeVal: 0
     }
   };
-  
+  balance: number = 25000.00;
 
   constructor(private stockService: StockService, private activatedRoute: ActivatedRoute,
     private watchlistService: WatchlistService, private router: Router, private portfolioService: PortfolioService) {  }
@@ -68,6 +70,8 @@ export class SearchPageComponent implements OnInit {
         this.insider = data.insider;
 
         this.isInWatchlist = this.watchlistService.isWatched(data.profile.ticker);
+        this.isHold = this.portfolioService.isHold(data.profile.ticker);
+        this.balance = this.portfolioService.getBalance();
         // this.updateMarketStatus();
       }
     });
@@ -124,18 +128,4 @@ export class SearchPageComponent implements OnInit {
   updateCurrentPrice(){
     // TODO: update when market is open
   }
-
-  OnSellClick(ticker: string): void {
-    console.log('Sell: ', ticker);
-    //TODO: add pop out for quantity
-
-    // this.portfolioService.changeQuantity(-1, ticker);
-  }
-
-  OnBuyClick(ticker: string): void {
-    console.log('Buy: ', ticker);
-    //TODO: add pop out for quantity
-    // this.portfolioService.changeQuantity(1, ticker);
-  }
-  
 }

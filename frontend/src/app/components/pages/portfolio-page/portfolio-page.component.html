@@ -19,7 +19,7 @@
                 </div>
                 <div class="col pe-0">
                     <div>{{portfolioItem.quantity.toFixed(2)}}</div>
-                    <div>{{calculateAvgValue(portfolioItem)}}</div>
+                    <div>{{portfolioItem.average}}</div>
                     <div>{{portfolioItem.totalCost.toFixed(2)}}</div>
                 </div>
                 <div class="col">
@@ -31,16 +31,15 @@
                     <div>
                         <i *ngIf="portfolioItem.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
                         <i *ngIf="portfolioItem.color == 'text-success'" class="bi bi-caret-up-fill"></i>
-                        {{calculateChangeValue(portfolioItem)}}
+                        {{portfolioItem.change}}
                     </div>
                     <div>{{portfolioItem.c.toFixed(2)}}</div>
-                    <div>{{calculateMarketValue(portfolioItem)}}</div>
+                    <div>{{portfolioItem.marketValue}}</div>
                 </div>
             </div>
         </div>
         <div class="card-footer text-body-secondary">
-            <button class="btn btn-primary mx-1 px-3" type="button">Buy</button>
-            <button class="btn btn-danger mx-1 px-3" type="button">Sell</button>
+            <app-buy-sell [name]="portfolioItem.name" [ticker]="portfolioItem.ticker" [price]="portfolioItem.c"></app-buy-sell>
         </div>
     </div>
 </div>

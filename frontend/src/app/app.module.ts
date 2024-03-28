@@ -28,6 +28,7 @@ import { HomePageComponent } from './components/pages/home-page/home-page.compon
 import { SearchPageComponent } from './components/pages/search-page/search-page.component';
 import { ChartComponent } from './components/partials/chart/chart.component';
 import { NewsCardComponent } from './components/partials/news-card/news-card.component';
+import { BuySellComponent } from './components/partials/buy-sell/buy-sell.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { NewsCardComponent } from './components/partials/news-card/news-card.com
     HomePageComponent,
     SearchPageComponent,
     ChartComponent,
-    NewsCardComponent
+    NewsCardComponent,
+    BuySellComponent
   ],
   imports: [
     BrowserModule,

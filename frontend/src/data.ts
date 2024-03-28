@@ -144,34 +144,6 @@ export const sample_portfolio: Portfolio =
     },
   ]
 }
-
-// export const sample_stockV2:StockV2 =
-// {
-//   "profile": {
-//     "exchange": "",
-//     "finnhubIndustry": "",
-//     "ipo": "",
-//     "logo": "",
-//     "name": "",
-//     "ticker": "home",
-//     "weburl": ""
-//   },
-//   "currentPrice": {
-//     "c": 0,
-//     "d": "",
-//     "dp": "",
-//     "h": "",
-//     "l": "",
-//     "o": "",
-//     "pc": "",
-//     "t": "",
-//     "color": ""
-//   },
-//   "peers": [],
-//   "quantity": 0,
-//   "totalCost": 0
-// }
-
 export const sample_news: News =
 {
   "datetime": "March 26, 2024",
