@@ -10,6 +10,16 @@ interface NewsItem {
     url: string;
 }
 
+interface NewsResult {
+    datetime: string;
+    headline: string;
+    image: string;
+    related: string;
+    source: string;
+    summary: string;
+    url: string;
+}
+
 const isValidNews = (item: NewsItem): boolean => {
     if (item.datetime === undefined || item.datetime === 0) {
         return false;
@@ -28,12 +38,34 @@ const isValidNews = (item: NewsItem): boolean => {
 
 export const formatNews = (data: { data: NewsItem[]}) => {
     // init the result
-    const result: NewsItem[] = [];
+    const result: NewsResult[] = [];
     var count = 0;      // show 20 news items
+
+    const monthNames = [
+        "January", "February", "March",
+        "April", "May", "June",
+        "July", "August", "September",
+        "October", "November", "December"
+    ];
 
     for (var i = 0; i < data.data.length && count < 20 ; i++) {
         if(isValidNews(data.data[i])) {
-            result.push(data.data[i]);
+            const date = new Date(data.data[i].datetime * 1000);
+            const year = date.getFullYear();
+            const month = monthNames[date.getMonth()];
+            const day = date.getDate();
+            const datetime = `${month} ${day}, ${year}`;
+
+            const newsItem: NewsResult = {
+                datetime: datetime,
+                headline: data.data[i].headline,
+                image: data.data[i].image,
+                related: data.data[i].related,
+                source: data.data[i].source,
+                summary: data.data[i].summary,
+                url: data.data[i].url
+            };
+            result.push(newsItem);
             count++;
         }
     }

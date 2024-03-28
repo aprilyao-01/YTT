@@ -20,7 +20,7 @@ interface QuoteResult {
     t: number;
     color: string;
     markOpen: boolean;
-    currentTimestamp: string;
+    getQuoteTimestamp: string;
     lastTimestamp: string;
 }
 
@@ -47,7 +47,7 @@ export const formatQuote = (quote: QuoteItem): QuoteResult => {
         t: quote.t,
         color: '',
         markOpen: true,
-        currentTimestamp: '',
+        getQuoteTimestamp: '',
         lastTimestamp:'',
     };
 
@@ -59,7 +59,7 @@ export const formatQuote = (quote: QuoteItem): QuoteResult => {
         result.color = 'text-dark';
     }
 
-    result.currentTimestamp = formatDate(new Date());
+    result.getQuoteTimestamp = formatDate(new Date());
 
     const currentTimestamp = Math.floor(Date.now() / 1000);
     if (currentTimestamp - quote.t < 60) {

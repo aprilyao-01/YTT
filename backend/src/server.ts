@@ -8,6 +8,7 @@ import asyncHandler from 'express-async-handler';
 import searchRouter from './routers/stock.router';
 import watchlistRouter from './routers/watchlist.router';
 import portfolioRouter from './routers/portfolio.router';
+import chartRouter from './routers/chart.router';
 
 // connect to MongoDB
 import { dbConnect } from './configs/db.config';
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use("/api", searchRouter);
 app.use('/api/watchlist', watchlistRouter);
 app.use('/api/portfolio', portfolioRouter);
+app.use('/api/chart', chartRouter);
 
 // get current time
 app.get('/', asyncHandler(async (req, res) => {

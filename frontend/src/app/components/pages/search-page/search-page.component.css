@@ -3,6 +3,14 @@
     width: auto;
 }
 
+.price{
+    width: 50%;
+}
+
+.left i:hover{
+    cursor: pointer;
+}
+
 @media screen and (max-width: 900px) {
     .stock-info {
         width: 100%;
@@ -12,5 +20,8 @@
         height: 50px;
         width: auto;
     }
-    
+
+    .price{
+        width: 100%;
+    }
 }

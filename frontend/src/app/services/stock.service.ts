@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CurrentPrice, Profile, Stock, StockV2 } from '../shared/models/Stock';
+import { Stock, StockV2 } from '../shared/models/Stock';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, forkJoin, of } from 'rxjs';
-import { PEERS_URL, PROFILE_URL, QUOTE_URL, SEARCH_URL } from '../shared/constants/urls';
-import axios from 'axios';
-import { CurrencyPipe } from '@angular/common';
+import { NEWS_URL, PEERS_URL, PROFILE_URL, QUOTE_URL, SEARCH_URL } from '../shared/constants/urls';
 import { catchError, finalize, map } from 'rxjs/operators';
 // import { sample_stockV2 } from '../../data';
 
@@ -34,6 +32,7 @@ export class StockService {
       profile: this.getProfileV2(ticker),
       quote: this.getQuoteV2(ticker),
       peers: this.getPeersV2(ticker),
+      news: this.getNewsV2(ticker)
     })
     .pipe(
       catchError(error => {
@@ -44,7 +43,7 @@ export class StockService {
     )
     .subscribe(result => {
       if (result) {
-        const combinedData = new StockV2(result.profile, result.quote, result.peers);
+        const combinedData = new StockV2(result.profile, result.quote, result.peers, result.news);
         this.stockDataSubject.next(combinedData);
         this.errorSubject.next(null);
         this.setStockToLocalV2();
@@ -88,6 +87,11 @@ export class StockService {
   getPeersV2(ticker: string): Observable<any> {
     // Assuming PEERS_URL is defined and correct
     return this.http.get(PEERS_URL + ticker);
+  }
+
+  getNewsV2(ticker: string): Observable<any> {
+    // Assuming NEWS_URL is defined and correct
+    return this.http.get(NEWS_URL + ticker);
   }
 
   // getStockObservableV2():Observable<StockV2>{

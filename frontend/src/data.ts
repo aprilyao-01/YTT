@@ -1,5 +1,5 @@
 import { Portfolio } from "./app/shared/models/Portfolio";
-import { Stock, StockV2 } from "./app/shared/models/Stock";
+import { News, Stock, StockV2 } from "./app/shared/models/Stock";
 import { WatchlistItem } from "./app/shared/models/WatchlistItem";
 
 export const sample_stock: Stock[] = 
@@ -171,3 +171,14 @@ export const sample_portfolio: Portfolio =
 //   "quantity": 0,
 //   "totalCost": 0
 // }
+
+export const sample_news: News =
+{
+  "datetime": "March 26, 2024",
+  "headline": "Wall Street Breakfast Podcast: Bridge Collapse Disrupts Coal Operations",
+  "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/96390221/image_96390221.jpg?io=getty-c-w1536",
+  "related": "AAPL",
+  "source": "SeekingAlpha",
+  "summary": "Consol Energy slips 7% as Maryland marine terminal likely faces long downtime. GameStop slides after reporting weak sales tally for holiday quarter. Apple confirms developer conference.",
+  "url": "https://finnhub.io/api/news?id=7540647ebf5e6cdf2c08118c47a9de2147b772361c798df621a3dab15f22a905"
+}

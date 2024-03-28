@@ -12,6 +12,8 @@ import { HighchartsChartModule } from 'highcharts-angular';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/partials/header/header.component';
@@ -27,6 +29,7 @@ import { PortfolioPageComponent } from './components/pages/portfolio-page/portfo
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
 import { SearchPageComponent } from './components/pages/search-page/search-page.component';
 import { ChartComponent } from './components/partials/chart/chart.component';
+import { NewsCardComponent } from './components/partials/news-card/news-card.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,8 @@ import { ChartComponent } from './components/partials/chart/chart.component';
     PortfolioPageComponent,
     HomePageComponent,
     SearchPageComponent,
-    ChartComponent
+    ChartComponent,
+    NewsCardComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +58,8 @@ import { ChartComponent } from './components/partials/chart/chart.component';
     MatInputModule,
     ReactiveFormsModule,
     FormsModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    FontAwesomeModule
   ],
   providers: [
     provideAnimationsAsync(),

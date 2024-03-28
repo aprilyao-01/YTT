@@ -2,7 +2,7 @@
 <app-loading *ngIf="loading$ | async"></app-loading>
 <app-alert [visible]="alertVisible" [condition]="alertCondition" [ticker]="alertTicker"></app-alert>
 <div class="container w-70 stock-info" *ngIf="!(loading$ | async) && currentTicker !== 'home' && stockV2">
-    <div class="container text-center basic-info">
+    <!-- <div class="container text-center basic-info">
         <div class="row profile">
           <div class="col-5 left px-0">
             <div>
@@ -28,7 +28,7 @@
                     {{ stockV2.currentPrice.d.toFixed(2) }} ({{ stockV2.currentPrice.dp.toFixed(2) }}%)
                 </span>
             </div>
-            <div class="my-2"> {{stockV2.currentPrice.currentTimestamp}} </div>
+            <div class="my-2"> {{stockV2.currentPrice.getQuoteTimestamp}} </div>
           </div>
         </div>
         <div class="row buy-sell">
@@ -45,57 +45,58 @@
             <div class="text-success" *ngIf="stockV2.currentPrice.markOpen"> Market is Open </div>
             <div class="text-danger" *ngIf="!stockV2.currentPrice.markOpen"> Market Closed on {{stockV2.currentPrice.lastTimestamp}} </div>
         </div>
-    </div>
+    </div> -->
     <div class="detail-info">
-        <mat-tab-group >
+        <mat-tab-group>
             <mat-tab label="Summary">
                 <div class="row">
                     <div class="col-md">
-                        <div style="padding: 30px; margin-right:50%; font-size: small; width: 50%;">
-                            <table>
+                        <div class="pt-4 price">
+                            <table class="mx-auto">
                                 <tr><th>High Price:</th><td>{{ stockV2.currentPrice.h.toFixed(2) }}</td></tr>
                                 <tr><th>Low Price:</th><td>{{ stockV2.currentPrice.l.toFixed(2) }}</td></tr>
                                 <tr><th>Open Price:</th><td>{{ stockV2.currentPrice.o.toFixed(2) }}</td></tr>
                                 <tr><th>Prev. Close:</th><td>{{ stockV2.currentPrice.pc.toFixed(2) }}</td></tr>
                             </table>
                         </div>
-                        <div class = "text-center" style="padding: 10px; font-size: small;">
-                            <p class="my-4" style="font-size: large;"><strong><u>About the company</u></strong></p>
+                        <div class = "text-center py-2">
+                            <p class="my-3" style="font-size: large;"><strong><u>About the company</u></strong></p>
                             <div class="my-2"><strong>IPO Start Date: </strong>{{ stockV2.profile.ipo }}</div>
                             <div class="my-2"><strong>Industry: </strong>{{ stockV2.profile.finnhubIndustry }}</div>
                             <div class="my-2"><strong>Webpage: </strong><a href="{{ stockV2.profile.weburl }}" target="_blank">{{ stockV2.profile.weburl }}</a></div>
                             <div class="my-2"><strong>Company peers: </strong></div>
-                            <!-- TODO: peers list -->
-                            <div class="my-2">
-                                <span *ngFor="let peer of stockV2.peers" [routerLink]="['/','search','{{peer}}']"> {{peer}}</span>
-                                <!-- <a href="https://www.google.com/search?q={{stockV2.profile.ticker}}+stock" target="_blank">More...</a> -->
-                            </div>
+                            <span class="my-2" *ngFor="let peer of stockV2.peers">
+                                <a [routerLink]="['/','search', peer]">{{peer}}</a>
+                                &nbsp;
+                            </span>
                         </div>
                     </div>
                     <div class="col-md" style="text-align: start;">
-                        chart
-                        <!-- <highcharts-chart class="search-highchart insights-highchart" id="summary-highchart" 
+                        Chart for the last Working Day:
+                        <highcharts-chart class="search-highchart insights-highchart" id="summary-highchart" 
                             [Highcharts]="highcharts"
-                            [options]="summaryChartOptions"
-                        >
-                        </highcharts-chart> -->
+                            [options]="summaryChartOptions">
+                        </highcharts-chart>
                     </div>
                 </div>
             </mat-tab>
-            <mat-tab label="Top News"> Top News 
-                <!-- <div #news class="row mt-3" style="margin: auto; margin-bottom: 2px;">
-                    <div class="col-md mt-3" hidden>
-                        <mat-card>
-                            hello
-                        </mat-card>
+            <mat-tab label="Top News">
+                <div class="news">
+                    <div class="row">
+                        <div class="col-md">
+                            <div class="news-list">
+                                <div class="news-item" *ngFor="let news of stockV2.news">
+                                    <div class="news-title">
+                                        <a href="{{ news.url }}" target="_blank">{{ news.headline }}</a>
+                                    </div>
+                                    <div class="news-source">{{ news.source }}</div>
+                                    <div class="news-summary">{{ news.summary }}</div>
+                                    <div class="news-date">{{ news.datetime }}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md mt-3" hidden>
-                        <mat-card>
-                            hello
-                        </mat-card>
-                    </div>
-                    <div class="w-100"></div>
-                </div> -->
+                </div>
             </mat-tab>
             <mat-tab label="Charts">
                 <app-chart></app-chart>
