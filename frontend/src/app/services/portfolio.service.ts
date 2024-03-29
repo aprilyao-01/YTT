@@ -42,13 +42,12 @@ export class PortfolioService {
       inPortfolioItem.c = c;
       inPortfolioItem.quantity = quantity;
       inPortfolioItem.totalCost = total;
-      inPortfolioItem.average = (total / quantity).toFixed(2);
-      inPortfolioItem.marketValue = (total).toFixed(2);
-      const change = (total / quantity - c);
-      inPortfolioItem.change = change.toFixed(2);
-      if(change > 0) {
+      inPortfolioItem.average = total / quantity
+      inPortfolioItem.marketValue = c * quantity;
+      inPortfolioItem.change = inPortfolioItem.average - c;
+      if(inPortfolioItem.change > 0) {
         inPortfolioItem.color = 'text-success';
-      } else if(change < 0) {
+      } else if(inPortfolioItem.change < 0) {
         inPortfolioItem.color = 'text-danger';
       } else {
         inPortfolioItem.color = 'text-dark';
@@ -63,6 +62,7 @@ export class PortfolioService {
     this.portfolio.balance -= total;
     this.changeAlert('buySuccess', ticker);
     this.setPortfolioToLocal();
+    this.portfolioSubject.next(this.portfolio);
   }
 
   sellStock(ticker:string, quantity:number, total:number): boolean {
@@ -73,11 +73,12 @@ export class PortfolioService {
 
     // update
     this.changeQuantity(-quantity, ticker);
+    this.changeAlert('sellSuccess', ticker);
 
     this.portfolio.balance += total;
     this.setPortfolioToLocal();
+    this.portfolioSubject.next(this.portfolio);
     console.log('Stock sold:', inPortfolioItem);
-    this.changeAlert('sellSuccess', ticker);
     return true;
   }
 
@@ -87,11 +88,14 @@ export class PortfolioService {
 
     // update
     inPortfolioItem.quantity += increment;
-    inPortfolioItem.average = (inPortfolioItem.totalCost / inPortfolioItem.quantity).toFixed(2);
-    inPortfolioItem.marketValue = (inPortfolioItem.c * inPortfolioItem.quantity).toFixed(2);
-    inPortfolioItem.change = (inPortfolioItem.totalCost / inPortfolioItem.quantity - inPortfolioItem.c).toFixed(2);
-
-    this.setPortfolioToLocal();
+    if(inPortfolioItem.quantity === 0) {
+      this.portfolio.portfolioItem = this.portfolio.portfolioItem.filter(item => item.ticker != ticker);
+    }
+    inPortfolioItem.average = inPortfolioItem.totalCost / inPortfolioItem.quantity;
+    inPortfolioItem.marketValue = inPortfolioItem.c * inPortfolioItem.quantity;
+    const change = (inPortfolioItem.totalCost / inPortfolioItem.quantity - inPortfolioItem.c);
+    inPortfolioItem.change = change;
+    inPortfolioItem.color = change > 0 ? 'text-success' : change < 0 ? 'text-danger' : 'text-dark';
     console.log('Quantity changed:', inPortfolioItem);
   }
 
@@ -114,6 +118,7 @@ export class PortfolioService {
   }
 
   changeAlert(condition: string, ticker?: string): void {
+    console.log('Alert:', condition, ticker);
     this.alertSubject.next({condition, ticker});
   }
 
@@ -126,18 +131,23 @@ export class PortfolioService {
   }
 
   private setPortfolioToLocal():void {
-    localStorage.setItem('Portfolio', JSON.stringify(this.portfolio));
-    this.portfolioSubject.next(this.portfolio);
+    const portfolioJson = JSON.stringify(this.portfolio);
+    localStorage.setItem('Portfolio', portfolioJson);
+    // this.portfolioSubject.next(this.portfolio);
+
+    console.log('Portfolio local updated:', portfolioJson);
 
     // update in database
-    this.updateInDB(this.portfolio).subscribe({
-      next: (response) => console.log(response.message),
-      error: (error) => console.error('Failed to update portfolio in database', error)
-    });
+    // this.updateInDB(this.portfolio).subscribe({
+    //   next: (response) => console.log(response.message),
+    //   error: (error) => console.error('Failed to update portfolio in database', error)
+    // });
   }
 
   private getPortfolioFromLocal():Portfolio {
     let data = localStorage.getItem('Portfolio');
+    // console.log('Local portfolio:', data);
+    // console.log('DB portfolio:',  this.http.get<Portfolio>(PORTFOLIO_URL));
     return data ? JSON.parse(data) : this.http.get<Portfolio>(PORTFOLIO_URL);
   }
 }

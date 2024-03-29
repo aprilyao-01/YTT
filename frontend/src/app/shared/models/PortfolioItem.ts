@@ -4,9 +4,9 @@ export class PortfolioItem {
     c!: number;
     quantity: number = 0;
     totalCost: number = 0;
-    average?: string = "";
-    marketValue?: string = "";
-    change?: string = "";
+    average?: number = 0;
+    marketValue?: number = 0;
+    change?: number = 0;
     color?: string;
     // ave = total / quantity
     // current = c

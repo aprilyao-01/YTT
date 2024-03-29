@@ -37,6 +37,7 @@ export class BuySellComponent {
 
   doTransaction() {
     if (this.mode == 'Buy') {
+      this.holding += this.quantity;
       this.portfolioService.buyStock(this.ticker, this.price, this.name, this.quantity, this.total);
     } else {
       this.holding -= this.quantity;

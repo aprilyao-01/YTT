@@ -20,9 +20,19 @@ export class StockService {
   stockData$ = this.stockDataSubject.asObservable();
   error$ = this.errorSubject.asObservable();
 
+  private lastTicker: string = '';
+  private lastStockData: StockV2 | null = null;
+
   constructor(private http:HttpClient) { }
 
   loadStockData(ticker: string): void {
+
+    if (ticker === this.lastTicker && this.stockDataSubject.value) {
+      console.log("Using cached data for: ", ticker);
+      return;
+    }
+
+    this.lastTicker = ticker;
     console.log("Loading stock data for: ", ticker);
     this.loadingSubject.next(true);
 
@@ -202,6 +212,18 @@ export class StockService {
 
   isMarketOpen(): boolean {
     return this.getStockFromLocal('quote').markOpen;
+  }
+
+  clearStockLocal(){
+    localStorage.removeItem('profile');
+    localStorage.removeItem('quote');
+    localStorage.removeItem('peers');
+    localStorage.removeItem('news');
+    localStorage.removeItem('insider');
+    localStorage.removeItem('recommendation');
+    localStorage.removeItem('earnings');
+    localStorage.removeItem('lastworking');
+    localStorage.removeItem('history');
   }
 
   private setStockToLocal(data: any, key: string): void {

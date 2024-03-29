@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { map, startWith, debounceTime } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { AUTOCOMPLETE_URL } from '../../../shared/constants/urls';
+import { StockService } from '../../../services/stock.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -24,7 +25,7 @@ export class SearchBarComponent implements OnInit{
   loading = false;
 
 
-  constructor(private activatedRoute:ActivatedRoute, private router:Router, private http:HttpClient){
+  constructor(private activatedRoute:ActivatedRoute, private router:Router, private http:HttpClient, private stockService: StockService) {
     this.activatedRoute.params.subscribe((params) => {
       if(params.ticker && params.ticker!='home') {
         // console.log('params.ticker:', params.ticker);
@@ -66,6 +67,9 @@ export class SearchBarComponent implements OnInit{
   OnCancelClick() {
     this.tickerFormCtrl.setValue('');
     this.notify.emit('home');
+    this.router.navigateByUrl('/search/home');
+    this.stockService.clearStockLocal();
+    this.stockService.setStockDataSubject(null);
   }
 
   OnOptionClick(ticker: string) {

@@ -9,7 +9,7 @@ const routes: Routes = [
   // {path: '', component: SearchPageComponent},
   // {path: 'search/home', component: HomePageComponent},
   {path: '', redirectTo: 'search/home', pathMatch: 'full'},
-  {path: 'search', redirectTo: 'search/home', pathMatch: 'full'},
+  {path: 'search', component: SearchPageComponent},
   {path: 'search/:ticker', component: SearchPageComponent},
   {path: 'watchlist', component: WatchlistPageComponent},
   {path: 'portfolio', component: PortfolioPageComponent}

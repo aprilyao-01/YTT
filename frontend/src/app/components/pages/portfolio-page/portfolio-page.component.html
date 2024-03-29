@@ -16,6 +16,7 @@
         </div>
         <!-- TODO: display -->
         <div class="card-body fs-md-5">
+            <!-- <div class="row row-cols-1 row-cols-md-2 g-3 mt-3"></div> -->
             <div class="row">
                 <div class="col">
                     <div>Quantity: </div>
@@ -24,7 +25,7 @@
                 </div>
                 <div class="col pe-0">
                     <div>{{portfolioItem.quantity.toFixed(2)}}</div>
-                    <div>{{portfolioItem.average}}</div>
+                    <div>{{portfolioItem.average?.toFixed(2)}}</div>
                     <div>{{portfolioItem.totalCost.toFixed(2)}}</div>
                 </div>
                 <div class="col">
@@ -36,10 +37,10 @@
                     <div>
                         <i *ngIf="portfolioItem.color == 'text-danger'" class="bi bi-caret-down-fill"></i>
                         <i *ngIf="portfolioItem.color == 'text-success'" class="bi bi-caret-up-fill"></i>
-                        {{portfolioItem.change}}
+                        {{portfolioItem.change?.toFixed(2)}}
                     </div>
                     <div>{{portfolioItem.c.toFixed(2)}}</div>
-                    <div>{{portfolioItem.marketValue}}</div>
+                    <div>{{portfolioItem.marketValue?.toFixed(2)}}</div>
                 </div>
             </div>
         </div>

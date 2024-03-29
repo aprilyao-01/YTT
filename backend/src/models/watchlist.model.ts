@@ -16,7 +16,7 @@ export const WatchItemSchema = new Schema<WatchItem>(
         c: {type: Number, required: true},
         d: {type: Number, required: true},
         dp: {type: Number, required: true},
-        color: {type: String, required: false}
+        color: {type: String, default: 'text-dark', required: true}
     },{
         toObject: {
             virtuals: true

@@ -9,8 +9,8 @@
         <span><i class="bi bi-x" (click)="modal.dismiss('Cross click')"></i></span>
     </div>
     <div class="modal-body">
-        <div>Current Price: {{ price }}</div>
-        <div>Money in Wallet: ${{ balance }}</div>
+        <div>Current Price: {{ price.toFixed(2) }}</div>
+        <div>Money in Wallet: ${{ balance.toFixed(2) }}</div>
         <div class="form-group">
             <label class="control-label">Quantity &nbsp;</label>
             <input (change)="onValueChange()" (input)="onValueChange()" [(ngModel)]="quantity"

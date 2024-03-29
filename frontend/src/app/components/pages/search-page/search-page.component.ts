@@ -12,7 +12,7 @@ import { ChartComponent } from '../../partials/chart/chart.component';
   templateUrl: './search-page.component.html',
   styleUrl: './search-page.component.css'
 })
-export class SearchPageComponent implements OnInit {
+export class SearchPageComponent implements OnInit, OnDestroy{
   
   // from service
   loading$ = this.stockService.loading$;
@@ -53,13 +53,17 @@ export class SearchPageComponent implements OnInit {
 
   constructor(private stockService: StockService, private activatedRoute: ActivatedRoute,
     private watchlistService: WatchlistService, private router: Router) {  }
+    
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
-      if(params.ticker && params.ticker !== 'home') {
-        this.search(params.ticker);
+      const { ticker } = params;
+      console.log('ticker:', ticker);
+
+      if(ticker && ticker !== 'home'){
+        this.search(ticker);
       } else {
-        this.currentTicker = 'home';
+        this.loadFromCache();   //only occurs when switch back to search tab
       }
     });
 
@@ -112,7 +116,7 @@ export class SearchPageComponent implements OnInit {
       this.stockService.setStockDataSubject(null);
       return;
     }
-    this.currentTicker = ticker;
+    this.currentTicker = ticker.toUpperCase();
     this.stockService.loadStockData(ticker);
   }
   
@@ -145,10 +149,22 @@ export class SearchPageComponent implements OnInit {
     });
   }
 
-  // ngOnDestroy(): void {
-  //   // clean up the all subscription when the component is destroyed
-  //   if (this.updateSubscription) {
-  //     this.updateSubscription.unsubscribe();
-  //   }
-  // }
+  loadFromCache(): void {
+    this.currentProfile = this.stockService.getStockFromLocal('profile');
+    this.currentTicker = this.stockService.getStockFromLocal('profile').ticker;
+    this.currentQuote = this.stockService.getStockFromLocal('quote');
+    this.currentPeers = this.stockService.getStockFromLocal('peers');
+    this.currentNews = this.stockService.getStockFromLocal('news');
+    this.currentInsider = this.stockService.getStockFromLocal('insider');
+
+    this.isInWatchlist = this.watchlistService.isWatched(this.currentTicker);
+    this.router.navigateByUrl('/search/' + this.currentTicker);
+  }
+
+  ngOnDestroy(): void {
+    // clean up subscription when the component is destroyed
+    if (this.updateSubscription) {
+      this.updateSubscription.unsubscribe();
+    }
+  }
 }
