@@ -1,10 +1,12 @@
-<h1 class="text-start px-2 py-1 mx-3 my-4 fs-2 w-100 w-md-75">My Watchlist</h1>
+<div class="text-start pt-2 pb-0 px-2 px-lg-5 my-4 mx-2 mx-lg-5 w-100 w-lg-50 top-info">
+    <div class="fs-2 m-2 mx-lg-5 px-lg-5 ">My Watchlist</div>
+</div>
 
 <app-loading></app-loading>
 <app-alert [visible]="alertVisible" [condition]="alertCondition" [ticker]="alertTicker"></app-alert>
 
-<div *ngFor="let watchItem of watchlist" class="container w-md-75">
-    <div class="card my-4 mx-auto w-100 w-md-75" [routerLink]="['/','search', watchItem.ticker]">
+<div *ngFor="let watchItem of watchlist" class="container w-lg-50">
+    <div class="card my-4 mx-auto w-100 w-lg-50" [routerLink]="['/','search', watchItem.ticker]">
         <div class="card-body">
             <button class="btn p-0" type="button"> <i class="bi bi-x" (click)="removeFromWatchlist(watchItem.ticker)"></i> </button>
             <div class="row">

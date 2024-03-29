@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StockV2 } from '../shared/models/Stock';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject, forkJoin, of } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, of } from 'rxjs';
 import { EARNING_URL, INSIDER_URL, NEWS_URL, PEERS_URL, PROFILE_URL, QUOTE_URL, RECOMMENDATION_URL, SEARCH_URL, LASTWORKING_URL, HISTORY_URL } from '../shared/constants/urls';
 import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { format, subDays, parseISO, subYears } from 'date-fns';
@@ -20,22 +20,10 @@ export class StockService {
   stockData$ = this.stockDataSubject.asObservable();
   error$ = this.errorSubject.asObservable();
 
-  private lastTicker: string = '';
-  private lastStockData: StockV2 | null = null;
-
   constructor(private http:HttpClient) { }
 
   loadStockData(ticker: string): void {
-
-    if (ticker === this.lastTicker && this.stockDataSubject.value) {
-      console.log("Using cached data for: ", ticker);
-      return;
-    }
-
-    this.lastTicker = ticker;
-    console.log("Loading stock data for: ", ticker);
-    this.loadingSubject.next(true);
-
+    console.log("Loading for: ", ticker);
     // start by getting the quote
     this.getQuote(ticker).pipe(
       // store then continue
@@ -61,6 +49,7 @@ export class StockService {
       if (result) {
         const combinedData = new StockV2(result.profile, result.quote);
         this.stockDataSubject.next(combinedData); // Send the result back
+        this.errorSubject.next(null);
 
         this.setStockToLocal(result.profile, 'profile');
         this.setStockToLocal(result.peers, 'peers');
@@ -73,6 +62,7 @@ export class StockService {
       }
     });
   }
+  
 
   setLoadingSubject(condition:any){
     this.loadingSubject.next(condition);
@@ -95,7 +85,7 @@ export class StockService {
       earnings: this.getEarings(ticker),
     }).pipe(
       catchError(error => {
-        // this.errorSubject.next(error);
+        this.errorSubject.next(error);
         return of(null); // Handle error, possibly nullify the data or handle as per requirement
       }),
       finalize(() => this.loadingSubject.next(false))

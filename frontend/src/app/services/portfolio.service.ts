@@ -133,15 +133,13 @@ export class PortfolioService {
   private setPortfolioToLocal():void {
     const portfolioJson = JSON.stringify(this.portfolio);
     localStorage.setItem('Portfolio', portfolioJson);
-    // this.portfolioSubject.next(this.portfolio);
-
-    console.log('Portfolio local updated:', portfolioJson);
+    console.log('Portfolio updated:', this.portfolio);
 
     // update in database
-    // this.updateInDB(this.portfolio).subscribe({
-    //   next: (response) => console.log(response.message),
-    //   error: (error) => console.error('Failed to update portfolio in database', error)
-    // });
+    this.updateInDB(this.portfolio).subscribe({
+      next: (response) => console.log(response.message),
+      error: (error) => console.error('Failed to update portfolio in database', error)
+    });
   }
 
   private getPortfolioFromLocal():Portfolio {

@@ -1,5 +1,5 @@
 <span>
-    <button type="button" class="btn btn-success" (click)="openModal(transaction, 'Buy')">Buy</button>&nbsp;
+    <button type="button" [class]="btnCol" (click)="openModal(transaction, 'Buy')">Buy</button>&nbsp;
     <button *ngIf="holding>0" type="button" class="btn btn-danger" (click)="openModal(transaction, 'Sell')">Sell</button>
 </span>
 

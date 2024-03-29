@@ -12,6 +12,7 @@ export class BuySellComponent {
   @Input() name: string = 'text';
   @Input() ticker: string = "TST";
   @Input() price: number = 3.22;
+  @Input() btnCol: string = 'btn btn-primary';
 
   mode: string = "";
   balance: number;

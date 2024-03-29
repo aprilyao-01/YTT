@@ -24,6 +24,7 @@ export class AlertComponent implements OnInit{
   condition: string = '';
   @Input()
   ticker: string = '';
+  @Input() triggerCounter: number = 0;
 
   alert: Alert = this.setAlert('undefined');
 
@@ -34,7 +35,7 @@ export class AlertComponent implements OnInit{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.visible && changes.visible.currentValue === true) {
+    if (changes.triggerCounter && changes.visible && changes.visible.currentValue === true) {
       this.alert = this.setAlert(this.condition);
 
       // dismiss after 5s

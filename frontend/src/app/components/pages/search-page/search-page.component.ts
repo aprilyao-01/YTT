@@ -3,9 +3,7 @@ import { StockService } from '../../../services/stock.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WatchlistService } from '../../../services/watchlist.service';
 import { CurrentPrice, InsiderResult, News, Profile, StockV2 } from '../../../shared/models/Stock';
-import { PortfolioService } from '../../../services/portfolio.service';
 import { Subscription, exhaustMap, interval, of } from 'rxjs';
-import { ChartComponent } from '../../partials/chart/chart.component';
 
 @Component({
   selector: 'app-search-page',
@@ -24,6 +22,8 @@ export class SearchPageComponent implements OnInit, OnDestroy{
   alertCondition: string = 'undefined';
   alertTicker: string = '';
 
+  invalidSymbolFlag: boolean = false;
+
   // for automate
   private updateSubscription: Subscription | undefined;
 
@@ -37,6 +37,7 @@ export class SearchPageComponent implements OnInit, OnDestroy{
   currentNews: News[] = [];
   currentInsider: InsiderResult | null = null;
   isInWatchlist: boolean = false;
+  isShow: boolean = true;
   insider: InsiderResult = {
     symbol: '',
     change: {
@@ -63,7 +64,12 @@ export class SearchPageComponent implements OnInit, OnDestroy{
       if(ticker && ticker !== 'home'){
         this.search(ticker);
       } else {
-        this.loadFromCache();   //only occurs when switch back to search tab
+        if(this.stockService.getStockFromLocal('profile'))
+        {
+          this.loadFromCache();  //only occurs when switch back to search tab
+        } else {
+          this.router.navigateByUrl('/search/home');
+        }
       }
     });
 
@@ -73,6 +79,17 @@ export class SearchPageComponent implements OnInit, OnDestroy{
       if(data) {
 
         this.currentProfile = this.stockService.getStockFromLocal('profile');
+        if(!this.currentProfile){
+          // this.changeAlert("notFound");
+          this.invalidSymbolFlag = true;
+          this.isShow = false;
+          
+          // dismiss after 5s
+          setTimeout(() => {
+            this.invalidSymbolFlag = false;
+          }, 5000);
+        }
+
         this.currentQuote = data.currentPrice;
         this.currentPeers = this.stockService.getStockFromLocal('peers');
         this.currentNews = this.stockService.getStockFromLocal('news');
@@ -84,7 +101,11 @@ export class SearchPageComponent implements OnInit, OnDestroy{
 
     this.stockService.error$.subscribe(error => {
       if(error) {
-        this.changeAlert("notFound");
+        // this.changeAlert("notFound");
+        // this.invalidSymbolFlag = true;
+        // this.isShow = false;
+      } else {
+        this.isShow = true;
       }
     });
 
@@ -126,8 +147,10 @@ export class SearchPageComponent implements OnInit, OnDestroy{
     if (!ticker) {
       this.changeAlert("noInput");
       this.router.navigateByUrl('/search/home');
+      this.isShow = false;
     } else {
       this.router.navigateByUrl('/search/' + ticker);
+      this.isShow = true;
     }
   }
 

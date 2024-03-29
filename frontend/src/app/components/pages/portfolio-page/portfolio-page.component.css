@@ -1,0 +1,11 @@
+/* .card-container{
+    margin: auto 10%;
+    width: 70%;
+} */
+
+@media screen and (max-width: 900px) {
+    /* .card-container{
+        margin: auto;
+        width: 90%;
+   } */
+}

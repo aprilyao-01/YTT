@@ -12,6 +12,7 @@ export class PortfolioPageComponent {
   alertVisible: boolean = false;
   alertCondition: string = 'undefined';
   alertTicker: string = '';
+  triggerCounter: number = 0;
   
   portfolio: Portfolio = new Portfolio();
   constructor(private portfolioService: PortfolioService) {
@@ -27,6 +28,7 @@ export class PortfolioPageComponent {
   }
 
   changeAlert(condition:string, ticker?: string): void {
+    this.triggerCounter++;
     this.alertCondition = condition;
     this.alertVisible = true;
     ticker? this.alertTicker = ticker : this.alertTicker = '';

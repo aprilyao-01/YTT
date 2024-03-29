@@ -3,7 +3,12 @@
     <mat-spinner style="margin: auto;" diameter="50"></mat-spinner>
 </div>
 <app-alert [visible]="alertVisible" [condition]="alertCondition" [ticker]="alertTicker"></app-alert>
-<div class="container w-70 stock-info" *ngIf="!(loading$ | async) && currentTicker !== 'home' && stockV2">
+
+<ngb-alert id="invalid-ticker-alert" *ngIf="invalidSymbolFlag" type="alert-danger" class="alert alert-danger" [dismissible]="false">
+    No data found. Please enter a valid ticker
+</ngb-alert>
+
+<div class="container w-70 stock-info" *ngIf="!(loading$ | async) && isShow && stockV2">
     <div class="container text-center basic-info">
         <div class="row profile">
           <div class="col-5 left px-0">
@@ -35,7 +40,7 @@
         </div>
         <div class="row buy-sell">
             <div class="col-5 d-flex justify-content-center px-0">
-                <app-buy-sell [name]="stockV2.profile.name" [ticker]="currentTicker" [price]="stockV2.currentPrice.c"></app-buy-sell>
+                <app-buy-sell [name]="stockV2.profile.name" [ticker]="currentTicker" [price]="stockV2.currentPrice.c" btnCol="btn btn-success"></app-buy-sell>
             </div>
             <div class="col-2 px-0"></div>
             <div class="col-5 px-0"></div>
