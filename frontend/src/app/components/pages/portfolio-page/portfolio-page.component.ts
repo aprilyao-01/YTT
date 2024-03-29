@@ -22,9 +22,7 @@ export class PortfolioPageComponent {
     })
 
     this.portfolioService.getAlertObservable().subscribe(alertData => {
-      this.alertCondition = alertData.condition;
-      this.alertVisible = true;
-      this.alertTicker = alertData.ticker || '';
+      this.changeAlert(alertData.condition, alertData.ticker);
     });
   }
 

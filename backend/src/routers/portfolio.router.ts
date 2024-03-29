@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import {Router} from 'express';
-import axios from 'axios';
 import asyncHandler from 'express-async-handler';
 import { PortfolioModel } from '../models/portfolio.model';
 import { sample_portfolio } from '../data';

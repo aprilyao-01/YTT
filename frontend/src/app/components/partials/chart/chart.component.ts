@@ -47,7 +47,7 @@ export class ChartComponent implements OnInit {
   }
 
   setLastworkingChart(){
-    // console.log("setLastworkingChart");
+    console.log("setLastworkingChart");
     var data = JSON.parse(localStorage.getItem('lastworking') || "[]");
     const ticker = JSON.parse(localStorage.getItem('profile') || "{}").ticker;
     const quote = JSON.parse(localStorage.getItem('quote') || "{}");
@@ -131,8 +131,6 @@ export class ChartComponent implements OnInit {
       item.t, // the date
       item.v  // volume
     ]);
-
-    console.log(volumeData);
 
     this.chartOptions = {
       rangeSelector: {
@@ -261,7 +259,6 @@ export class ChartComponent implements OnInit {
 
 
   setEarningsChart() {
-    console.log("setEarningsChart");
     var data = JSON.parse(localStorage.getItem('earnings') || "[]");
     var xCategories = [];
     var xActual = [];
@@ -310,7 +307,6 @@ export class ChartComponent implements OnInit {
 
 
   setRecommendationChart() {
-    console.log("setRecommendationChart");
     var data = JSON.parse(localStorage.getItem('recommendation') || "[]");
     var xCategories = [];
     var xStrongBuy = [];

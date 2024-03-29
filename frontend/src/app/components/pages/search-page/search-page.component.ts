@@ -1,14 +1,11 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
-// import { sample_stock, sample_stockV2 } from '../../../../data';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StockService } from '../../../services/stock.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WatchlistService } from '../../../services/watchlist.service';
-import { Observable } from 'rxjs';
-import { InsiderResult, News, Stock, StockV2 } from '../../../shared/models/Stock';
-import { time } from 'highcharts';
+import { CurrentPrice, InsiderResult, News, Profile, StockV2 } from '../../../shared/models/Stock';
 import { PortfolioService } from '../../../services/portfolio.service';
-import Highcharts from 'highcharts';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription, exhaustMap, interval, of } from 'rxjs';
+import { ChartComponent } from '../../partials/chart/chart.component';
 
 @Component({
   selector: 'app-search-page',
@@ -27,13 +24,19 @@ export class SearchPageComponent implements OnInit {
   alertCondition: string = 'undefined';
   alertTicker: string = '';
 
+  // for automate
+  private updateSubscription: Subscription | undefined;
+
   
-  // other page variables
+  // page variables
   stockV2: StockV2 | null = null;
   currentTicker: string = 'home';
+  currentProfile: Profile | null = null;
+  currentQuote: CurrentPrice | null = null;
+  currentPeers: string[] = [];
+  currentNews: News[] = [];
+  currentInsider: InsiderResult | null = null;
   isInWatchlist: boolean = false;
-  isHold: boolean = false;
-  news: News[] = [];
   insider: InsiderResult = {
     symbol: '',
     change: {
@@ -47,10 +50,9 @@ export class SearchPageComponent implements OnInit {
       negativeVal: 0
     }
   };
-  balance: number = 25000.00;
 
   constructor(private stockService: StockService, private activatedRoute: ActivatedRoute,
-    private watchlistService: WatchlistService, private router: Router, private portfolioService: PortfolioService) {  }
+    private watchlistService: WatchlistService, private router: Router) {  }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
@@ -66,13 +68,13 @@ export class SearchPageComponent implements OnInit {
       this.stockV2 = data;
       if(data) {
 
-        this.news = data.news;
-        this.insider = data.insider;
+        this.currentProfile = this.stockService.getStockFromLocal('profile');
+        this.currentQuote = data.currentPrice;
+        this.currentPeers = this.stockService.getStockFromLocal('peers');
+        this.currentNews = this.stockService.getStockFromLocal('news');
+        this.currentInsider = this.stockService.getStockFromLocal('insider');
 
         this.isInWatchlist = this.watchlistService.isWatched(data.profile.ticker);
-        this.isHold = this.portfolioService.isHold(data.profile.ticker);
-        this.balance = this.portfolioService.getBalance();
-        // this.updateMarketStatus();
       }
     });
 
@@ -81,6 +83,9 @@ export class SearchPageComponent implements OnInit {
         this.changeAlert("notFound");
       }
     });
+
+    this.setAutoUpdate();
+
   }
 
   changeAlert(condition:string, ticker?: string): void {
@@ -107,13 +112,10 @@ export class SearchPageComponent implements OnInit {
       this.stockService.setStockDataSubject(null);
       return;
     }
-    // this.router.navigateByUrl('/search/' + ticker);
-    // Set the current ticker and proceed with the search for valid tickers other than 'home'
     this.currentTicker = ticker;
     this.stockService.loadStockData(ticker);
   }
   
-
   OnNotify(ticker: string): void {
     console.log('Notify: ', ticker);
 
@@ -125,7 +127,28 @@ export class SearchPageComponent implements OnInit {
     }
   }
 
-  updateCurrentPrice(){
-    // TODO: update when market is open
+  setAutoUpdate(){
+    // interval fires every 15 seconds
+    this.updateSubscription = interval(15000).pipe(
+      // check if the market is open before trying to load new data
+      exhaustMap(() => {
+        if (this.stockService.isMarketOpen() && this.currentTicker !== 'home') {
+          return this.stockService.getUpdate(this.currentTicker);
+        }
+        return of(null); // If market is closed or ticker is 'home', do nothing
+      })
+    ).subscribe(data => {
+      // If market is open, data will be loaded; otherwise, nothing happens
+      if (data && this.currentTicker !== 'home') {
+        this.stockService.getUpdate(this.currentTicker);
+      }
+    });
   }
+
+  // ngOnDestroy(): void {
+  //   // clean up the all subscription when the component is destroyed
+  //   if (this.updateSubscription) {
+  //     this.updateSubscription.unsubscribe();
+  //   }
+  // }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Stock, StockV2 } from '../shared/models/Stock';
+import { StockV2 } from '../shared/models/Stock';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, forkJoin, of } from 'rxjs';
 import { EARNING_URL, INSIDER_URL, NEWS_URL, PEERS_URL, PROFILE_URL, QUOTE_URL, RECOMMENDATION_URL, SEARCH_URL, LASTWORKING_URL, HISTORY_URL } from '../shared/constants/urls';
-import { catchError, finalize, map } from 'rxjs/operators';
+import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { format, subDays, parseISO, subYears } from 'date-fns';
 
 @Injectable({
@@ -26,32 +26,37 @@ export class StockService {
     console.log("Loading stock data for: ", ticker);
     this.loadingSubject.next(true);
 
-    forkJoin({
-      profile: this.getProfile(ticker),
-      quote: this.getQuote(ticker),
-      peers: this.getPeers(ticker),
-      lastworking: this.getLastworking(ticker),
-    })
-    .pipe(
+    // start by getting the quote
+    this.getQuote(ticker).pipe(
+      // store then continue
+      tap(quote => {
+        this.setStockToLocal(quote, 'quote');
+      }),
+      // switchMap to wait for the first call to complete before proceeding
+      switchMap(quote => {
+        // get in parallel
+        return forkJoin({
+          profile: this.getProfile(ticker),
+          peers: this.getPeers(ticker),
+          lastworking: this.getLastworking(ticker),
+          quote: of(quote), // pass the already retrieved quote forward
+        });
+      }),
       catchError(error => {
         this.errorSubject.next(error);
         return of(null); // Handle error, possibly nullify the data or handle as per requirement
       }),
       finalize(() => this.loadingSubject.next(false))
-    )
-    .subscribe(result => {
+    ).subscribe(result => {
       if (result) {
-        const combinedData = new StockV2(result.profile, result.quote, result.peers);
-        console.log("Combined data: ", combinedData);
-        this.stockDataSubject.next(combinedData);   // return this part first
-        this.errorSubject.next(null);
-
-        console.log("First part Done");
+        const combinedData = new StockV2(result.profile, result.quote);
+        this.stockDataSubject.next(combinedData); // Send the result back
 
         this.setStockToLocal(result.profile, 'profile');
-        this.setStockToLocal(result.quote, 'quote');
         this.setStockToLocal(result.peers, 'peers');
         this.setStockToLocal(result.lastworking, 'lastworking');
+
+        console.log("First part Done");
 
         // then get the rest
         this.fetchOthers(ticker);
@@ -104,9 +109,38 @@ export class StockService {
         this.setStockToLocal(result.insider, 'insider');
         this.setStockToLocal(result.recommendation, 'recommendation');
         this.setStockToLocal(result.earnings, 'earnings');
-        
       }
     });
+  }
+
+  getUpdate(ticker: string): Observable<StockV2 | null> {
+    console.log("Update for: ", ticker);
+
+    return forkJoin({
+      quote: this.getQuote(ticker),
+      // lastworking: this.getLastworking(ticker),
+    })
+    .pipe(
+      catchError(error => {
+        this.errorSubject.next(error);
+        return of(null); // Handle error, possibly nullify the data or handle as per requirement
+      }),
+      map(result => {
+        if (result) {
+          const profile = this.getStockFromLocal('profile');
+          const combinedData = new StockV2(profile, result.quote);
+  
+          this.stockDataSubject.next(combinedData); // Update observable with new data
+          this.errorSubject.next(null);
+  
+          this.setStockToLocal(result.quote, 'quote');
+          // this.setStockToLocal(result.lastworking, 'lastworking');
+  
+          return combinedData; // Return the combined data
+        }
+        return null; // Return null if there's an error or if result is empty
+      })
+    );
   }
 
   // tab summary
@@ -166,21 +200,13 @@ export class StockService {
     return this.http.get(EARNING_URL + ticker);
   }
 
-  // setStockToLocal():void {
-  //   //TODO: Implement
-  // }
+  isMarketOpen(): boolean {
+    return this.getStockFromLocal('quote').markOpen;
+  }
 
   private setStockToLocal(data: any, key: string): void {
-    // const watchlistJson = JSON.stringify(this.watchlist);
-    // localStorage.setItem('Watchlist', watchlistJson);
-
     const dataJson = JSON.stringify(data);
     localStorage.setItem(key, dataJson);
-
-    // // Store the specific part of the data in localStorage
-    // const existingData = JSON.parse(localStorage.getItem('stockV2') || '{}');
-    // existingData[key] = data;
-    // localStorage.setItem('stockV2', JSON.stringify(existingData));
   }
   
   getStockFromLocal(key: string): any{

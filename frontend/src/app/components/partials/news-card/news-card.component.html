@@ -24,8 +24,12 @@
         <div class="card container mt-5">
             <div class="card-body container p-1">
                 <p class="text-secondary">Share</p>
-                <button class="btn p-0"><i class="bi bi-twitter-x fs-3"></i></button>
-                <button class="btn p-1"><i class="fa-brands fa-square-facebook fs-2" style="color: blue;"></i></button>
+                <a class="btn p-0" [href]="getTwitterShareUrl(news)" target="_blank">
+                    <i class="bi bi-twitter-x fs-3"></i>
+                </a>
+                <a class="btn p-1" [href]="getFacebookShareUrl(news)" target="_blank">
+                    <i class="fa-brands fa-square-facebook fs-2" style="color: blue;"></i>
+                </a>
             </div>
         </div>
     </div>

@@ -1,5 +1,3 @@
-import { format, subDays } from 'date-fns';
-
 interface QuoteItem {
     c: number;
     d: number;
@@ -62,6 +60,8 @@ export const formatQuote = (quote: QuoteItem): QuoteResult => {
     }
 
     result.getQuoteTimestamp = formatDate(new Date());
+    const date = new Date(quote.t * 1000);
+    result.lastTimestamp = formatDate(date);
 
     const currentTimestamp = Math.floor(Date.now() / 1000);
     // Assume the market is closed if more than 5 minutes has elapsed from this ‘t’ value.
@@ -70,8 +70,6 @@ export const formatQuote = (quote: QuoteItem): QuoteResult => {
         result.markOpen = true;
     } else {
         result.markOpen = false;
-        const date = new Date(quote.t * 1000);
-        result.lastTimestamp = formatDate(date);
     }
 
     return result;

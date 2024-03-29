@@ -9,44 +9,40 @@
           <div class="col-5 left px-0">
             <div>
                 <span class="my-2 fs-3">
-                    {{ stockV2.profile.ticker }}
+                    {{ currentTicker }}
                     <i (click)="toggleToWatchlist()" 
                     [ngClass]="{'bi bi-star-fill fs-5': isInWatchlist, 'bi bi-star fs-5': !isInWatchlist}" 
                     [ngStyle]="{'color': isInWatchlist ? 'gold' : 'inherit'}"></i>
                 </span>
             </div>
-            <div class="text-secondary my-2 fs-5">{{ stockV2.profile.name }}</div>
-            <div class="my-2">{{ stockV2.profile.exchange }}</div>
+            <div class="text-secondary my-2 fs-5">{{ currentProfile?.name }}</div>
+            <div class="my-2">{{ currentProfile?.exchange }}</div>
           </div>
           <div class="col-2 middle px-0">
-            <img id="logo-img" src="{{ stockV2.profile.logo }}">
+            <img id="logo-img" src="{{ currentProfile?.logo }}">
           </div>
           <div class="col-5 right px-0">
-            <div #searchPrice class="{{stockV2.currentPrice.color}}">
-                <div class="my-2 fs-3">{{ stockV2.currentPrice.c.toFixed(2) }}</div>
+            <div #searchPrice class="{{currentQuote?.color}}">
+                <div class="my-2 fs-3">{{ currentQuote?.c?.toFixed(2) }}</div>
                 <span class="my-2 fs-5">
-                    <i *ngIf="stockV2.currentPrice.color == 'text-danger'" class="fs-6 bi bi-caret-down-fill"></i>
-                    <i *ngIf="stockV2.currentPrice.color == 'text-success'" class="fs-6 bi bi-caret-up-fill"></i>
-                    {{ stockV2.currentPrice.d.toFixed(2) }} ({{ stockV2.currentPrice.dp.toFixed(2) }}%)
+                    <i *ngIf="currentQuote?.color == 'text-danger'" class="fs-6 bi bi-caret-down-fill"></i>
+                    <i *ngIf="currentQuote?.color == 'text-success'" class="fs-6 bi bi-caret-up-fill"></i>
+                    {{ currentQuote?.c?.toFixed(2) }} ({{ currentQuote?.c?.toFixed(2) }}%)
                 </span>
             </div>
-            <div class="my-2"> {{stockV2.currentPrice.getQuoteTimestamp}} </div>
+            <div class="my-2"> {{currentQuote?.getQuoteTimestamp}} </div>
           </div>
         </div>
         <div class="row buy-sell">
             <div class="col-5 d-flex justify-content-center px-0">
-                <!-- <app-buy-sell c="{{stockV2.currentPrice.c}}" [price]="stockV2.currentPrice.c" [balance]="balance"></app-buy-sell> -->
-                <!-- <span>
-                    <button type="button" class="btn btn-success" (click)="openModal(buyNew)">Buy</button>&nbsp;
-                    <button *ngIf="isHold" type="button" class="btn btn-danger" (click)="openModal(sell)">Sell</button>
-                </span> -->
+                <app-buy-sell [name]="stockV2.profile.name" [ticker]="currentTicker" [price]="stockV2.currentPrice.c"></app-buy-sell>
             </div>
             <div class="col-2 px-0"></div>
             <div class="col-5 px-0"></div>
         </div>
         <div class="market-info text-center my-2 fw-bold">
-            <div class="text-success" *ngIf="stockV2.currentPrice.markOpen"> Market is Open </div>
-            <div class="text-danger" *ngIf="!stockV2.currentPrice.markOpen"> Market Closed on {{stockV2.currentPrice.lastTimestamp}} </div>
+            <div class="text-success" *ngIf="currentQuote?.markOpen"> Market is Open </div>
+            <div class="text-danger" *ngIf="!currentQuote?.markOpen"> Market Closed on {{currentQuote?.lastTimestamp}} </div>
         </div>
     </div>
     <div class="detail-info">
@@ -56,19 +52,19 @@
                     <div class="col-md">
                         <div class="pt-4 price">
                             <table class="mx-auto">
-                                <tr><th>High Price:</th><td>{{ stockV2.currentPrice.h.toFixed(2) }}</td></tr>
-                                <tr><th>Low Price:</th><td>{{ stockV2.currentPrice.l.toFixed(2) }}</td></tr>
-                                <tr><th>Open Price:</th><td>{{ stockV2.currentPrice.o.toFixed(2) }}</td></tr>
-                                <tr><th>Prev. Close:</th><td>{{ stockV2.currentPrice.pc.toFixed(2) }}</td></tr>
+                                <tr><th>High Price:</th><td>{{ currentQuote?.h?.toFixed(2) }}</td></tr>
+                                <tr><th>Low Price:</th><td>{{ currentQuote?.l?.toFixed(2) }}</td></tr>
+                                <tr><th>Open Price:</th><td>{{ currentQuote?.o?.toFixed(2) }}</td></tr>
+                                <tr><th>Prev. Close:</th><td>{{ currentQuote?.pc?.toFixed(2) }}</td></tr>
                             </table>
                         </div>
                         <div class = "text-center my-2 py-auto">
                             <p class="my-3" style="font-size: large;"><strong><u>About the company</u></strong></p>
-                            <div class="my-2"><strong>IPO Start Date: </strong>{{ stockV2.profile.ipo }}</div>
-                            <div class="my-2"><strong>Industry: </strong>{{ stockV2.profile.finnhubIndustry }}</div>
-                            <div class="my-2"><strong>Webpage: </strong><a href="{{ stockV2.profile.weburl }}" target="_blank">{{ stockV2.profile.weburl }}</a></div>
+                            <div class="my-2"><strong>IPO Start Date: </strong>{{ currentProfile?.ipo }}</div>
+                            <div class="my-2"><strong>Industry: </strong>{{ currentProfile?.finnhubIndustry }}</div>
+                            <div class="my-2"><strong>Webpage: </strong><a href="{{ currentProfile?.weburl }}" target="_blank">{{ currentProfile?.weburl }}</a></div>
                             <div class="my-2"><strong>Company peers: </strong></div>
-                            <span class="my-2" *ngFor="let peer of stockV2.peers">
+                            <span class="my-2" *ngFor="let peer of currentPeers">
                                 <a [routerLink]="['/','search', peer]">{{peer}}</a>
                                 &nbsp;
                             </span>
@@ -81,7 +77,7 @@
             </mat-tab>
             <mat-tab label="Top News">
                 <div class="row row-cols-1 row-cols-md-2 g-3 mt-3">
-                    <app-news-card *ngFor="let newsItem of news" [news]="newsItem"></app-news-card>
+                    <app-news-card *ngFor="let newsItem of currentNews" [news]="newsItem"></app-news-card>
                 </div>
             </mat-tab>
             <mat-tab label="Charts">
@@ -129,45 +125,3 @@
         </mat-tab-group>
     </div>
 </div>
-
-
-<!-- Modal -->
-<ng-template #buyNew let-modal>
-    <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">AAPL</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <div> Current Price: {{stockV2?.currentPrice?.c}} </div>
-        <div> Money in Wallet: $3333.33</div>
-        <div class="d-flex align-items-center">
-            <span class="me-2">Quantity: </span>
-            <input type="number" class="form-control" id="quantity" placeholder="0">
-        </div>
-        <div class="text-danger">Not enough</div>
-    </div>
-    <div class="modal-footer d-flex justify-content-between">
-        <div>Total: 546.32</div>
-        <button type="button" class="btn btn-primary">Buy</button>
-    </div>
-</ng-template>
-
-<ng-template #sell let-modal>
-    <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">AAPL</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <div> Current Price: {{stockV2?.currentPrice?.c}} </div>
-        <div> Money in Wallet: $3333.33</div>
-        <div class="d-flex align-items-center">
-            <span class="me-2">Quantity: </span>
-            <input type="number" class="form-control" id="quantity" placeholder="0">
-        </div>
-        <div class="text-danger">Not enough</div>
-    </div>
-    <div class="modal-footer d-flex justify-content-between">
-        <div>Total: 546.32</div>
-        <button type="button" class="btn btn-primary">Sell</button>
-    </div>
-</ng-template>

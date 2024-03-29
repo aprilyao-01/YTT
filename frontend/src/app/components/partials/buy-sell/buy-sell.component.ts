@@ -1,7 +1,6 @@
 import { Component, Input, TemplateRef, inject } from '@angular/core';
 import { PortfolioService } from '../../../services/portfolio.service';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PortfolioPageComponent } from '../../pages/portfolio-page/portfolio-page.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-buy-sell',
@@ -10,7 +9,6 @@ import { PortfolioPageComponent } from '../../pages/portfolio-page/portfolio-pag
 })
 export class BuySellComponent {
   
-  // @Input() c: number = 1;
   @Input() name: string = 'text';
   @Input() ticker: string = "TST";
   @Input() price: number = 3.22;
@@ -86,10 +84,6 @@ export class BuySellComponent {
 
   openModal(content: TemplateRef<any>, mode: 'Buy' | 'Sell') {
     this.mode = mode;
-    console.log(content);
-    // if(content.toString() === 'Buy'){
-    //   this.mode = 'Buy';
-    // }
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result) => {
       },

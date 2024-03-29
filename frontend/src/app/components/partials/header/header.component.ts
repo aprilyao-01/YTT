@@ -9,7 +9,7 @@ import { filter } from 'rxjs/operators';
 })
 
 
-export class HeaderComponent {
+export class HeaderComponent implements OnInit{
   activeTab: string = '';
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, sample } from 'rxjs';
-import { Stock, StockV2 } from '../shared/models/Stock';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { StockV2 } from '../shared/models/Stock';
 import { WatchlistItem } from '../shared/models/WatchlistItem';
 import { HttpClient } from '@angular/common/http';
 import { WATCHLIST_UPDATE_URL, WATCHLIST_URL } from '../shared/constants/urls';
@@ -33,13 +33,10 @@ export class WatchlistService {
   }
   
   getAll(): Observable<WatchlistItem[]> {
-    // let list = this.http.get<WatchlistItem[]>(WATCHLIST_URL);
-    // console.log('In Function watchlist:', list);
     return this.http.get<WatchlistItem[]>(WATCHLIST_URL);
   }
 
   isWatched(ticker:string): boolean {
-    // console.log('Current watchlist:', this.watchlist);
     let watchItem = this.watchlist.find(item => item.ticker === ticker);
     return watchItem? true : false;
   }
