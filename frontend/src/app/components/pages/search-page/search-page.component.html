@@ -4,10 +4,10 @@
 </div>
 
 <div class="container d-flex justify-content-center mx-auto">
-    <ngb-alert *ngIf="noInput" type="alert alert-danger" class="alert alert-danger text-center mx-2 w-100 w-lg-75" (closed)="noInput = false">
+    <ngb-alert *ngIf="noInput" type="alert-danger" class="alert alert-danger text-center mx-2 w-100 w-lg-75" (closed)="noInput = false">
         Please enter a valid ticker
     </ngb-alert>
-    <ngb-alert *ngIf="notFound" type="alert alert-danger" class="alert alert-danger text-center mx-2 w-100 w-lg-75" [dismissible]="false">
+    <ngb-alert *ngIf="noData" type="alert-danger" class="alert alert-danger text-center mx-2 w-100 w-lg-75" [dismissible]="false">
         No data found. Please enter a valid ticker
     </ngb-alert>
     

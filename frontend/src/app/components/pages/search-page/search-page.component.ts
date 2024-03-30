@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { StockService } from '../../../services/stock.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WatchlistService } from '../../../services/watchlist.service';
 import { CurrentPrice, InsiderResult, News, Profile, StockV2 } from '../../../shared/models/Stock';
 import { Subscription, exhaustMap, interval, of } from 'rxjs';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-search-page',
@@ -24,7 +25,7 @@ export class SearchPageComponent implements OnInit, OnDestroy{
 
   // alert flags
   noInput: boolean = false;
-  notFound: boolean = false;
+  noData: boolean = false;
   buySuccess: boolean = false;
   sellSuccess: boolean = false;
   addWatchlist: boolean = false;
@@ -59,7 +60,8 @@ export class SearchPageComponent implements OnInit, OnDestroy{
   };
 
   constructor(private stockService: StockService, private activatedRoute: ActivatedRoute,
-    private watchlistService: WatchlistService, private router: Router) {  }
+    private watchlistService: WatchlistService, private router: Router) {
+     }
     
 
   ngOnInit(): void {
@@ -83,43 +85,36 @@ export class SearchPageComponent implements OnInit, OnDestroy{
     this.stockService.stockData$.subscribe(data => {
       this.stockV2 = data;
       if(data) {
-
-        this.currentProfile = data.profile;
-        if(!this.currentProfile){
+        if(!data.profile.name) {
           // this.changeAlert("notFound");
-          this.notFound = true;
+          this.noData = true;
           this.isShow = false;
           
           // dismiss after 5s
           setTimeout(() => {
-            this.noInput = false;
-            this.isShow = true;
+            this.noData = false;
           }, 5000);
+        } else {
+          this.noData = false;
+          this.isShow = true;
+          this.currentProfile = data.profile;
+          this.currentQuote = data.currentPrice;
+          this.currentPeers = this.stockService.getStockFromLocal('peers');
+          this.currentNews = this.stockService.getStockFromLocal('news');
+          this.currentInsider = this.stockService.getStockFromLocal('insider');
+          this.isInWatchlist = this.watchlistService.isWatched(data.profile.ticker);
         }
-
-        this.currentQuote = data.currentPrice;
-        this.currentPeers = this.stockService.getStockFromLocal('peers');
-        this.currentNews = this.stockService.getStockFromLocal('news');
-        this.currentInsider = this.stockService.getStockFromLocal('insider');
-
-        this.isInWatchlist = this.watchlistService.isWatched(data.profile.ticker);
+        console.log('notFound:', this.noData);
+        
       }
     });
 
     this.stockService.error$.subscribe(error => {
       if(error) {
-        this.notFound = true;
-        this.isShow = false;
-        //dismiss after 5s
-        setTimeout(() => {
-          this.noInput = false;
-        }, 5000);
+        console.log('error:', error);
         // this.changeAlert("notFound");
         // this.invalidSymbolFlag = true;
         // this.isShow = false;
-      } else {
-        this.notFound = false;
-        this.isShow = true;
       }
     });
 
