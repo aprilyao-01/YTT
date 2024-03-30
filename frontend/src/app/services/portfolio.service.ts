@@ -14,6 +14,8 @@ export class PortfolioService {
   private portfolioSubject: BehaviorSubject<Portfolio> = new BehaviorSubject(this.portfolio);
   private alertSubject = new Subject<{condition: string, ticker?: string}>();
 
+  private currentTicker: string = '';
+
   constructor(private http: HttpClient) {
     const localData = this.getPortfolioFromLocal();
     if (localData.portfolioItem && localData.portfolioItem.length > 0) {
@@ -33,6 +35,7 @@ export class PortfolioService {
   }
 
   buyStock(ticker: string, c:number, name:string, quantity:number, total:number){
+    this.currentTicker = ticker;
     let inPortfolioItem = this.portfolio.portfolioItem.find(item => item.ticker === ticker);
     if (!inPortfolioItem) {
       // add new item
@@ -60,12 +63,13 @@ export class PortfolioService {
     }
 
     this.portfolio.balance -= total;
-    this.changeAlert('buySuccess', ticker);
+    // this.changeAlert('buySuccess', ticker);
     this.setPortfolioToLocal();
     this.portfolioSubject.next(this.portfolio);
   }
 
   sellStock(ticker:string, quantity:number, total:number): boolean {
+    this.currentTicker = ticker;
     let inPortfolioItem = this.portfolio.portfolioItem.find(item => item.ticker === ticker);
     if (!inPortfolioItem) return false;   // not currently in portfolio
 
@@ -73,7 +77,7 @@ export class PortfolioService {
 
     // update
     this.changeQuantity(-quantity, ticker);
-    this.changeAlert('sellSuccess', ticker);
+    // this.changeAlert('sellSuccess', ticker);
 
     this.portfolio.balance += total;
     this.setPortfolioToLocal();
@@ -120,6 +124,10 @@ export class PortfolioService {
   changeAlert(condition: string, ticker?: string): void {
     console.log('Alert:', condition, ticker);
     this.alertSubject.next({condition, ticker});
+  }
+
+  getTicker(): string {
+    return this.currentTicker;
   }
 
   getAlertObservable(): Observable<{condition: string, ticker?: string}> {

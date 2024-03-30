@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef, inject } from '@angular/core';
 import { PortfolioService } from '../../../services/portfolio.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -13,6 +13,8 @@ export class BuySellComponent {
   @Input() ticker: string = "TST";
   @Input() price: number = 3.22;
   @Input() btnCol: string = 'btn btn-primary';
+
+  @Output() transactionSuccess = new EventEmitter<string>();
 
   mode: string = "";
   balance: number;
@@ -40,9 +42,11 @@ export class BuySellComponent {
     if (this.mode == 'Buy') {
       this.holding += this.quantity;
       this.portfolioService.buyStock(this.ticker, this.price, this.name, this.quantity, this.total);
+      this.transactionSuccess.emit('buySuccess');
     } else {
       this.holding -= this.quantity;
       this.portfolioService.sellStock(this.ticker, this.quantity, this.total);
+      this.transactionSuccess.emit('sellSuccess');
     }
 
     // Close the modal after the transaction

@@ -1,0 +1,21 @@
+{
+    "name": "ytt",
+    "version": "1.0.0",
+    "engines": {
+        "node": "v20.11.1"
+    },
+    "scripts": {
+        "dev": "cd frontend && npm start & cd backend && npm start",
+        "start": "npm run build && cd backend && node built/server.js",
+        "prebuild": "cd backend && npm install && tsc",
+        "build": "cd frontend && npm install && ng build --configuration=production",
+        "test": "npx tsx backend/src/server.ts"
+    },
+    "dependencies": {
+        "ts-node": "^10.9.2"
+    },
+    "type": "module",
+    "devDependencies": {
+        "tsx": "^4.7.1"
+    }
+}

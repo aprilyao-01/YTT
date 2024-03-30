@@ -6,6 +6,16 @@
 <app-loading></app-loading>
 <app-alert [visible]="alertVisible" [condition]="alertCondition" [ticker]="alertTicker" [triggerCounter]="triggerCounter"></app-alert>
 
+<div class="container d-flex justify-content-center mx-auto">
+    <ngb-alert *ngIf="buySuccess" type="alert-success" class="alert alert-success text-center mx-2 w-100 w-lg-75" (closed)="buySuccess = false">
+        {{ currentTicker }} bought successfully.
+    </ngb-alert>
+    
+    <ngb-alert *ngIf="sellSuccess" type="alert-danger" class="alert alert-danger text-center mx-2 w-100 w-lg-75" (closed)="sellSuccess = false">
+        {{ currentTicker }} sold successfully.
+    </ngb-alert>
+</div>
+
 <div *ngFor="let portfolioItem of portfolio.portfolioItem" class="container w-lg-25">
     <div class="card my-4 w-100 w-lg-25">
         <div class="card-header pt-3">
@@ -13,7 +23,6 @@
             <span class="fs-lg-5" style="color: gray;">  {{portfolioItem.name}}</span>
         </div>
         <div class="card-body fs-lg-5">
-            <!-- <div class="row row-cols-1 row-cols-lg-2 g-3 mt-3"></div> -->
             <div class="row">
                 <div class="col">
                     <div>Quantity: </div>
@@ -42,7 +51,7 @@
             </div>
         </div>
         <div class="card-footer text-body-secondary">
-            <app-buy-sell [name]="portfolioItem.name" [ticker]="portfolioItem.ticker" [price]="portfolioItem.c" btnCol="btn btn-primary"></app-buy-sell>
+            <app-buy-sell [name]="portfolioItem.name" [ticker]="portfolioItem.ticker" [price]="portfolioItem.c" btnCol="btn btn-primary" (transactionSuccess)="handleTransactionSuccess($event)"></app-buy-sell>
         </div>
     </div>
 </div>

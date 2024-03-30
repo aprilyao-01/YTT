@@ -30,7 +30,6 @@ router.get('/', asyncHandler(
         const balance = await BalanceModel.findOne();
         if (!balance) {
             res.send({ balance: 25000.00, portfolioItem: portfolioItem });
-            res.send({message: 'Balance not found'});
             return;
         } else {
             res.send({ balance: balance.balance, portfolioItem: portfolioItem });

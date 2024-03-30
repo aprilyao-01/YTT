@@ -23,6 +23,7 @@ export class StockService {
   constructor(private http:HttpClient) { }
 
   loadStockData(ticker: string): void {
+    this.loadingSubject.next(true);
     console.log("Loading for: ", ticker);
     // start by getting the quote
     this.getQuote(ticker).pipe(

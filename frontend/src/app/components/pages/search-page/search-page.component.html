@@ -2,11 +2,31 @@
 <div class="container-fluid my-5" *ngIf="loading$ | async">
     <mat-spinner style="margin: auto;" diameter="50"></mat-spinner>
 </div>
-<app-alert [visible]="alertVisible" [condition]="alertCondition" [ticker]="alertTicker"></app-alert>
 
-<ngb-alert id="invalid-ticker-alert" *ngIf="invalidSymbolFlag" type="alert-danger" class="alert alert-danger" [dismissible]="false">
-    No data found. Please enter a valid ticker
-</ngb-alert>
+<div class="container d-flex justify-content-center mx-auto">
+    <ngb-alert *ngIf="noInput" type="alert alert-danger" class="alert alert-danger text-center mx-2 w-100 w-lg-75" (closed)="noInput = false">
+        Please enter a valid ticker
+    </ngb-alert>
+    <ngb-alert *ngIf="notFound" type="alert alert-danger" class="alert alert-danger text-center mx-2 w-100 w-lg-75" [dismissible]="false">
+        No data found. Please enter a valid ticker
+    </ngb-alert>
+    
+    <ngb-alert *ngIf="addWatchlist" type="alert-success" class="alert alert-success text-center mx-2 w-100 w-lg-75" (closed)="addWatchlist = false">
+        {{ stockV2?.profile?.ticker }} added to Watchlist.
+    </ngb-alert>
+    
+    <ngb-alert *ngIf="removeWatchlist" type="alert-danger" class="alert alert-danger text-center mx-2 w-100 w-lg-75" (closed)="removeWatchlist = false">
+        {{ stockV2?.profile?.ticker }} removed from Watchlist.
+    </ngb-alert>
+    
+    <ngb-alert *ngIf="buySuccess" type="alert-success" class="alert alert-success text-center mx-2 w-100 w-lg-75" (closed)="buySuccess = false">
+        {{ stockV2?.profile?.ticker }} bought successfully.
+    </ngb-alert>
+    
+    <ngb-alert *ngIf="sellSuccess" type="alert-danger" class="alert alert-danger text-center mx-2 w-100 w-lg-75" (closed)="sellSuccess = false">
+        {{ stockV2?.profile?.ticker }} sold successfully.
+    </ngb-alert>
+</div>
 
 <div class="container w-70 stock-info" *ngIf="!(loading$ | async) && isShow && stockV2">
     <div class="container text-center basic-info">
@@ -40,7 +60,7 @@
         </div>
         <div class="row buy-sell">
             <div class="col-5 d-flex justify-content-center px-0">
-                <app-buy-sell [name]="stockV2.profile.name" [ticker]="currentTicker" [price]="stockV2.currentPrice.c" btnCol="btn btn-success"></app-buy-sell>
+                <app-buy-sell [name]="stockV2.profile.name" [ticker]="currentTicker" [price]="stockV2.currentPrice.c" btnCol="btn btn-success" (transactionSuccess)="handleTransactionSuccess($event)"></app-buy-sell>
             </div>
             <div class="col-2 px-0"></div>
             <div class="col-5 px-0"></div>

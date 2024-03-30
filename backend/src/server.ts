@@ -1,6 +1,8 @@
 // use env file
 import dotenv from 'dotenv';
+import path from 'path';
 dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 import express from 'express';
 import cors from 'cors';
@@ -41,10 +43,7 @@ app.get('/', asyncHandler(async (req, res) => {
     res.send({ str: String(ts), num: Number(ts), last: Number(last) });
 }));
 
-const port = 3000;
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-
-
-// TODO: candle?

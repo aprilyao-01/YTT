@@ -22,7 +22,13 @@ export class SearchPageComponent implements OnInit, OnDestroy{
   alertCondition: string = 'undefined';
   alertTicker: string = '';
 
-  invalidSymbolFlag: boolean = false;
+  // alert flags
+  noInput: boolean = false;
+  notFound: boolean = false;
+  buySuccess: boolean = false;
+  sellSuccess: boolean = false;
+  addWatchlist: boolean = false;
+  removeWatchlist: boolean = false;
 
   // for automate
   private updateSubscription: Subscription | undefined;
@@ -78,15 +84,16 @@ export class SearchPageComponent implements OnInit, OnDestroy{
       this.stockV2 = data;
       if(data) {
 
-        this.currentProfile = this.stockService.getStockFromLocal('profile');
+        this.currentProfile = data.profile;
         if(!this.currentProfile){
           // this.changeAlert("notFound");
-          this.invalidSymbolFlag = true;
+          this.notFound = true;
           this.isShow = false;
           
           // dismiss after 5s
           setTimeout(() => {
-            this.invalidSymbolFlag = false;
+            this.noInput = false;
+            this.isShow = true;
           }, 5000);
         }
 
@@ -101,10 +108,17 @@ export class SearchPageComponent implements OnInit, OnDestroy{
 
     this.stockService.error$.subscribe(error => {
       if(error) {
+        this.notFound = true;
+        this.isShow = false;
+        //dismiss after 5s
+        setTimeout(() => {
+          this.noInput = false;
+        }, 5000);
         // this.changeAlert("notFound");
         // this.invalidSymbolFlag = true;
         // this.isShow = false;
       } else {
+        this.notFound = false;
         this.isShow = true;
       }
     });
@@ -123,7 +137,13 @@ export class SearchPageComponent implements OnInit, OnDestroy{
     if(!this.stockV2) return;
     const isInWatchlist = this.watchlistService.isWatched(this.stockV2.profile.ticker);
     isInWatchlist? this.watchlistService.removeFromWatchlist(this.stockV2.profile.ticker) : this.watchlistService.addToWatchlist(this.stockV2);
-    this.changeAlert(isInWatchlist? 'removeWatchlist' : 'addWatchlist', this.stockV2.profile.ticker);
+    // this.changeAlert(isInWatchlist? 'removeWatchlist' : 'addWatchlist', this.stockV2.profile.ticker);
+    isInWatchlist? this.removeWatchlist = true : this.addWatchlist = true;
+    // dismiss after 5s
+    setTimeout(() => {
+      this.addWatchlist = false;
+      this.removeWatchlist = false;
+    }, 5000);
     this.isInWatchlist = !isInWatchlist;
   }
 
@@ -145,13 +165,32 @@ export class SearchPageComponent implements OnInit, OnDestroy{
     console.log('Notify: ', ticker);
 
     if (!ticker) {
-      this.changeAlert("noInput");
+      // this.changeAlert("noInput");
+      this.noInput = true;
       this.router.navigateByUrl('/search/home');
       this.isShow = false;
+      // dismiss after 5s
+      setTimeout(() => {
+        this.noInput = false;
+      }, 5000);
     } else {
+      this.noInput = false;
       this.router.navigateByUrl('/search/' + ticker);
       this.isShow = true;
     }
+  }
+
+  handleTransactionSuccess(event: string) {
+    if (event === 'buySuccess') {
+      this.buySuccess = true;
+    } else if (event === 'sellSuccess') {
+      this.sellSuccess = true;
+    }
+
+    setTimeout(() => {
+      this.buySuccess = false;
+      this.sellSuccess = false;
+    }, 5000);
   }
 
   setAutoUpdate(){

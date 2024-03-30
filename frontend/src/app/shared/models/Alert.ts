@@ -14,7 +14,7 @@ export const ALERTS: Alert[] = [
         type: 'danger',
         condition: 'notFound',
         message: 'No data found. Please enter a valid ticker',
-        dismissible: true
+        dismissible: false
     },
     {
         type: 'success',
