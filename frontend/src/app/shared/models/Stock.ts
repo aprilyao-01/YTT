@@ -109,18 +109,18 @@ export class StockV2 {
     constructor(
         profile: Profile = {ticker: '', name: '', exchange: '', ipo: '', logo: '', weburl: '', finnhubIndustry: ''},
         currentPrice: CurrentPrice = {c: 0, d: 0, dp: 0, h: 0, l: 0, o: 0, pc: 0, t: 0, color: '', markOpen: true, getQuoteTimestamp:'', lastTimestamp: ''},
-        // peers: string[] = [],
-        // news: News[] = [],
-        // insider: InsiderResult = {symbol: '', change: {total: 0, positiveVal: 0, negativeVal: 0}, mspr: {total: 0, positiveVal: 0, negativeVal: 0}},
+        peers: string[] = [],
+        news: News[] = [],
+        insider: InsiderResult = {symbol: '', change: {total: 0, positiveVal: 0, negativeVal: 0}, mspr: {total: 0, positiveVal: 0, negativeVal: 0}},
         // earnings: EarningItem[] = [],
         quantity: number = 0,
         totalCost: number = 0
     ) {
         this.profile = profile;
         this.currentPrice = currentPrice;
-        // this.peers = peers;
-        // this.news = news;
-        // this.insider = insider;
+        this.peers = peers;
+        this.news = news;
+        this.insider = insider;
         // this.earnings = earnings;
         this.quantity = quantity;
         this.totalCost = totalCost;

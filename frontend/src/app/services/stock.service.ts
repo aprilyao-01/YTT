@@ -39,6 +39,11 @@ export class StockService {
           peers: this.getPeers(ticker),
           lastworking: this.getLastworking(ticker),
           quote: of(quote), // pass the already retrieved quote forward
+          news: this.getNews(ticker),
+          history: this.getHistory(ticker),
+          insider: this.getInsider(ticker),
+          recommendation: this.getRecommendation(ticker),
+          earnings: this.getEarings(ticker),
         });
       }),
       catchError(error => {
@@ -48,7 +53,7 @@ export class StockService {
       finalize(() => this.loadingSubject.next(false))
     ).subscribe(result => {
       if (result) {
-        const combinedData = new StockV2(result.profile, result.quote);
+        const combinedData = new StockV2(result.profile, result.quote, result.peers, result.news, result.insider);
         this.stockDataSubject.next(combinedData); // Send the result back
         this.errorSubject.next(null);
 
@@ -57,6 +62,12 @@ export class StockService {
         this.setStockToLocal(result.lastworking, 'lastworking');
 
         console.log("First part Done");
+
+        this.setStockToLocal(result.news, 'news');
+        this.setStockToLocal(result.history, 'history');
+        this.setStockToLocal(result.insider, 'insider');
+        this.setStockToLocal(result.recommendation, 'recommendation');
+        this.setStockToLocal(result.earnings, 'earnings');
 
         // then get the rest
         this.fetchOthers(ticker);
@@ -94,10 +105,6 @@ export class StockService {
     .subscribe(result => {
       if (result) {
         const stockData = this.stockDataSubject.getValue();
-        if(stockData){
-          stockData.news = result.news;
-          stockData.insider = result.insider;
-        }
         
         this.stockDataSubject.next(stockData);
         this.errorSubject.next(null);
@@ -129,7 +136,10 @@ export class StockService {
       map(result => {
         if (result) {
           const profile = this.getStockFromLocal('profile');
-          const combinedData = new StockV2(profile, result.quote);
+          const peers = this.getStockFromLocal('peers');
+          const news = this.getStockFromLocal('news');
+          const insider = this.getStockFromLocal('insider');
+          const combinedData = new StockV2(profile, result.quote, peers, news, insider);
   
           this.stockDataSubject.next(combinedData); // Update observable with new data
           this.errorSubject.next(null);

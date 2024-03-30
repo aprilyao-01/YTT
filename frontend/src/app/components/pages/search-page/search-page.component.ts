@@ -45,19 +45,6 @@ export class SearchPageComponent implements OnInit, OnDestroy{
   currentInsider: InsiderResult | null = null;
   isInWatchlist: boolean = false;
   isShow: boolean = true;
-  insider: InsiderResult = {
-    symbol: '',
-    change: {
-      total: 0,
-      positiveVal: 0,
-      negativeVal: 0
-    },
-    mspr: {
-      total: 0,
-      positiveVal: 0,
-      negativeVal: 0
-    }
-  };
 
   constructor(private stockService: StockService, private activatedRoute: ActivatedRoute,
     private watchlistService: WatchlistService, private router: Router) {
@@ -99,9 +86,9 @@ export class SearchPageComponent implements OnInit, OnDestroy{
           this.isShow = true;
           this.currentProfile = data.profile;
           this.currentQuote = data.currentPrice;
-          this.currentPeers = this.stockService.getStockFromLocal('peers');
-          this.currentNews = this.stockService.getStockFromLocal('news');
-          this.currentInsider = this.stockService.getStockFromLocal('insider');
+          this.currentPeers = data.peers;
+          this.currentNews = data.news;
+          this.currentInsider = data.insider;
           this.isInWatchlist = this.watchlistService.isWatched(data.profile.ticker);
         }
         console.log('notFound:', this.noData);
