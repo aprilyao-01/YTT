@@ -11,7 +11,7 @@ interface NewsItem {
 }
 
 interface NewsResult {
-    datetime: string;
+    datetime: number;
     headline: string;
     id: number;
     image: string;
@@ -51,14 +51,14 @@ export const formatNews = (data: { data: NewsItem[]}) => {
 
     for (var i = 0; i < data.data.length && count < 20 ; i++) {
         if(isValidNews(data.data[i])) {
-            const date = new Date(data.data[i].datetime * 1000);
-            const year = date.getFullYear();
-            const month = monthNames[date.getMonth()];
-            const day = date.getDate();
-            const datetime = `${month} ${day}, ${year}`;
+            // const date = new Date(data.data[i].datetime * 1000);
+            // const year = date.getFullYear();
+            // const month = monthNames[date.getMonth()];
+            // const day = date.getDate();
+            // const datetime = `${month} ${day}, ${year}`;
 
             const newsItem: NewsResult = {
-                datetime: datetime,
+                datetime: data.data[i].datetime,
                 headline: data.data[i].headline,
                 id: data.data[i].id,
                 image: data.data[i].image,

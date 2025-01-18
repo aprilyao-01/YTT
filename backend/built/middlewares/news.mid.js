@@ -28,13 +28,13 @@ var formatNews = function (data) {
     ];
     for (var i = 0; i < data.data.length && count < 20; i++) {
         if (isValidNews(data.data[i])) {
-            var date = new Date(data.data[i].datetime * 1000);
-            var year = date.getFullYear();
-            var month = monthNames[date.getMonth()];
-            var day = date.getDate();
-            var datetime = "".concat(month, " ").concat(day, ", ").concat(year);
+            // const date = new Date(data.data[i].datetime * 1000);
+            // const year = date.getFullYear();
+            // const month = monthNames[date.getMonth()];
+            // const day = date.getDate();
+            // const datetime = `${month} ${day}, ${year}`;
             var newsItem = {
-                datetime: datetime,
+                datetime: data.data[i].datetime,
                 headline: data.data[i].headline,
                 id: data.data[i].id,
                 image: data.data[i].image,

@@ -35,6 +35,7 @@ router.post('/update', asyncHandler(
         await WatchItemModel.deleteMany({});
         await WatchItemModel.insertMany(req.body);
         res.send( {message: 'Watchlist updated'});
+        console.log("updated /watchlist in db");
     }
 ))
 

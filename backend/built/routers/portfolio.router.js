@@ -107,6 +107,7 @@ router.post('/update', (0, express_async_handler_1.default)(function (req, res) 
             case 4:
                 _a.sent();
                 res.send({ message: 'Portfolio updated' });
+                console.log("updated /portfolio in db");
                 return [2 /*return*/];
         }
     });

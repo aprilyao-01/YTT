@@ -47,6 +47,7 @@ router.post('/update', asyncHandler(
         await BalanceModel.create({ balance: req.body.balance });
         
         res.send( {message: 'Portfolio updated'});
+        console.log("updated /portfolio in db");
     }
 ))
 

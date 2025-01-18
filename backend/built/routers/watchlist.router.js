@@ -91,6 +91,7 @@ router.post('/update', (0, express_async_handler_1.default)(function (req, res) 
             case 2:
                 _a.sent();
                 res.send({ message: 'Watchlist updated' });
+                console.log("updated /watchlist in db");
                 return [2 /*return*/];
         }
     });
